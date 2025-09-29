@@ -1,0 +1,13 @@
+
+import { ShardEntity } from 'src/shared/typeorm/base.orm-entity';
+import { Entity, Column, ManyToMany } from 'typeorm';
+import { RoleOrm } from './role.orm-entity';
+import { UserOrm } from './user.orm-entity';
+@Entity('Permission'.toLowerCase())
+export class PermissionOrm extends ShardEntity {
+  @Column() code : string
+  @ManyToMany(() => RoleOrm, (role) => role.permissions)
+  roles: RoleOrm[]
+  @ManyToMany(() => UserOrm, (user) => user.permissions)
+  users: UserOrm[]
+}

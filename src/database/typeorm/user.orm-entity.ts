@@ -1,6 +1,7 @@
-import { Exclude } from 'class-transformer';
 import { ShardEntity } from 'src/shared/typeorm/base.orm-entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { PermissionOrm } from './permission.orm-entity';
+import { RoleOrm } from './role.orm-entity';
 @Entity('User'.toLowerCase())
 export class UserOrm extends ShardEntity {
   @Column() username: string;
@@ -9,4 +10,10 @@ export class UserOrm extends ShardEntity {
   password: string;
   @Column({ default: false })
   is_verified: boolean;
+  @ManyToMany(() => RoleOrm, (role) => role.users)
+  @JoinTable()
+  roles: RoleOrm[];
+  @ManyToMany(() => PermissionOrm, (permission) => permission.users)
+  @JoinTable()
+  permissions: PermissionOrm[];
 }

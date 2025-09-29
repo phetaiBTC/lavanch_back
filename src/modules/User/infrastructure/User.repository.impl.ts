@@ -20,12 +20,17 @@ export class UserRepositoryImpl implements IUserRepository {
     const entity = await this.repo.findOne({
       where: { id },
       withDeleted: true,
+      relations: ['roles', 'permissions', 'roles.permissions'],
     });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
   async findAll(query: PaginationDto): Promise<PaginatedResponse<User>> {
-    const qb = this.repo.createQueryBuilder('user').withDeleted();
+    const qb = this.repo.createQueryBuilder('user')
+    .withDeleted()
+    .leftJoinAndSelect('user.roles', 'roles')
+    .leftJoinAndSelect('roles.permissions', 'permissions')
+    .leftJoinAndSelect('user.permissions', 'user_permissions')
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
@@ -42,7 +47,7 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const entity = await this.repo.findOne({ where: { email } });
+    const entity = await this.repo.findOne({ where: { email },relations: ['roles', 'permissions', 'roles.permissions'], withDeleted: true });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 

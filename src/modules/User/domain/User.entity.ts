@@ -1,5 +1,7 @@
 import { comparePassword, hashPassword } from 'src/shared/utils/bcrypt.util';
 import { UserProps } from '../interface/User.interface';
+import { Permission } from 'src/modules/Permission/domain/Permission.entity';
+import { Role } from 'src/modules/Role/domain/Role.entity';
 
 export class User {
   private id: number | null;
@@ -10,13 +12,16 @@ export class User {
   private createdAt: Date;
   private updatedAt: Date;
   private deletedAt: Date | null;
-
+  private permission:Permission[];
+  private roles:Role[]
   constructor(props: UserProps) {
     this.id = props.id ?? null;
     this.username = props.username;
     this.email = props.email;
     this.password = props.password;
     this.is_verified = props.is_verified;
+    this.roles = props.roles ?? [];
+    this.permission = props.permission ?? [];
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt ?? new Date();
     this.deletedAt = props.deletedAt ?? null;
@@ -28,6 +33,8 @@ export class User {
       username: this.username,
       email: this.email,
       password: this.password,
+      roles: this.roles,
+      permissions: this.permission,
       is_verified: this.is_verified,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

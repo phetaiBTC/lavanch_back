@@ -7,7 +7,7 @@ import { AuthModule } from './modules/Auth/Auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
-
+import { PermissionGuard } from './guards/PermissionGuard';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -39,6 +39,10 @@ import { MailModule } from './modules/mail/mail.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
+    }
   ],
 })
 export class AppModule {}

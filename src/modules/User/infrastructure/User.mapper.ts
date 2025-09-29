@@ -6,6 +6,8 @@ import {
   IPagination,
   PaginatedResponse,
 } from 'src/shared/interface/pagination.interface';
+import { PermissionMapper } from 'src/modules/Permission/infrastructure/Permission.mapper';
+import { RoleMapper } from 'src/modules/Role/infrastructure/Role.mapper';
 export const UserMapper = {
   toDomain(schema: UserOrm): User {
     return new User({
@@ -14,6 +16,10 @@ export const UserMapper = {
       email: schema.email,
       password: schema.password,
       is_verified: schema.is_verified,
+      roles: schema.roles.map((role) => RoleMapper.toDomain(role)),
+      permission: schema.permissions.map((permission) =>
+        PermissionMapper.toDomain(permission),
+      ),
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
       deletedAt: schema.deletedAt,
@@ -25,6 +31,10 @@ export const UserMapper = {
     schema.username = domain.value.username;
     schema.email = domain.value.email;
     schema.password = domain.value.password;
+    schema.roles = domain.value.roles.map((role) => RoleMapper.toSchema(role));
+    schema.permissions = domain.value.permissions.map((permission) =>
+      PermissionMapper.toSchema(permission),
+    );
     schema.is_verified = domain.value.is_verified;
     return schema;
   },
@@ -34,6 +44,10 @@ export const UserMapper = {
       username: domain.value.username,
       email: domain.value.email,
       is_verified: domain.value.is_verified,
+      roles: domain.value.roles.map((role) => RoleMapper.toResponse(role)),
+      permissions: domain.value.permissions.map((permission) =>
+        PermissionMapper.toResponse(permission),
+      ),
       createdAt: formatDate(domain.value.createdAt),
       updatedAt: formatDate(domain.value.updatedAt),
       deletedAt: domain.value.deletedAt

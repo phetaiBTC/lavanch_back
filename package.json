@@ -20,7 +20,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "pnpm run typeorm migration:generate -d ./src/database/data-source.ts ./src/database/migrations/update-schema",
-    "migration:run": "pnpm run typeorm migration:run -d ./src/database/data-source.ts"
+    "migration:run": "pnpm run typeorm migration:run -d ./src/database/data-source.ts",
+    "migration:revert": "pnpm run typeorm migration:revert -d ./src/database/data-source.ts",
+    "migration:show": "pnpm run typeorm migration:show -d ./src/database/data-source.ts",
+    "migration:drop": "pnpm run typeorm migration:drop -d ./src/database/data-source.ts",
+    "seed": "ts-node -r tsconfig-paths/register ./src/database/seed.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",

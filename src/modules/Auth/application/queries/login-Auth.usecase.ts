@@ -17,10 +17,20 @@ export class LoginAuthUseCase {
       throw new UnauthorizedException('invalid credentials');
     if (!user.value.is_verified)
       throw new UnauthorizedException('user not verified');
+    const permissions = user.value.permissions.map((permission) => {
+      return permission.value.code;
+    });
+    user.value.roles.forEach((role) => {
+      role.value.permissions.forEach((permission) => {
+        permissions.push(permission.value.code);
+      });
+    });
     const payload: AuthPayload = {
       id: user.value.id!,
       username: user.value.username,
       email: user.value.email,
+      roles: user.value.roles.map((role) => role.value.code),
+      permissions,
     };
     return {
       access_token: this.jwtService.sign(payload),

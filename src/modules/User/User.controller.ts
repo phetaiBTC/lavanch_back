@@ -37,6 +37,7 @@ export class UserController {
     private readonly changePasswordUseCase: ChangePasswordUserUseCase,
     private readonly verifyUserUseCase: VerifyUserUseCase,
   ) {}
+  @Public()
   @Post()
   async create(@Body() dto: CreateUserDto): Promise<UserResponse> {
     return UserMapper.toResponse(await this.createUser.execute(dto));
@@ -48,7 +49,7 @@ export class UserController {
   ): Promise<PaginatedResponse<UserResponse>> {
     return UserMapper.toResponseList(await this.findAllUser.execute(query));
   }
-
+  
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<UserResponse> {
     return UserMapper.toResponse(await this.findOneUser.execute(id));
