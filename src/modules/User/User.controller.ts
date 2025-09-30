@@ -69,11 +69,12 @@ export class UserController {
       await this.changePasswordUseCase.execute(user.id, body),
     );
   }
-
+  @Public()
   @Post('resend-mail-verify')
   async resendMail(@Body() body: SendEmailDto): Promise<{ message: string }> {
     return this.sendEmailUserUseCase.create(body.email);
   }
+  @Public()
   @Patch('reset-password')
   async resetPassword(
     @Body() body: ResetPasswordDto,
