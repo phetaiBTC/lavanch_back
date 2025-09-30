@@ -5,6 +5,8 @@ import { MailServiceImpl } from './infrastructure/mail.service.impl';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { SendEmailUserUseCase } from './application/sendMail-User.usecase';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     MailerModule.forRootAsync({
@@ -36,7 +38,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
   providers: [
     SendMailUseCase,
     { provide: 'IMailService', useClass: MailServiceImpl },
+    SendEmailUserUseCase
   ],
-  exports: [SendMailUseCase],
+  exports: [SendMailUseCase,SendEmailUserUseCase],
 })
 export class MailModule {}

@@ -26,11 +26,12 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async findAll(query: PaginationDto): Promise<PaginatedResponse<User>> {
-    const qb = this.repo.createQueryBuilder('user')
-    .withDeleted()
-    .leftJoinAndSelect('user.roles', 'roles')
-    .leftJoinAndSelect('roles.permissions', 'permissions')
-    .leftJoinAndSelect('user.permissions', 'user_permissions')
+    const qb = this.repo
+      .createQueryBuilder('user')
+      .withDeleted()
+      .leftJoinAndSelect('user.roles', 'roles')
+      .leftJoinAndSelect('roles.permissions', 'permissions')
+      .leftJoinAndSelect('user.permissions', 'user_permissions');
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
@@ -47,7 +48,11 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const entity = await this.repo.findOne({ where: { email },relations: ['roles', 'permissions', 'roles.permissions'], withDeleted: true });
+    const entity = await this.repo.findOne({
+      where: { email },
+      relations: ['roles', 'permissions', 'roles.permissions'],
+      withDeleted: true,
+    });
     return entity ? UserMapper.toDomain(entity) : null;
   }
 
@@ -58,10 +63,10 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async update(user: User): Promise<User> {
-    await this.repo.update(user.value.id!, UserMapper.toSchema(user));
+    await this.repo.save(UserMapper.toSchema(user));
     const updated = await this.findById(user.value.id!);
     if (!updated) throw new Error('User not found');
-    return updated
+    return updated;
   }
 
   async hardDelete(id: number): Promise<{ message: string }> {

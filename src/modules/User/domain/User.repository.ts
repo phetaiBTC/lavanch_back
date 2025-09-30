@@ -2,7 +2,7 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { User } from './User.entity';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
-export const User_REPOSITORY = Symbol('USER_REPOSITORY'.toLocaleUpperCase());
+export const User_REPOSITORY = Symbol('User_REPOSITORY'.toLocaleUpperCase());
 
 export interface IUserRepository {
   findById(id: number): Promise<User | null>;

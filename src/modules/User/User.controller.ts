@@ -25,6 +25,10 @@ import { type AuthPayload } from '../Auth/interface/Auth.interface';
 import { ChangePasswordUserUseCase } from './application/commands/changePassword-User.usecase';
 import { VerifyUserUseCase } from './application/commands/verify-User.usecase';
 import { Public } from 'src/shared/decorator/auth.decorator';
+import { ResetPasswordUserUseCase } from './application/commands/resetPassword-User.usecase';
+import { ResetPasswordDto } from './dto/resetPassword-User.dto';
+import { SendEmailDto } from './dto/sendEmail-User.dto';
+import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usecase';
 
 @Controller('user'.toLowerCase())
 export class UserController {
@@ -36,6 +40,8 @@ export class UserController {
     private readonly findOneUser: GetOneUserUseCase,
     private readonly changePasswordUseCase: ChangePasswordUserUseCase,
     private readonly verifyUserUseCase: VerifyUserUseCase,
+    private readonly resetPasswordUseCase: ResetPasswordUserUseCase,
+    private readonly sendEmailUserUseCase: sendEmailUserUseCase,
   ) {}
   @Public()
   @Post()
@@ -49,7 +55,7 @@ export class UserController {
   ): Promise<PaginatedResponse<UserResponse>> {
     return UserMapper.toResponseList(await this.findAllUser.execute(query));
   }
-  
+
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<UserResponse> {
     return UserMapper.toResponse(await this.findOneUser.execute(id));
@@ -63,10 +69,29 @@ export class UserController {
       await this.changePasswordUseCase.execute(user.id, body),
     );
   }
+
+  @Post('resend-mail-verify')
+  async resendMail(@Body() body: SendEmailDto): Promise<{ message: string }> {
+    return this.sendEmailUserUseCase.create(body.email);
+  }
+  @Patch('reset-password')
+  async resetPassword(
+    @Body() body: ResetPasswordDto,
+    @Query('token') token: string,
+  ): Promise<UserResponse> {
+    return UserMapper.toResponse(
+      await this.resetPasswordUseCase.execute(body, token),
+    );
+  }
   @Public()
   @Patch('verify-email')
   async verifyEmail(@Query('token') token: string): Promise<UserResponse> {
     return UserMapper.toResponse(await this.verifyUserUseCase.execute(token));
+  }
+  @Public()
+  @Post('send-password')
+  async sendPassword(@Body() body: SendEmailDto): Promise<{ message: string }> {
+    return this.sendEmailUserUseCase.reset(body.email);
   }
   @Patch(':id')
   async update(

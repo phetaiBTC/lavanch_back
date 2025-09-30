@@ -8,6 +8,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
 import { PermissionGuard } from './guards/PermissionGuard';
+import { PermissionModule } from './modules/Permission/Permission.module';
+import { RoleModule } from './modules/Role/Role.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -32,6 +34,8 @@ import { PermissionGuard } from './guards/PermissionGuard';
     UserModule,
     AuthModule,
     MailModule,
+    PermissionModule,
+    RoleModule
   ],
   controllers: [],
   providers: [
@@ -39,10 +43,10 @@ import { PermissionGuard } from './guards/PermissionGuard';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    {
-      provide: APP_GUARD,
-      useClass: PermissionGuard,
-    }
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: PermissionGuard,
+    // }
   ],
 })
 export class AppModule {}

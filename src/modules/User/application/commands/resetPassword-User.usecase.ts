@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
@@ -9,25 +10,27 @@ import {
   User_REPOSITORY,
 } from '../../domain/User.repository';
 import { GetByEmailUserUseCase } from '../queries/getByEmail-User.usecase';
+import { ResetPasswordDto } from '../../dto/resetPassword-User.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../../domain/User.entity';
 @Injectable()
-export class VerifyUserUseCase {
+export class ResetPasswordUserUseCase {
   constructor(
-    private readonly jwtService: JwtService,
     private readonly findByEmail: GetByEmailUserUseCase,
     @Inject(User_REPOSITORY) private readonly userRepo: IUserRepository,
+    private readonly jwtService: JwtService,
   ) {}
-  async execute(token: string) {
+  async execute(dto: ResetPasswordDto, token: string): Promise<User> {
     try {
+      if (dto.password != dto.confirm_password)
+        throw new BadRequestException('Passwords do not match');
       const email = await this.jwtService.verify(token).email;
       const user = await this.findByEmail.execute(email);
       if (!user) throw new NotFoundException('User not found');
-      if (user.value.is_verified)
-        throw new UnauthorizedException('User already verified');
-      user.verify();
-      return await this.userRepo.update(user);
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
+      await user.changePassword(dto.password);
+      return this.userRepo.update(user);
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Token has expired');
       }
       throw new UnauthorizedException('Invalid token');
