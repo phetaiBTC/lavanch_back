@@ -102,15 +102,15 @@ export class UserController {
     return UserMapper.toResponse(await this.updateUser.execute(id, dto));
   }
 
-  // @Delete('hard/:id')
-  // hardDelete(@Param('id') id: number) {
-  //   return this.userService.hardDeleteUser(+id);
-  // }
-
   @Delete('soft/:id')
   softDelete(@Param('id') id: number) {
     return this.softDeleteUser.execute(+id);
   }
+
+  // @Delete('hard/:id')
+  // hardDelete(@Param('id') id: number) {
+  //   return this.userService.hardDeleteUser(+id);
+  // }
 
   // @Patch('restore')
   // restore(@Param('id') id: number) {
