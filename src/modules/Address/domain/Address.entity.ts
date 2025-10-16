@@ -4,6 +4,7 @@ import {
   VillageProps,
 } from '../interface/Address.interface';
 
+// Province
 export class Province {
   private id?: number;
   private name: string;
@@ -22,6 +23,7 @@ export class Province {
   }
 }
 
+// District
 export class District {
   private id?: number;
   private name: string;
@@ -43,6 +45,7 @@ export class District {
   }
 }
 
+// Village
 export class Village {
   private id?: number;
   private name: string;
