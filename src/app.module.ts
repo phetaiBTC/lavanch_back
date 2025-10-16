@@ -10,6 +10,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { PermissionGuard } from './guards/PermissionGuard';
 import { PermissionModule } from './modules/Permission/Permission.module';
 import { RoleModule } from './modules/Role/Role.module';
+import { AddressModule } from './modules/Address/Address.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -35,7 +36,8 @@ import { RoleModule } from './modules/Role/Role.module';
     AuthModule,
     MailModule,
     PermissionModule,
-    RoleModule
+    RoleModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [
