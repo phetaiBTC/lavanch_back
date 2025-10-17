@@ -6,4 +6,5 @@ export const Permission_REPOSITORY = Symbol('Permission_REPOSITORY'.toLocaleUppe
 
 export interface IPermissionRepository {
   findAll(query: PaginationDto): Promise<PaginatedResponse<Permission>>;
+  findOne(id: number): Promise<Permission | null>;
 }

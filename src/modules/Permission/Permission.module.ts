@@ -5,6 +5,7 @@ import { PermissionController } from './Permission.controller';
 import { GetPermissionUseCase } from './application/queries/get-Permission.usecase';
 import { Permission_REPOSITORY } from './domain/Permission.repository';
 import { PermissionRepositoryImpl } from './infrastructure/Permission.repository.impl';
+import { GetOnePermissionUseCase } from './application/queries/getOne-Permission.usecase';
 @Module({
   imports: [TypeOrmModule.forFeature([PermissionOrm])],
   controllers: [PermissionController],
@@ -14,7 +15,8 @@ import { PermissionRepositoryImpl } from './infrastructure/Permission.repository
       useClass: PermissionRepositoryImpl,
     },
     GetPermissionUseCase,
+    GetOnePermissionUseCase
   ],
-  exports: [],
+  exports: [GetOnePermissionUseCase],
 })
 export class PermissionModule {}

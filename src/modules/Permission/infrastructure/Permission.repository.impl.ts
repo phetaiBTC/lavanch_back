@@ -32,4 +32,9 @@ export class PermissionRepositoryImpl implements IPermissionRepository {
       toDomain: PermissionMapper.toDomain,
     });
   }
+
+  async findOne(id: number): Promise<Permission | null> {
+    const permission = await this.permissionRepository.findOneBy({ id });
+    return permission ? PermissionMapper.toDomain(permission) : null;
+  }
 }

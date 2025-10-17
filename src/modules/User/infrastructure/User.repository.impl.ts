@@ -63,10 +63,8 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async update(user: User): Promise<User> {
-    await this.repo.save(UserMapper.toSchema(user));
-    const updated = await this.findById(user.value.id!);
-    if (!updated) throw new Error('User not found');
-    return updated;
+    const saved = await this.repo.save(UserMapper.toSchema(user));
+    return UserMapper.toDomain(saved);
   }
 
   async hardDelete(id: number): Promise<{ message: string }> {

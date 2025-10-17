@@ -15,6 +15,8 @@ import { VerifyUserUseCase } from './application/commands/verify-User.usecase';
 import { ResetPasswordUserUseCase } from './application/commands/resetPassword-User.usecase';
 import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usecase';
 import { MailModule } from '../mail/mail.module';
+import { HardDeleteUserUseCase } from './application/commands/hard-User.usecase';
+import { RestoreUserUseCase } from './application/commands/restore-User.usecase';
 @Module({
   imports: [TypeOrmModule.forFeature([UserOrm]),MailModule],
   controllers: [UserController],
@@ -32,7 +34,11 @@ import { MailModule } from '../mail/mail.module';
     ChangePasswordUserUseCase,
     VerifyUserUseCase,
     ResetPasswordUserUseCase,
-    sendEmailUserUseCase
+    sendEmailUserUseCase,
+    HardDeleteUserUseCase,
+    SoftDeleteUserUseCase,
+    HardDeleteUserUseCase,
+    RestoreUserUseCase
   ],
   exports: [GetByEmailUserUseCase,GetOneUserUseCase,UpdateUserUseCase],
 })

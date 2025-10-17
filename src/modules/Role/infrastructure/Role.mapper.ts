@@ -24,6 +24,9 @@ export const RoleMapper = {
     const schema = new RoleOrm();
     if (domain.value.id != null) schema.id = domain.value.id;
     schema.code = domain.value.code;
+    schema.permissions = domain.value.permissions.map((permission) =>
+      PermissionMapper.toSchema(permission),
+    );
     return schema;
   },
   toResponse(domain: Role): RoleResponse {

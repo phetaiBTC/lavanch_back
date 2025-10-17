@@ -17,7 +17,9 @@ export class RoleRepositoryImpl implements IRoleRepository {
   ) {}
 
   async findAll(query: PaginationDto): Promise<PaginatedResponse<Role>> {
-    const qb = this.roleRepository.createQueryBuilder('role').leftJoinAndSelect('role.permissions', 'permissions');
+    const qb = this.roleRepository
+      .createQueryBuilder('role')
+      .leftJoinAndSelect('role.permissions', 'permissions');
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
@@ -31,5 +33,37 @@ export class RoleRepositoryImpl implements IRoleRepository {
       limit: query.limit || 10,
       toDomain: RoleMapper.toDomain,
     });
+  }
+  async findOne(id: number): Promise<Role | null> {
+    const role = await this.roleRepository.findOne({
+      where: { id },
+      relations: ['permissions'],
+      withDeleted: true,
+    });
+    return role ? RoleMapper.toDomain(role) : null;
+  }
+  async findByCode(code: string): Promise<Role | null> {
+    const role = await this.roleRepository.findOne({
+      where: { code },
+      relations: ['permissions'],
+      withDeleted: true,
+    });
+    return role ? RoleMapper.toDomain(role) : null;
+  }
+  async save(role: Role): Promise<Role> {
+    const schema = await this.roleRepository.save(RoleMapper.toSchema(role));
+    return RoleMapper.toDomain(schema);
+  }
+  async hardDelete(id: number): Promise<{ message: string }> {
+    await this.roleRepository.delete(id);
+    return { message: 'hard delete sussessfully' };
+  }
+  async softDelete(id: number): Promise<{ message: string }> {
+    await this.roleRepository.softDelete(id);
+    return { message: 'soft delete sussessfully' };
+  }
+  async restore(id: number): Promise<{ message: string }> {
+    await this.roleRepository.restore(id);
+    return { message: 'restore sussessfully' };
   }
 }

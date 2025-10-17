@@ -29,6 +29,8 @@ import { ResetPasswordUserUseCase } from './application/commands/resetPassword-U
 import { ResetPasswordDto } from './dto/resetPassword-User.dto';
 import { SendEmailDto } from './dto/sendEmail-User.dto';
 import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usecase';
+import { HardDeleteUserUseCase } from './application/commands/hard-User.usecase';
+import { RestoreUserUseCase } from './application/commands/restore-User.usecase';
 
 @Controller('user'.toLowerCase())
 export class UserController {
@@ -36,6 +38,9 @@ export class UserController {
     private readonly createUser: CreateUserUseCase,
     private readonly findAllUser: GetUserUseCase,
     private readonly softDeleteUser: SoftDeleteUserUseCase,
+    private readonly hardDeleteUser: HardDeleteUserUseCase,
+    private readonly restoreUser: RestoreUserUseCase,
+
     private readonly updateUser: UpdateUserUseCase,
     private readonly findOneUser: GetOneUserUseCase,
     private readonly changePasswordUseCase: ChangePasswordUserUseCase,
@@ -103,17 +108,17 @@ export class UserController {
   }
 
   @Delete('soft/:id')
-  softDelete(@Param('id') id: number) {
-    return this.softDeleteUser.execute(+id);
+  async softDelete(@Param('id') id: number): Promise<{ message: string }> {
+    return await this.softDeleteUser.execute(+id);
   }
 
-  // @Delete('hard/:id')
-  // hardDelete(@Param('id') id: number) {
-  //   return this.userService.hardDeleteUser(+id);
-  // }
+  @Delete('hard/:id')
+  async hardDelete(@Param('id') id: number): Promise<{ message: string }> {
+    return await this.hardDeleteUser.execute(+id);
+  }
 
-  // @Patch('restore')
-  // restore(@Param('id') id: number) {
-  //   return this.userService.restoreUser(+id);
-  // }
+  @Patch('restore')
+  async restore(@Param('id') id: number): Promise<{ message: string }> {
+    return await this.restoreUser.execute(+id);
+  }
 }
