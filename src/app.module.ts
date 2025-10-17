@@ -7,10 +7,12 @@ import { AuthModule } from './modules/Auth/Auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
-import { PermissionGuard } from './guards/PermissionGuard';
+// import { PermissionGuard } from './guards/PermissionGuard';
 import { PermissionModule } from './modules/Permission/Permission.module';
 import { RoleModule } from './modules/Role/Role.module';
 import { AddressModule } from './modules/Address/Address.module';
+import { FileModule } from './modules/File/file.module';
+import { ImagesModule } from './modules/Images/Images.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -38,6 +40,8 @@ import { AddressModule } from './modules/Address/Address.module';
     PermissionModule,
     RoleModule,
     AddressModule,
+    FileModule,
+    ImagesModule,
   ],
   controllers: [],
   providers: [
