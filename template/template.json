@@ -1,0 +1,183 @@
+{
+  "folderTemplates.structures": [
+    {
+      "name": "Module Template",
+      "omitParentDirectory": true,
+      "structure": [
+        {
+          "fileName": "application/dto/<FTName | lowercase>.dto.ts",
+          "template": "DTO Template"
+        },
+        {
+          "fileName": "application/response/<FTName | lowercase>.response.ts",
+          "template": "Response Template"
+        },
+        {
+          "fileName": "application/services/<FTName | lowercase>.interface.ts",
+          "template": "Application Service Template"
+        },
+        {
+          "fileName": "domain/entities/<FTName | lowercase>.entity.ts",
+          "template": "Entity Template"
+        },
+        {
+          "fileName": "domain/repositories/<FTName | lowercase>.interface.ts",
+          "template": "Repository Interface Template"
+        },
+        {
+          "fileName": "infrastructure/apis/<FTName | lowercase>.api.ts",
+          "template": "API Template"
+        },
+        {
+          "fileName": "infrastructure/repositories/<FTName | lowercase>.repository.ts",
+          "template": "Repository Template"
+        },
+        {
+          "fileName": "infrastructure/services/<FTName | lowercase>.service.ts",
+          "template": "Infrastructure Service Template"
+        },
+        {
+          "fileName": "presentation/components/<FTName | pascalcase>Table.vue",
+          "template": "Table Component Template"
+        },
+        {
+          "fileName": "presentation/composables/use<FTName | pascalcase>.ts",
+          "template": "Composable Template"
+        },
+        {
+          "fileName": "presentation/views/<FTName | pascalcase>Page.vue",
+          "template": "Page View Template"
+        }
+      ]
+    },
+    {
+      "name": "Module v2 Template",
+      "omitParentDirectory": true,
+      "structure": [
+        {
+          "fileName": "application/dto/<FTName | lowercase>.dto.ts",
+          "template": "DTO Template"
+        },
+        {
+          "fileName": "application/response/<FTName | lowercase>.response.ts",
+          "template": "Response Template"
+        },
+        {
+          "fileName": "application/services/<FTName | lowercase>.interface.ts",
+          "template": "Application Service Template"
+        },
+        {
+          "fileName": "domain/entities/<FTName | lowercase>.entity.ts",
+          "template": "Entity Template"
+        },
+        {
+          "fileName": "domain/repositories/<FTName | lowercase>.interface.ts",
+          "template": "Repository Interface Template"
+        },
+        {
+          "fileName": "infrastructure/apis/<FTName | lowercase>.api.ts",
+          "template": "API Template"
+        },
+        {
+          "fileName": "infrastructure/repositories/<FTName | lowercase>.repository.ts",
+          "template": "Repository Template"
+        },
+        {
+          "fileName": "infrastructure/services/<FTName | lowercase>.service.ts",
+          "template": "Infrastructure Service Template"
+        },
+        {
+          "fileName": "presentation/modules/<FTName | lowercase>/components/<FTName | pascalcase>Table.vue",
+          "template": "Table Component Template"
+        },
+        {
+          "fileName": "presentation/modules/<FTName | lowercase>/composables/use<FTName | pascalcase>.ts",
+          "template": "Composable Template"
+        },
+        {
+          "fileName": "presentation/modules/<FTName | lowercase>/views/<FTName | pascalcase>Page.vue",
+          "template": "Page View Template"
+        }
+      ]
+    }
+  ],
+  "folderTemplates.fileTemplates": {
+    "DTO Template": [
+      "export class <FTName | pascalcase>CredentialsDto {",
+      "  // TODO: Define CredentialsDto properties",
+      "}"
+    ],
+    "Response Template": [
+      "export class <FTName | pascalcase>ApiResponse {",
+      "  // TODO: Define ApiResponse properties",
+      "}"
+    ],
+    "Application Service Template": [
+      "export class I<FTName | pascalcase>Service {",
+      "  // TODO: Implement service methods",
+      "}"
+    ],
+    "Entity Template": [
+      "export class <FTName | pascalcase>Entity {",
+      "  // TODO: Define entity properties",
+      "}"
+    ],
+    "Repository Interface Template": [
+      "export interface I<FTName | pascalcase>Repository {",
+      "  // TODO: Define repository methods",
+      "}"
+    ],
+    "API Template": [
+      "import { ApiClient } from '../api/api.client'",
+      "export class <FTName | pascalcase>Api extends ApiClient {",
+      "  // TODO: Implement API calls",
+      "}",
+      "",
+      "export const <FTName | pascalcase>Api = new <FTName | pascalcase>Api();"
+    ],
+    "Repository Template": [
+      "import { I<FTName | pascalcase>Repository } from '../../domain/repositories/<FTName | pascalcase>.interface';",
+      "",
+      "export class I<FTName | pascalcase>RepositoryImpl implements I<FTName | pascalcase>Repository {",
+      "  // TODO: Implement repository methods",
+      "}",
+      "",
+      "export const <FTName | pascalcase>Repository = new I<FTName | pascalcase>RepositoryImpl();"
+    ],
+    "Infrastructure Service Template": [
+      "export class <FTName | pascalcase>ServiceImpl {",
+      "  // TODO: Implement infrastructure service methods",
+      "}",
+      "",
+      "export const <FTName | pascalcase>Service = new <FTName | pascalcase>ServiceImpl();"
+    ],
+    "Table Component Template": [
+      "<template>",
+      "  <div>",
+      "    <!-- TODO: <FTName | pascalcase> Table Component -->",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "// TODO: Implement table logic",
+      "</script>"
+    ],
+    "Composable Template": [
+      "export function use<FTName | pascalcase>() {",
+      "  // TODO: Implement composable logic",
+      "}"
+    ],
+    "Page View Template": [
+      "<template>",
+      "  <div>",
+      "    <!-- TODO: <FTName | pascalcase> Page -->",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "// TODO: Implement page logic",
+      "</script>"
+    ]
+  }
+}
+
