@@ -3,7 +3,7 @@ import {
   Address_REPOSITORY,
   type IAddressRepository,
 } from '../../domain/Address.repository';
-import { Province } from '../../domain/Address.entity';
+import { Province } from '../../domain/address.entity';
 @Injectable()
 export class GetProvinceUseCase {
   constructor(

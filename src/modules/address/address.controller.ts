@@ -6,12 +6,12 @@ import {
   DistrictResponse,
   ProvinceResponse,
   VillageResponse,
-} from './interface/Address.interface';
+} from './interface/address.interface';
 import {
   DistrictMapper,
   ProvinceMapper,
   VillageMapper,
-} from './infrastructure/Address.mapper';
+} from './infrastructure/address.mapper';
 
 @Controller('address')
 export class AddressController {

@@ -2,7 +2,7 @@ import {
   DistrictProps,
   ProvinceProps,
   VillageProps,
-} from '../interface/Address.interface';
+} from '../interface/address.interface';
 
 // Province
 export class Province {

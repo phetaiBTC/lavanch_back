@@ -1,4 +1,4 @@
-import { District, Province, Village } from "./Address.entity";
+import { District, Province, Village } from "./address.entity";
 
 export const Address_REPOSITORY = Symbol(
   'Address_REPOSITORY'.toLocaleUpperCase(),

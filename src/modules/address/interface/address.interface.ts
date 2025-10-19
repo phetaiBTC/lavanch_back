@@ -1,4 +1,4 @@
-import { District, Province } from '../domain/Address.entity';
+import { District, Province } from '../domain/address.entity';
 
 // Province
 export interface ProvinceProps {
