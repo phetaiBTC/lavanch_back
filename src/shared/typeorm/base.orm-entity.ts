@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export class ShardEntity {
+export class ShardOrm {
   @PrimaryGeneratedColumn()
   id: number;
 

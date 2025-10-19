@@ -95,7 +95,7 @@
       "}"
     ],
     "Create Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
+      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/repositories/<FTName | lowercase>.repository';",
       "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
       "@Injectable() export class Create<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
@@ -104,7 +104,7 @@
       "}"
     ],
     "Soft Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
+      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/repositories/<FTName | lowercase>.repository';",
       "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
       "@Injectable() export class SoftDelete<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
@@ -113,7 +113,7 @@
       "}"
     ],
     "Hard Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
+      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/repositories/<FTName | lowercase>.repository';",
       "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
       "@Injectable() export class HardDelete<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
@@ -122,7 +122,7 @@
       "}"
     ],
     "Restore Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
+      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/repositories/<FTName | lowercase>.repository';",
       "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
       "@Injectable() export class Restore<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
@@ -131,7 +131,7 @@
       "}"
     ],
     "Find Name Query": [
-      "import {  Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
+      "import {  Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/repositories/<FTName | lowercase>.repository';",
       "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { PaginationDto } from 'src/shared/dto/pagination.dto';import { PaginatedResponse } from 'src/shared/interface/pagination.interface';",
       "@Injectable() export class Find<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",

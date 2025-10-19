@@ -12,8 +12,8 @@ export class User {
   private createdAt: Date;
   private updatedAt: Date;
   private deletedAt: Date | null;
-  private permission:Permission[];
-  private roles:Role[]
+  private permission: Permission[];
+  private roles: Role[];
   constructor(props: UserProps) {
     this.id = props.id ?? null;
     this.username = props.username;
