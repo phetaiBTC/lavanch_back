@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { UserModule } from './modules/User/User.module';
-import { AuthModule } from './modules/Auth/Auth.module';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
 // import { PermissionGuard } from './guards/PermissionGuard';
-import { PermissionModule } from './modules/Permission/Permission.module';
-import { RoleModule } from './modules/Role/Role.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { RoleModule } from './modules/role/role.module';
 import { AddressModule } from './modules/address/address.module';
-import { FileModule } from './modules/File/file.module';
-import { ImagesModule } from './modules/Images/Images.module';
+import { FileModule } from './modules/files/file.module';
+import { ImagesModule } from './modules/images/images.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

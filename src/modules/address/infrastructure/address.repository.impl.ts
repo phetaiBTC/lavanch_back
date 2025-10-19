@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IAddressRepository } from '../domain/Address.repository';
+import { IAddressRepository } from '../domain/address.repository';
 import { ProvinceOrm } from 'src/database/typeorm/province.orm-entity';
-import { District, Province, Village } from '../domain/Address.entity';
+import { District, Province, Village } from '../domain/address.entity';
 import {
   DistrictMapper,
   ProvinceMapper,
   VillageMapper,
-} from './Address.mapper';
+} from './address.mapper';
 import { DistrictOrm } from 'src/database/typeorm/district.orm-entity';
 import { VillageOrm } from 'src/database/typeorm/village.orm-entity';
 

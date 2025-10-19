@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  Address_REPOSITORY,
+  ADDRESS_REPOSITORY,
   type IAddressRepository,
-} from '../../domain/Address.repository';
+} from '../../domain/address.repository';
 import { Province } from '../../domain/address.entity';
 @Injectable()
 export class GetProvinceUseCase {
   constructor(
-    @Inject(Address_REPOSITORY)
+    @Inject(ADDRESS_REPOSITORY)
     private readonly addressRepo: IAddressRepository,
   ) {}
 

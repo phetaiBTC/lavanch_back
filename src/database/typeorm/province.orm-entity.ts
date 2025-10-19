@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { DistrictOrm } from './district.orm-entity';
-@Entity('Province'.toLowerCase())
+@Entity('province')
 export class ProvinceOrm {
   @PrimaryGeneratedColumn()
   id: number;

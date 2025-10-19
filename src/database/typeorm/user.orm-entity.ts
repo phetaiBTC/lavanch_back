@@ -2,7 +2,7 @@ import { ShardEntity } from 'src/shared/typeorm/base.orm-entity';
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { PermissionOrm } from './permission.orm-entity';
 import { RoleOrm } from './role.orm-entity';
-@Entity('User'.toLowerCase())
+@Entity('user')
 export class UserOrm extends ShardEntity {
   @Column() username: string;
   @Column({ unique: true }) email: string;

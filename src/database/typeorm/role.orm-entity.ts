@@ -3,7 +3,7 @@ import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { PermissionOrm } from './permission.orm-entity';
 import { UserOrm } from './user.orm-entity';
 
-@Entity('Role'.toLowerCase())
+@Entity('role')
 export class RoleOrm extends ShardEntity {
   @Column({ unique: true })
   code: string;

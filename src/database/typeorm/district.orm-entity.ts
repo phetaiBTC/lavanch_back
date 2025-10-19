@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { ProvinceOrm } from './province.orm-entity';
 import { VillageOrm } from './village.orm-entity';
-@Entity('District'.toLowerCase())
+@Entity('district')
 export class DistrictOrm {
   @PrimaryGeneratedColumn()
   id: number;

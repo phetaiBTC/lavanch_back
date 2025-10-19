@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { DistrictOrm } from './district.orm-entity';
-@Entity('Village'.toLowerCase())
+@Entity('village')
 export class VillageOrm {
   @PrimaryGeneratedColumn()
   id: number;

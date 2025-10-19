@@ -1,10 +1,10 @@
 import { ProvinceOrm } from 'src/database/typeorm/province.orm-entity';
-import { District, Province, Village } from '../domain/Address.entity';
+import { District, Province, Village } from '../domain/address.entity';
 import {
   DistrictResponse,
   ProvinceResponse,
   VillageResponse,
-} from '../interface/Address.interface';
+} from '../interface/address.interface';
 import { DistrictOrm } from 'src/database/typeorm/district.orm-entity';
 import { VillageOrm } from 'src/database/typeorm/village.orm-entity';
 

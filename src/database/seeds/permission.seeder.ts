@@ -1,6 +1,6 @@
 import { PermissionOrm } from 'src/database/typeorm/permission.orm-entity';
-import { AuthController } from 'src/modules/Auth/Auth.controller';
-import { UserController } from 'src/modules/User/User.controller';
+import { AuthController } from 'src/modules/auth/auth.controller';
+import { UserController } from 'src/modules/user/user.controller';
 import { IS_PUBLIC_KEY } from 'src/shared/decorator/auth.decorator';
 import { DataSource } from 'typeorm';
 
