@@ -228,7 +228,14 @@
     ],
     "Name Module":[
       "import { Module } from '@nestjs/common';import { TypeOrmModule } from '@nestjs/typeorm';import { <FTName | pascalcase>RepositoryImpl } from './infrastructure/<FTName | lowercase>.repository.impl';import { <FTName | pascalcase>Controller } from './<FTName | lowercase>.controller';import { <FTName | uppercase>_REPOSITORY } from './domain/<FTName | lowercase>.repository';import { <FTName | pascalcase>Orm } from 'src/database/typeorm/<FTName | lowercase>.orm-entity';",
-      "@Module({imports: [TypeOrmModule.forFeature([<FTName | pascalcase>Orm])],controllers: [<FTName | pascalcase>Controller], providers: [{provide: <FTName | uppercase>_REPOSITORY,useClass: <FTName | pascalcase>RepositoryImpl}]}) export class <FTName | pascalcase>Module {}"
+      "import {Create<FTName | pascalcase>UseCase} from './application/commands/create-<FTName | pascalcase>.usecase';",
+      "import {Update<FTName | pascalcase>UseCase} from './application/commands/update-<FTName | pascalcase>.usecase';",
+      "import {HardDelete<FTName | pascalcase>UseCase} from './application/commands/hard-<FTName | pascalcase>.usecase';",
+      "import {SoftDelete<FTName | pascalcase>UseCase} from './application/commands/soft-<FTName | pascalcase>.usecase';",
+      "import {Restore<FTName | pascalcase>UseCase} from './application/commands/restore-<FTName | pascalcase>.usecase';",
+      "import {FindOne<FTName | pascalcase>UseCase} from './application/queries/findOne-<FTName | pascalcase>.usecase';",
+      "import {FindAll<FTName | pascalcase>UseCase} from './application/queries/find-<FTName | pascalcase>.usecase';",
+      "@Module({imports: [TypeOrmModule.forFeature([<FTName | pascalcase>Orm])],controllers: [<FTName | pascalcase>Controller], providers: [{provide: <FTName | uppercase>_REPOSITORY,useClass: <FTName | pascalcase>RepositoryImpl},Create<FTName | pascalcase>UseCase,Update<FTName | pascalcase>UseCase,HardDelete<FTName | pascalcase>UseCase,SoftDelete<FTName | pascalcase>UseCase,Restore<FTName | pascalcase>UseCase,FindOne<FTName | pascalcase>UseCase,FindAll<FTName | pascalcase>UseCase]}) export class <FTName | pascalcase>Module {}"
     ]
   }
 }
