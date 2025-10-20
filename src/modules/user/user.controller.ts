@@ -117,7 +117,7 @@ export class UserController {
     return await this.hardDeleteUser.execute(+id);
   }
 
-  @Patch('restore')
+  @Patch('restore/:id')
   async restore(@Param('id') id: number): Promise<{ message: string }> {
     return await this.restoreUser.execute(+id);
   }
