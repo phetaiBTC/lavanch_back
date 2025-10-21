@@ -4,4 +4,5 @@ export interface IProductUnitRepository extends IRemoveRepository {
 findAll(query: PaginationDto): Promise<PaginatedResponse<ProductUnit>>;
 findById(id: number): Promise<ProductUnit | null>;
 create(product_unit: ProductUnit): Promise<ProductUnit>;
-update(product_unit: ProductUnit): Promise<ProductUnit>;}
+update(product_unit: ProductUnit): Promise<ProductUnit>;
+findByProductVariantAndUnit(product_variant_id: number, unit_id: number): Promise<ProductUnit | null>}

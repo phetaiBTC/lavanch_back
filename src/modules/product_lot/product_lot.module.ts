@@ -11,10 +11,22 @@ import { SoftDeleteProductLotUseCase } from './application/commands/soft-Product
 import { RestoreProductLotUseCase } from './application/commands/restore-ProductLot.usecase';
 import { FindOneProductLotUseCase } from './application/queries/findOne-ProductLot.usecase';
 import { FindAllProductLotUseCase } from './application/queries/find-ProductLot.usecase';
+import { ProductVariantModule } from '../product_variant/product_variant.module';
+import { CurrenciesModule } from '../currencies/currencies.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductLotOrm])],
+  imports: [TypeOrmModule.forFeature([ProductLotOrm]), ProductVariantModule, CurrenciesModule, ],
   controllers: [ProductLotController],
   providers: [
+    { provide: PRODUCT_LOT_REPOSITORY, useClass: ProductLotRepositoryImpl },
+    CreateProductLotUseCase,
+    UpdateProductLotUseCase,
+    HardDeleteProductLotUseCase,
+    SoftDeleteProductLotUseCase,
+    RestoreProductLotUseCase,
+    FindOneProductLotUseCase,
+    FindAllProductLotUseCase,
+  ],
+  exports: [
     { provide: PRODUCT_LOT_REPOSITORY, useClass: ProductLotRepositoryImpl },
     CreateProductLotUseCase,
     UpdateProductLotUseCase,

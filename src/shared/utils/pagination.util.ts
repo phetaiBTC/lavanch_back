@@ -47,7 +47,7 @@ export async function fetchWithPagination<T extends object, U>(query: {
     .getManyAndCount();
 
   return {
-    data: entities.map(query.toDomain),
+    data: entities.map(query.toDomain), 
     pagination: {
       total,
       count: entities.length,

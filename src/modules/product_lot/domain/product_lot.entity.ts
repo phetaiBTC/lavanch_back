@@ -1,6 +1,7 @@
 import { ShardEntity } from 'src/shared/entity/base.entity';
 import { ProductLotProps } from '../interface/product_lot.interface';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
+import { Currencies } from 'src/modules/currencies/domain/currencies.entity';
 
 export class ProductLot extends ShardEntity<ProductLotProps> {
   product_variant: ProductVariant;
@@ -10,7 +11,7 @@ export class ProductLot extends ShardEntity<ProductLotProps> {
 //   branch: Branch;
   quantity: number;
   cost_price_local: number;
-//   cost_currency: Currency;
+  cost_currency: Currencies | null;
   cost_price_original: number;
   fx_rate: number;
 
@@ -23,7 +24,7 @@ export class ProductLot extends ShardEntity<ProductLotProps> {
     // this.branch = props.branch;
     this.quantity = props.quantity ?? 0;
     this.cost_price_local = props.cost_price_local;
-    // this.cost_currency = props.cost_currency;
+    this.cost_currency = props.cost_currency;
     this.cost_price_original = props.cost_price_original;
     this.fx_rate = props.fx_rate;
   }
@@ -38,7 +39,7 @@ export class ProductLot extends ShardEntity<ProductLotProps> {
     //   branch: this.branch,
       quantity: this.quantity,
       cost_price_local: this.cost_price_local,
-    //   cost_currency: this.cost_currency,
+      cost_currency: this.cost_currency,
       cost_price_original: this.cost_price_original,
       fx_rate: this.fx_rate,
       createdAt: this.createdAt,

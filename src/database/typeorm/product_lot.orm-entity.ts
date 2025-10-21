@@ -1,12 +1,7 @@
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  Unique,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { ProductVariantOrm } from './product-variant.orm-entity';
+import { CurrenciesOrm } from './currencies.orm-entity';
 
 @Entity('product_lots')
 // @Unique(['product_variant', 'lot_number'])
@@ -24,16 +19,16 @@ export class ProductLotOrm extends ShardOrm {
   @Column({ type: 'date', nullable: true })
   expiry_date?: Date;
 
-//   @ManyToOne(() => BranchOrm, { nullable: false })
-//   @JoinColumn({ name: 'branch_id' })
-//   branch: BranchOrm;
+  //   @ManyToOne(() => BranchOrm, { nullable: false })
+  //   @JoinColumn({ name: 'branch_id' })
+  //   branch: BranchOrm;
 
   @Column({ type: 'int', default: 0 })
   quantity: number;
 
-//   @ManyToOne(() => CurrencyOrm, { nullable: false })
-//   @JoinColumn({ name: 'cost_currency_id' })
-//   cost_currency: CurrencyOrm;
+  @ManyToOne(() => CurrenciesOrm, { nullable: false })
+  @JoinColumn({ name: 'cost_currency_id' })
+  cost_currency: CurrenciesOrm;
 
   @Column({ type: 'decimal', nullable: false })
   cost_price_local: number;

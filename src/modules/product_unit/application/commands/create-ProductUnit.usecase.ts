@@ -23,6 +23,14 @@ export class CreateProductUnitUseCase {
     const unit = await this.unitRepo.findById(dto.unit_id);
     if (!unit) throw new BadRequestException('Unit not found');
 
+    if (productVariant.id && unit.id) {
+      const existing = await this.productUnitRepo.findByProductVariantAndUnit(
+        productVariant.id,
+        unit.id,
+      );
+      if (existing) throw new BadRequestException('Product Unit already exists');
+    }
+
     const productUnit = new ProductUnit({
       product_variant: productVariant,
       unit,

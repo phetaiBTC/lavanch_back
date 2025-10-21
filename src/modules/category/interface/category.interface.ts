@@ -11,7 +11,7 @@ export interface CategoryProps extends ShardInterfaceProps {
 export interface CategoryResponse extends ShardInterfaceResponse {
   name: string;
   description?: string;
-  parent?: Category | null;
-  children: Category[];
+  parent?: CategoryResponse | null;
+  children: CategoryResponse[];
   is_active: boolean;
 }

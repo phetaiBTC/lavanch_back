@@ -22,6 +22,7 @@ import { ProductVariantModule } from './modules/product_variant/product_variant.
 import { ProductPointModule } from './modules/product_point/product_point.module';
 import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
+import { ProductLotModule } from './modules/product_lot/product_lot.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -60,6 +61,8 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
     ProductPointModule,
     CurrencyRatesModule,
     CurrenciesModule,
+    ProductLotModule
+
   ],
   controllers: [],
   providers: [
