@@ -20,6 +20,8 @@ import { ProductModule } from './modules/product/product.module';
 import { ProductUnitModule } from './modules/product_unit/product_unit.module';
 import { ProductVariantModule } from './modules/product_variant/product_variant.module';
 import { ProductPointModule } from './modules/product_point/product_point.module';
+import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
+import { CurrenciesModule } from './modules/currencies/currencies.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -56,6 +58,8 @@ import { ProductPointModule } from './modules/product_point/product_point.module
     ProductUnitModule,
     ProductVariantModule,
     ProductPointModule,
+    CurrencyRatesModule,
+    CurrenciesModule,
   ],
   controllers: [],
   providers: [
