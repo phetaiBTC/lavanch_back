@@ -1,0 +1,98 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T03:30:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2025.3.1",
+  "resources": [
+    {
+      "_id": "wrk_product_point_api",
+      "_type": "workspace",
+      "name": "Product Point API",
+      "description": "Workspace for ProductPointController API",
+      "scope": "collection"
+    },
+    {
+      "_id": "req_create_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Create Product Point",
+      "url": "http://localhost:3000/product_point",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"product_variant_id\": 1,\n  \"unit_id\": 1,\n  \"points_per_unit\": 50,\n  \"is_active\": true,\n  \"effective_date\": \"2025-10-21T00:00:00.000Z\"\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_all_product_points",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Get All Product Points",
+      "url": "http://localhost:3000/product_point",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Get Product Point by ID",
+      "url": "http://localhost:3000/product_point/1",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_update_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Update Product Point",
+      "url": "http://localhost:3000/product_point/1",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"points_per_unit\": 100,\n  \"is_active\": false\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_soft_delete_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Soft Delete Product Point",
+      "url": "http://localhost:3000/product_point/soft/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_hard_delete_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Hard Delete Product Point",
+      "url": "http://localhost:3000/product_point/hard/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_restore_product_point",
+      "_type": "request",
+      "parentId": "wrk_product_point_api",
+      "name": "Restore Product Point",
+      "url": "http://localhost:3000/product_point/restore/1",
+      "method": "PATCH",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    }
+  ]
+}

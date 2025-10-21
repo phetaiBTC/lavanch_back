@@ -13,6 +13,13 @@ import { RoleModule } from './modules/role/role.module';
 import { AddressModule } from './modules/address/address.module';
 import { FileModule } from './modules/files/file.module';
 import { ImagesModule } from './modules/images/images.module';
+import { CategoryModule } from './modules/category/category.module';
+import { PointModule } from './modules/point/point.module';
+import { UnitModule } from './modules/unit/unit.module';
+import { ProductModule } from './modules/product/product.module';
+import { ProductUnitModule } from './modules/product_unit/product_unit.module';
+import { ProductVariantModule } from './modules/product_variant/product_variant.module';
+import { ProductPointModule } from './modules/product_point/product_point.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -42,6 +49,13 @@ import { ImagesModule } from './modules/images/images.module';
     AddressModule,
     FileModule,
     ImagesModule,
+    CategoryModule,
+    PointModule,
+    UnitModule,
+    ProductModule,
+    ProductUnitModule,
+    ProductVariantModule,
+    ProductPointModule,
   ],
   controllers: [],
   providers: [

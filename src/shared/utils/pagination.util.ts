@@ -25,19 +25,7 @@ export async function fetchWithPagination<T extends object, U>(query: {
   }
 
   query.qb.orderBy(`${query.qb.alias}.createdAt`, query.sort || sortType.DESC);
-  if (query.type === GetType.PAGE) {
-    const [entities, total] = await query.qb.getManyAndCount();
-    return {
-      data: entities.map(query.toDomain),
-      pagination: {
-        total,
-        count: entities.length,
-        limit: query.limit,
-        totalPages: Math.ceil(total / query.limit) || 1,
-        currentPage: query.page,
-      },
-    };
-  }
+
   if (query.type === GetType.ALL) {
     const [entities, total] = await query.qb.getManyAndCount();
     return {
