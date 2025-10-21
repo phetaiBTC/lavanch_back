@@ -13,6 +13,8 @@ import { RoleModule } from './modules/role/role.module';
 import { AddressModule } from './modules/address/address.module';
 import { FileModule } from './modules/files/file.module';
 import { ImagesModule } from './modules/images/images.module';
+import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
+import { CurrenciesModule } from './modules/currencies/currencies.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -42,6 +44,8 @@ import { ImagesModule } from './modules/images/images.module';
     AddressModule,
     FileModule,
     ImagesModule,
+    CurrencyRatesModule,
+    CurrenciesModule
   ],
   controllers: [],
   providers: [
