@@ -1,0 +1,13 @@
+export interface ShardInterfaceProps {
+  id?: number | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
+export interface ShardInterfaceResponse {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}

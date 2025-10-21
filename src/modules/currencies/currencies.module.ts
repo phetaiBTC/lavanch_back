@@ -24,6 +24,15 @@ import { UpdateCurrenciesUseCase } from './application/commands/update-Currencie
     FindOneCurrenciesUseCase,
     FindAllCurrenciesUseCase,
   ],
-  exports: [FindOneCurrenciesUseCase],
+  exports: [
+    { provide: CURRENCIES_REPOSITORY, useClass: CurrenciesRepositoryImpl },
+    CreateCurrenciesUseCase,
+    UpdateCurrenciesUseCase,
+    HardDeleteCurrenciesUseCase,
+    SoftDeleteCurrenciesUseCase,
+    RestoreCurrenciesUseCase,
+    FindOneCurrenciesUseCase,
+    FindAllCurrenciesUseCase,
+  ],
 })
 export class CurrenciesModule {}

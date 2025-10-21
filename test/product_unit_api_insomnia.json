@@ -1,0 +1,98 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T03:15:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2025.3.1",
+  "resources": [
+    {
+      "_id": "wrk_product_unit_api",
+      "_type": "workspace",
+      "name": "Product Unit API",
+      "description": "Workspace for ProductUnitController API",
+      "scope": "collection"
+    },
+    {
+      "_id": "req_create_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Create Product Unit",
+      "url": "http://localhost:3000/product_unit",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"product_variant_id\": 1,\n  \"unit_id\": 1,\n  \"quantity_per_unit\": 10,\n  \"is_base_unit\": true\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_all_product_units",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Get All Product Units",
+      "url": "http://localhost:3000/product_unit",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Get Product Unit by ID",
+      "url": "http://localhost:3000/product_unit/1",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_update_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Update Product Unit",
+      "url": "http://localhost:3000/product_unit/1",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"quantity_per_unit\": 20,\n  \"is_base_unit\": false\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_soft_delete_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Soft Delete Product Unit",
+      "url": "http://localhost:3000/product_unit/soft/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_hard_delete_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Hard Delete Product Unit",
+      "url": "http://localhost:3000/product_unit/hard/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_restore_product_unit",
+      "_type": "request",
+      "parentId": "wrk_product_unit_api",
+      "name": "Restore Product Unit",
+      "url": "http://localhost:3000/product_unit/restore/1",
+      "method": "PATCH",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    }
+  ]
+}

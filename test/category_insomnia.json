@@ -1,0 +1,96 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T00:00:00.000Z",
+  "__export_source": "chatgpt-gpt5",
+  "resources": [
+    {
+      "_id": "wrk_category",
+      "parentId": null,
+      "_type": "workspace",
+      "name": "Category API",
+      "scope": "collection"
+    },
+    {
+      "_id": "fld_category",
+      "_type": "request_group",
+      "parentId": "wrk_category",
+      "name": "Category"
+    },
+    {
+      "_id": "req_create_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Create Category",
+      "method": "POST",
+      "url": "http://localhost:3000/category",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic gadgets and accessories\",\n  \"parentId\": null,\n  \"is_active\": true\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_get_all_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Get All Categories",
+      "method": "GET",
+      "url": "http://localhost:3000/category?page=1&limit=10",
+      "headers": []
+    },
+    {
+      "_id": "req_get_one_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Get One Category",
+      "method": "GET",
+      "url": "http://localhost:3000/category/1",
+      "headers": []
+    },
+    {
+      "_id": "req_update_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Update Category",
+      "method": "PATCH",
+      "url": "http://localhost:3000/category/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Updated Electronics\",\n  \"description\": \"Updated description for electronics\",\n  \"is_active\": false\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_soft_delete_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Soft Delete Category",
+      "method": "DELETE",
+      "url": "http://localhost:3000/category/soft/1",
+      "headers": []
+    },
+    {
+      "_id": "req_hard_delete_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Hard Delete Category",
+      "method": "DELETE",
+      "url": "http://localhost:3000/category/hard/1",
+      "headers": []
+    },
+    {
+      "_id": "req_restore_category",
+      "parentId": "fld_category",
+      "_type": "request",
+      "name": "Restore Category",
+      "method": "PATCH",
+      "url": "http://localhost:3000/category/restore/1",
+      "headers": []
+    }
+  ]
+}

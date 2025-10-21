@@ -1,0 +1,98 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T03:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2025.3.1",
+  "resources": [
+    {
+      "_id": "req_create_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Create Unit",
+      "url": "http://localhost:3000/unit",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Unit Name\",\n  \"name_en\": \"Unit Name EN\",\n  \"abbreviation\": \"U\",\n  \"is_active\": true\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_all_units",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Get All Units",
+      "url": "http://localhost:3000/unit",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Get Unit by ID",
+      "url": "http://localhost:3000/unit/1",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_update_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Update Unit",
+      "url": "http://localhost:3000/unit/1",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Updated Unit Name\",\n  \"is_active\": false\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_soft_delete_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Soft Delete Unit",
+      "url": "http://localhost:3000/unit/soft/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_hard_delete_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Hard Delete Unit",
+      "url": "http://localhost:3000/unit/hard/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_restore_unit",
+      "_type": "request",
+      "parentId": "wrk_unit_api",
+      "name": "Restore Unit",
+      "url": "http://localhost:3000/unit/restore/1",
+      "method": "PATCH",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "wrk_unit_api",
+      "_type": "workspace",
+      "name": "Unit API",
+      "description": "Workspace for UnitController API",
+      "scope": "collection"
+    }
+  ]
+}
