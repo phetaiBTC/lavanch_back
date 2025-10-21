@@ -5,6 +5,7 @@ import { join } from 'path';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
+import { TransactionModule } from './database/transaction/transaction.module';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
 // import { PermissionGuard } from './guards/PermissionGuard';
@@ -36,6 +37,7 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
         migrationsTableName: 'migrations',
       }),
     }),
+    TransactionModule,
     UserModule,
     AuthModule,
     MailModule,
