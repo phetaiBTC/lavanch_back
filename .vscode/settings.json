@@ -80,11 +80,11 @@
           "template": "Name Interface"
         },
         {
-          "fileName": "<FTName | lowercase>.controller.ts",
+          "fileName": "<FTName>.controller.ts",
           "template": "Name Controller"
         },
         {
-          "fileName": "<FTName | lowercase>.module.ts",
+          "fileName": "<FTName>.module.ts",
           "template": "Name Module"
         }
       ]
@@ -101,6 +101,7 @@
       "this.updatedAt = props.updatedAt ?? new Date();",
       "this.deletedAt = props.deletedAt ?? null;}",
       "get value() {return{id: this.id,createdAt: this.createdAt,updatedAt: this.updatedAt,deletedAt: this.deletedAt}}",
+      "update(props: Partial<<FTName | pascalcase>Props>): <FTName | pascalcase> { return new <FTName | pascalcase>({...this.value,...props,updatedAt: new Date(),});}",
       "}"
     ],
     "Create Name DTO": [
@@ -109,8 +110,8 @@
       "}"
     ],
     "Update Name DTO": [
-      "import { IsEmail, IsNotEmpty, IsString } from 'class-validator';",
-      "export class Update<FTName | pascalcase>Dto {",
+      "import { PartialType } from '@nestjs/mapped-types';",
+      "export class Update<FTName | pascalcase>Dto extends PartialType(Create<FTName | pascalcase>Dto) {",
       "}"
     ],
     "Create Name Command": [
@@ -123,8 +124,7 @@
       "}"
     ],
     "Soft Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
-      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
+      "import { NotFoundException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
       "@Injectable() export class SoftDelete<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
       "async execute(id: number): Promise<{message: string}> {const <FTName | lowercase> = await this.<FTName | lowercase>Repo.findById(id);if (!<FTName | lowercase>) throw new NotFoundException('<FTName | pascalcase> not found');return this.<FTName | lowercase>Repo.softDelete(id);",
@@ -132,8 +132,7 @@
       "}"
     ],
     "Hard Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
-      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
+      "import { NotFoundException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
       "@Injectable() export class HardDelete<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
       "async execute(id: number): Promise<{message: string}> {const <FTName | lowercase> = await this.<FTName | lowercase>Repo.findById(id);if (!<FTName | lowercase>) throw new NotFoundException('<FTName | pascalcase> not found');return this.<FTName | lowercase>Repo.hardDelete(id);",
@@ -141,8 +140,7 @@
       "}"
     ],
     "Restore Name Command": [
-      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
-      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Create<FTName | pascalcase>Dto } from '../../dto/create-<FTName | pascalcase>.dto';",
+      "import { NotFoundException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
       "@Injectable() export class Restore<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
       "async execute(id: number): Promise<{message: string}> {const <FTName | lowercase> = await this.<FTName | lowercase>Repo.findById(id);if (!<FTName | lowercase>) throw new NotFoundException('<FTName | pascalcase> not found');return this.<FTName | lowercase>Repo.restore(id);",
@@ -151,7 +149,7 @@
     ],
     "Find Name Query": [
       "import {  Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
-      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { PaginationDto } from 'src/shared/dto/pagination.dto';import { PaginatedResponse } from 'src/shared/interface/pagination.interface';",
+      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { PaginationDto } from 'src/shared/dto/pagination.dto';import { PaginatedResponse } from 'src/shared/interface/pagination.interface';",
       "@Injectable() export class FindAll<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
       "async execute(query: PaginationDto): Promise<PaginatedResponse<<FTName | pascalcase>>> {return await this.<FTName | lowercase>Repo.findAll(query);",
@@ -160,7 +158,7 @@
     ],
     "Find One Name Query": [
       "import {  Inject, Injectable, NotFoundException } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';",
-      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';",
+      "import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';",
       "@Injectable() export class FindOne<FTName | pascalcase>UseCase {",
       "constructor(@Inject(<FTName | uppercase>_REPOSITORY) private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}",
       "async execute(id: number): Promise<<FTName | pascalcase>> {const <FTName | lowercase> = await this.<FTName | lowercase>Repo.findById(id);if (!<FTName | lowercase>) throw new NotFoundException('<FTName | pascalcase> not found');return <FTName | lowercase>;",
@@ -183,7 +181,7 @@
       "@Injectable() export class <FTName | pascalcase>RepositoryImpl implements I<FTName | pascalcase>Repository {",
       "constructor(@InjectRepository(<FTName | pascalcase>Orm) private readonly <FTName | lowercase>Repo: Repository<<FTName | pascalcase>Orm>) {}",
       "async findAll(query: PaginationDto): Promise<PaginatedResponse<<FTName | pascalcase>>> {    const qb = this.<FTName | lowercase>Repo.createQueryBuilder('<FTName | lowercase>').withDeleted();    return await fetchWithPagination({qb,page: query.page || 1,type: query.type,search: {kw: query.search,field: 'name',},is_active: query.is_active,sort: query.sort,limit: query.limit || 10,toDomain: <FTName | pascalcase>Mapper.toDomain,});}",
-      "async findById(id: number): Promise<<FTName | pascalcase> | null> {const <FTName | lowercase>Entity = await this.<FTName | lowercase>Repo.findOne({where: {id}});return <FTName | lowercase>Entity ? <FTName | pascalcase>Mapper.toDomain(<FTName | lowercase>Entity) : null;}",
+      "async findById(id: number): Promise<<FTName | pascalcase> | null> {const <FTName | lowercase>Entity = await this.<FTName | lowercase>Repo.findOne({where: {id},withDeleted: true});return <FTName | lowercase>Entity ? <FTName | pascalcase>Mapper.toDomain(<FTName | lowercase>Entity) : null;}",
       "async create(<FTName | lowercase>: <FTName | pascalcase>): Promise<<FTName | pascalcase>> {const entity = this.<FTName | lowercase>Repo.create(<FTName | pascalcase>Mapper.toSchema(<FTName | lowercase>));const saved = await this.<FTName | lowercase>Repo.save(entity);return <FTName | pascalcase>Mapper.toDomain(saved);}",
       "async update(<FTName | lowercase>: <FTName | pascalcase>): Promise<<FTName | pascalcase>> {const saved = await this.<FTName | lowercase>Repo.save(<FTName | pascalcase>Mapper.toSchema(<FTName | lowercase>));return <FTName | pascalcase>Mapper.toDomain(saved);}",
       "async hardDelete(id: number): Promise<{ message: string }> {await this.<FTName | lowercase>Repo.delete(id);return { message: 'hard delete sussessfully' };}",
@@ -226,8 +224,8 @@
       "  @Patch('restore/:id') async restore(@Param('id') id: number): Promise<{ message: string }> {return await this.restore<FTName | pascalcase>UseCase.execute(+id);}",
       "}"
     ],
-    "Name Module":[
-      "import { Module } from '@nestjs/common';import { TypeOrmModule } from '@nestjs/typeorm';import { <FTName | pascalcase>RepositoryImpl } from './infrastructure/<FTName | lowercase>.repository.impl';import { <FTName | pascalcase>Controller } from './<FTName | lowercase>.controller';import { <FTName | uppercase>_REPOSITORY } from './domain/<FTName | lowercase>.repository';import { <FTName | pascalcase>Orm } from 'src/database/typeorm/<FTName | lowercase>.orm-entity';",
+    "Name Module": [
+      "import { Module } from '@nestjs/common';import { TypeOrmModule } from '@nestjs/typeorm';import { <FTName | pascalcase>RepositoryImpl } from './infrastructure/<FTName | lowercase>.repository.impl';import { <FTName | pascalcase>Controller } from './<FTName>.controller';import { <FTName | uppercase>_REPOSITORY } from './domain/<FTName | lowercase>.repository';import { <FTName | pascalcase>Orm } from 'src/database/typeorm/<FTName | lowercase>.orm-entity';",
       "import {Create<FTName | pascalcase>UseCase} from './application/commands/create-<FTName | pascalcase>.usecase';",
       "import {Update<FTName | pascalcase>UseCase} from './application/commands/update-<FTName | pascalcase>.usecase';",
       "import {HardDelete<FTName | pascalcase>UseCase} from './application/commands/hard-<FTName | pascalcase>.usecase';",
@@ -236,6 +234,9 @@
       "import {FindOne<FTName | pascalcase>UseCase} from './application/queries/findOne-<FTName | pascalcase>.usecase';",
       "import {FindAll<FTName | pascalcase>UseCase} from './application/queries/find-<FTName | pascalcase>.usecase';",
       "@Module({imports: [TypeOrmModule.forFeature([<FTName | pascalcase>Orm])],controllers: [<FTName | pascalcase>Controller], providers: [{provide: <FTName | uppercase>_REPOSITORY,useClass: <FTName | pascalcase>RepositoryImpl},Create<FTName | pascalcase>UseCase,Update<FTName | pascalcase>UseCase,HardDelete<FTName | pascalcase>UseCase,SoftDelete<FTName | pascalcase>UseCase,Restore<FTName | pascalcase>UseCase,FindOne<FTName | pascalcase>UseCase,FindAll<FTName | pascalcase>UseCase]}) export class <FTName | pascalcase>Module {}"
+    ],
+    "Update Name Command": [
+      "import { BadRequestException, Inject, Injectable } from '@nestjs/common';import {<FTName | uppercase>_REPOSITORY,type I<FTName | pascalcase>Repository,} from '../../domain/<FTName | lowercase>.repository';import { <FTName | pascalcase> } from '../../domain/<FTName | lowercase>.entity';import { Update<FTName | pascalcase>Dto } from '../../dto/update-<FTName | pascalcase>.dto';@Injectable()export class Update<FTName | pascalcase>UseCase {constructor(@Inject(<FTName | uppercase>_REPOSITORY)private readonly <FTName | lowercase>Repo: I<FTName | pascalcase>Repository,) {}async execute(id: number, dto: Update<FTName | pascalcase>Dto): Promise<<FTName | pascalcase>> {const existing = await this.<FTName | lowercase>Repo.findById(id);if (!existing) throw new BadRequestException('Currency not found');const updated: <FTName | pascalcase> = existing.update(dto);return this.currenciesRepo.update(updated);}}"
     ]
   }
 }
