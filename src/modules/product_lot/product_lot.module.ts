@@ -14,7 +14,11 @@ import { FindAllProductLotUseCase } from './application/queries/find-ProductLot.
 import { ProductVariantModule } from '../product_variant/product_variant.module';
 import { CurrenciesModule } from '../currencies/currencies.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductLotOrm]), ProductVariantModule, CurrenciesModule, ],
+  imports: [
+    TypeOrmModule.forFeature([ProductLotOrm]),
+    ProductVariantModule,
+    CurrenciesModule,
+  ],
   controllers: [ProductLotController],
   providers: [
     { provide: PRODUCT_LOT_REPOSITORY, useClass: ProductLotRepositoryImpl },

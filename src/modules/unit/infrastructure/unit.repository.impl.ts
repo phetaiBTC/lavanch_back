@@ -64,7 +64,7 @@ import { IUnitRepository } from '../domain/unit.repository';
 import { Unit } from '../domain/unit.entity';
 import { UnitMapper } from './unit.mapper';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 

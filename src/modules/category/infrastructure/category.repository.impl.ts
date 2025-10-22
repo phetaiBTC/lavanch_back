@@ -79,9 +79,7 @@ import { ICategoryRepository } from '../domain/category.repository';
 import { Category } from '../domain/category.entity';
 import { CategoryMapper } from './category.mapper';
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 
 @Injectable()
 export class CategoryRepositoryImpl
@@ -90,21 +88,9 @@ export class CategoryRepositoryImpl
 {
   constructor(
     @InjectRepository(CategoryOrm)
-    private readonly categoryRepo: Repository<CategoryOrm>,
+    protected readonly categoryRepo: Repository<CategoryOrm>,
   ) {
     super(categoryRepo, CategoryMapper, 'category', 'name');
-  }
-  async findAll(query: PaginationDto) {
-    return super.findAll(query, [
-      {
-        relation: 'category.children',
-        as: 'children',
-      },
-      {
-        relation: 'category.parent',
-        as: 'parent',
-      },
-    ]);
   }
   async findByName(name: string): Promise<Category | null> {
     return this.findByField('name', name);

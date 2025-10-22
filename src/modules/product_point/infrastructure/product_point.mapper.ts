@@ -73,7 +73,7 @@
 import { ProductPoint } from '../domain/product_point.entity';
 import { ProductPointOrm } from 'src/database/typeorm/product_point.orm-entity';
 import { ProductPointResponse } from '../interface/product_point.interface';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 import { ProductVariantMapper } from 'src/modules/product_variant/infrastructure/product_variant.mapper';
 import { UnitMapper } from 'src/modules/unit/infrastructure/unit.mapper';
 

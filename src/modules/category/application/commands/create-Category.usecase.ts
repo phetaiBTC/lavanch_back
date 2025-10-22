@@ -13,8 +13,6 @@ export class CreateCategoryUseCase {
   constructor(
     @Inject(CATEGORY_REPOSITORY)
     private readonly categoryRepo: ICategoryRepository,
-
-    private readonly updateCategoryUseCase: UpdateCategoryUseCase,
   ) {}
 
   async execute(dto: CreateCategoryDto): Promise<Category> {
@@ -23,7 +21,6 @@ export class CreateCategoryUseCase {
       parent = await this.categoryRepo.findById(dto.parentId);
       if (!parent) throw new BadRequestException('Parent category not found');
     }
-
     const existingCategory = await this.categoryRepo.findByName(dto.name);
     if (existingCategory)
       throw new BadRequestException('Category already exists');
@@ -35,6 +32,6 @@ export class CreateCategoryUseCase {
       is_active: dto.is_active ?? true,
     });
 
-    return this.categoryRepo.create(category);
+    return this.categoryRepo.save(category);
   }
 }

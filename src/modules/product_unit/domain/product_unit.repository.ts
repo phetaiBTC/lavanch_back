@@ -1,8 +1,9 @@
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';import { ProductUnit } from './product_unit.entity';import { PaginationDto } from 'src/shared/dto/pagination.dto';import { IRemoveRepository } from 'src/shared/interface/removeRepository.interface';
+import { ProductUnit } from './product_unit.entity';
+import { IBaseRepository } from 'src/shared/BaseModule/domain/base.repository';
 export const PRODUCT_UNIT_REPOSITORY = Symbol('PRODUCT_UNIT_REPOSITORY');
-export interface IProductUnitRepository extends IRemoveRepository {
-findAll(query: PaginationDto): Promise<PaginatedResponse<ProductUnit>>;
-findById(id: number): Promise<ProductUnit | null>;
-create(product_unit: ProductUnit): Promise<ProductUnit>;
-update(product_unit: ProductUnit): Promise<ProductUnit>;
-findByProductVariantAndUnit(product_variant_id: number, unit_id: number): Promise<ProductUnit | null>}
+export interface IProductUnitRepository extends IBaseRepository<ProductUnit> {
+  findByProductVariantAndUnit(
+    product_variant_id: number,
+    unit_id: number,
+  ): Promise<ProductUnit | null>;
+}

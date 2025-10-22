@@ -84,7 +84,7 @@ import { FindAllPointUseCase } from './application/queries/find-Point.usecase';
 import { HardDeletePointUseCase } from './application/commands/hard-Point.usecase';
 import { SoftDeletePointUseCase } from './application/commands/soft-Point.usecase';
 import { RestorePointUseCase } from './application/commands/restore-Point.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('point')
 export class PointController extends BaseController<

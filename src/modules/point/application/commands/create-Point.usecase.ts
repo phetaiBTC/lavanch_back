@@ -23,6 +23,6 @@ export class CreatePointUseCase {
       name_code: dto.name_code
     });
 
-    return this.pointRepo.create(point);
+    return this.pointRepo.save(point);
   }
 }

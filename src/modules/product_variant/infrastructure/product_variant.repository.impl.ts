@@ -74,7 +74,7 @@ import { IProductVariantRepository } from '../domain/product_variant.repository'
 import { ProductVariant } from '../domain/product_variant.entity';
 import { ProductVariantMapper } from './product_variant.mapper';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 

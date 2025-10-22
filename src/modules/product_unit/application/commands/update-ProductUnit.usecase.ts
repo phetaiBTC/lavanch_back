@@ -36,27 +36,27 @@ export class UpdateProductUnitUseCase {
       dto.unit_id ? this.unitRepo.findById(dto.unit_id) : Promise.resolve(null),
     ]);
 
-    if (productVariant && !productVariant.id)
+    if (productVariant && !productVariant.value.id)
       throw new BadRequestException('Product variant not found');
-    if (unit && !unit.id) throw new BadRequestException('Unit not found');
+    if (unit && !unit.value.id) throw new BadRequestException('Unit not found');
 
     if (productVariant) existing.product_variant = productVariant;
     if (unit) existing.unit = unit;
 
-    if (productVariant?.id && unit?.id) {
+    if (productVariant?.value.id && unit?.value.id) {
       const existing = await this.productUnitRepo.findByProductVariantAndUnit(
-        productVariant.id,
-        unit.id,
+        productVariant.value.id,
+        unit.value.id,
       );
       if (existing)
         throw new BadRequestException('Product Unit already exists');
     }
 
     if (dto.quantity_per_unit !== undefined)
-      existing.quantity_per_unit = dto.quantity_per_unit;
+      existing.value.quantity_per_unit = dto.quantity_per_unit;
     if (dto.is_base_unit !== undefined)
       existing.is_base_unit = dto.is_base_unit;
 
-    return this.productUnitRepo.update(existing);
+    return this.productUnitRepo.save(existing);
   }
 }

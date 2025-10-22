@@ -1,5 +1,5 @@
 export interface ShardInterfaceProps {
-  id?: number | null;
+  id?: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

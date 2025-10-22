@@ -1,19 +1,19 @@
-import { ShardEntity } from 'src/shared/entity/base.entity';
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 import { ProductPointProps } from '../interface/product_point.interface';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
 import { Unit } from 'src/modules/unit/domain/unit.entity';
 
 export class ProductPoint extends ShardEntity<ProductPointProps> {
-  product_variant: ProductVariant | null;
-  unit: Unit | null;
-  points_per_unit: number;
-  is_active: boolean;
-  effective_date: Date;
+  private product_variant: ProductVariant | null;
+  private unit: Unit | null;
+  private points_per_unit: number;
+  private is_active: boolean;
+  private effective_date: Date;
 
   constructor(props: ProductPointProps) {
     super(props);
     this.product_variant = props.product_variant ?? null;
-    this.unit = props.unit  ?? null;
+    this.unit = props.unit ?? null;
     this.points_per_unit = props.points_per_unit ?? 0;
     this.is_active = props.is_active ?? true;
     this.effective_date = props.effective_date;
@@ -31,5 +31,16 @@ export class ProductPoint extends ShardEntity<ProductPointProps> {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
     };
+  }
+
+  update(
+    props: Partial<
+      Omit<ProductPointProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
+    return new ProductPoint({
+      ...this.value,
+      ...props,
+    });
   }
 }

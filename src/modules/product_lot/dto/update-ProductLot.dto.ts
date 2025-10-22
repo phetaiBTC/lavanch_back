@@ -1,6 +1,11 @@
-import { IsNotEmpty, IsOptional, IsNumber, IsDateString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsDateString,
+} from 'class-validator';
 
-export class UpdateProductLotDto  {
+export class UpdateProductLotDto {
   @IsNotEmpty()
   product_variant_id: number;
 

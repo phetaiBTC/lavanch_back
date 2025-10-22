@@ -5,7 +5,7 @@ import { ProductVariantResponse } from 'src/modules/product_variant/interface/pr
 import {
   ShardInterfaceProps,
   ShardInterfaceResponse,
-} from 'src/shared/interface/Base.interface';
+} from 'src/shared/BaseModule/interface/Base.interface';
 
 export interface ProductLotProps extends ShardInterfaceProps {
   product_variant: ProductVariant;

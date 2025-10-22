@@ -23,33 +23,38 @@ export class UpdateProductUseCase {
     const product = await this.productRepo.findById(id);
     if (!product) throw new BadRequestException('Product not found');
 
-    let categoryDomain = product.category;
+    let categoryDomain = product.value.category;
     if (dto.categoryId) {
       const category = await this.categoryRepo.findById(dto.categoryId);
       if (!category) throw new BadRequestException('Category not found');
       categoryDomain = category;
     }
 
-    if (dto.name && dto.name !== product.name) {
+    if (dto.name && dto.name !== product.value.name) {
       const existingName = await this.productRepo.findName(dto.name);
-      if (existingName) throw new BadRequestException('Product name already exists');
+      if (existingName)
+        throw new BadRequestException('Product name already exists');
     }
 
-    if (dto.barcode && dto.barcode !== product.barcode) {
+    if (dto.barcode && dto.barcode !== product.value.barcode) {
       const existingBarcode = await this.productRepo.findByBarcode(dto.barcode);
-      if (existingBarcode) throw new BadRequestException('Product barcode already exists');
+      if (existingBarcode)
+        throw new BadRequestException('Product barcode already exists');
     }
-
-    const updatedProduct = new Product({
-      ...product,
-      name: dto.name ?? product.name,
-      brand: dto.brand ?? product.brand,
+    product.update({
       category: categoryDomain,
-      description: dto.description ?? product.description,
-      barcode: dto.barcode ?? product.barcode,
-      id: product.id
+      ...dto,
     });
+    // const updatedProduct = new Product({
+    //   ...product,
+    //   name: dto.name ?? product.name,
+    //   brand: dto.brand ?? product.brand,
+    //   category: categoryDomain,
+    //   description: dto.description ?? product.description,
+    //   barcode: dto.barcode ?? product.barcode,
+    //   id: product.id
+    // });
 
-    return this.productRepo.update(updatedProduct);
+    return this.productRepo.save(product);
   }
 }

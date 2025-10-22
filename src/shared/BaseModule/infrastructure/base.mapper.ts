@@ -23,7 +23,11 @@ export abstract class BaseMapper<TDomain, TOrm, TResponse> {
     return date ? formatDate(date) : null;
   }
 
-  protected getTimestampsFromSchema(schema: any) {
+  protected getTimestampsFromSchema(schema: {
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+  }) {
     return {
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,

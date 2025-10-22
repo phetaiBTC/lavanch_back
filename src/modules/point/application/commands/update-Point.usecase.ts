@@ -19,15 +19,17 @@ export class UpdatePointUseCase {
 
     if (dto.name) {
       const existing = await this.pointRepo.findByName(dto.name);
-      if (existing && existing.id !== id) {
+      if (existing && existing.value.id !== id) {
         throw new BadRequestException('Point name already exists');
       }
-      point.name = dto.name;
+      // point.name = dto.name;
+      point.update({ name: dto.name });
     }
 
     if (dto.points_multiplier !== undefined) {
-      point.points_multiplier = dto.points_multiplier;
+      // point.points_multiplier = dto.points_multiplier;
+      point.update({ points_multiplier: dto.points_multiplier });
     }
-    return this.pointRepo.update(point);
+    return this.pointRepo.save(point);
   }
 }

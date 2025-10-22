@@ -40,11 +40,17 @@ export class UpdateProductPointUseCase {
     const unit = await this.unitRepo.findById(dto.unit_id);
     if (!unit) throw new BadRequestException('Unit not found');
 
-    existing.product_variant = product_variant;
-    existing.unit = unit;
-    existing.points_per_unit = dto.points_per_unit ?? existing.points_per_unit;
-    existing.effective_date = new Date(dto.effective_date);
+    // existing.product_variant = product_variant;
+    // existing.unit = unit;
+    // existing.points_per_unit = dto.points_per_unit ?? existing.points_per_unit;
+    // existing.effective_date = new Date(dto.effective_date);
 
-    return this.repo.update(existing);
+    existing.update({
+      product_variant,
+      unit,
+      points_per_unit: dto.points_per_unit ?? existing.value.points_per_unit,
+      effective_date: new Date(dto.effective_date),
+    });
+    return this.repo.save(existing);
   }
 }

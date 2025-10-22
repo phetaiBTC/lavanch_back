@@ -1,15 +1,13 @@
-
+import { Get, Post, Body, Param, Patch, Delete, Query } from '@nestjs/common';
+import { BaseMapper } from './infrastructure/base.mapper';
 import {
-  Get,
-  Post,
-  Body,
-  Param,
-  Patch,
-  Delete,
-  Query,
-} from '@nestjs/common';
-import { BaseMapper } from '../mappers/base.mapper';
-import { ICreateUseCase, IDeleteUseCase, IFindAllUseCase, IFindOneUseCase, IRestoreUseCase, IUpdateUseCase } from '../Base Use Cases Interfaces/Base.usecase';
+  ICreateUseCase,
+  IDeleteUseCase,
+  IFindAllUseCase,
+  IFindOneUseCase,
+  IRestoreUseCase,
+  IUpdateUseCase,
+} from './application/base.usecase';
 import { PaginationDto } from '../dto/pagination.dto';
 import { PaginatedResponse } from '../interface/pagination.interface';
 

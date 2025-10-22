@@ -98,7 +98,7 @@ import { IProductPointRepository } from '../domain/product_point.repository';
 import { ProductPoint } from '../domain/product_point.entity';
 import { ProductPointMapper } from './product_point.mapper';
 import { ProductPointOrm } from 'src/database/typeorm/product_point.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
