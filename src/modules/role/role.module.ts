@@ -12,6 +12,7 @@ import { UpdateRoleUseCase } from './application/commands/udate-Role.usecase';
 import { SoftDeleteRoleUseCase } from './application/commands/soft-Role.usecase';
 import { HardDeleteRoleUseCase } from './application/commands/hard-Role.usecase';
 import { RestoreRoleUseCase } from './application/commands/restore-Role.usecase';
+import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RoleOrm]), PermissionModule],

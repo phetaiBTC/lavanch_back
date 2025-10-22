@@ -14,6 +14,9 @@ import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-enti
 import { ActiveProductVariantUseCase } from './application/commands/active-ProductVariant.usecase';
 import { ProductModule } from '../product/product.module';
 import { UnitModule } from '../unit/unit.module';
+import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
+import { FindBarcodeProductVariantUseCase } from './application/queries/find-barcodeProductVariant.usecase';
+import { FindNameProductVariantUseCase } from './application/queries/find-nameProductVarinat.usecase';
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProductVariantOrm]),
@@ -34,6 +37,9 @@ import { UnitModule } from '../unit/unit.module';
     FindOneProductVariantUseCase,
     FindAllProductVariantUseCase,
     ActiveProductVariantUseCase,
+    UniqueValidatorService,
+    FindBarcodeProductVariantUseCase,
+    FindNameProductVariantUseCase
   ],
   exports: [
     {

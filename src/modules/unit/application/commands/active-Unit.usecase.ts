@@ -27,6 +27,6 @@ export class ActiveUnitUseCase {
       ...existing.value,
       is_active: dto.is_active,
     });
-    return this.unitRepo.update(updatedUnit);
+    return this.unitRepo.save(updatedUnit);
   }
 }

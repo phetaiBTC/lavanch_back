@@ -11,6 +11,7 @@ import { RestorePointUseCase } from './application/commands/restore-Point.usecas
 import { FindOnePointUseCase } from './application/queries/findOne-Point.usecase';
 import { FindAllPointUseCase } from './application/queries/find-Point.usecase';
 import { PointOrm } from 'src/database/typeorm/point.orm-entity';
+import { FindNameCodePointUseCase } from './application/queries/findNameCode-Point.usecase';
 @Module({
   imports: [TypeOrmModule.forFeature([PointOrm])],
   controllers: [PointController],
@@ -23,6 +24,7 @@ import { PointOrm } from 'src/database/typeorm/point.orm-entity';
     RestorePointUseCase,
     FindOnePointUseCase,
     FindAllPointUseCase,
+    FindNameCodePointUseCase
   ],
   exports: [
     { provide: POINT_REPOSITORY, useClass: PointRepositoryImpl },
@@ -33,6 +35,7 @@ import { PointOrm } from 'src/database/typeorm/point.orm-entity';
     RestorePointUseCase,
     FindOnePointUseCase,
     FindAllPointUseCase,
+    FindNameCodePointUseCase
   ],
 })
 export class PointModule {}

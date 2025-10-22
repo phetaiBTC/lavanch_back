@@ -3,8 +3,6 @@ import {
   PRODUCT_POINT_REPOSITORY,
   type IProductPointRepository,
 } from '../../domain/product_point.repository';
-import { ProductPoint } from '../../domain/product_point.entity';
-import { CreateProductPointDto } from '../../dto/create-ProductPoint.dto';
 @Injectable()
 export class RestoreProductPointUseCase {
   constructor(

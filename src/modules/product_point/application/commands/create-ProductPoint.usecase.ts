@@ -5,20 +5,12 @@ import {
   PRODUCT_POINT_REPOSITORY,
   type IProductPointRepository,
 } from '../../domain/product_point.repository';
-
-import {
-  type IUnitRepository,
-  UNIT_REPOSITORY,
-} from 'src/modules/unit/domain/unit.repository';
-import {
-  type IProductVariantRepository,
-  PRODUCT_VARIANT_REPOSITORY,
-} from 'src/modules/product_variant/domain/product_variant.repository';
-import {
-  type IPointRepository,
-  POINT_REPOSITORY,
-} from 'src/modules/point/domain/point.repository';
 import { PointNameCode } from 'src/shared/enum/point-name-code';
+import { FindOneProductVariantUseCase } from 'src/modules/product_variant/application/queries/findOne-ProductVariant.usecase';
+import { FindOneUnitUseCase } from 'src/modules/unit/application/queries/findOne-Unit.usecase';
+import { FindNameCodePointUseCase } from 'src/modules/point/application/queries/findNameCode-Point.usecase';
+import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
+import { Unit } from 'src/modules/unit/domain/unit.entity';
 
 @Injectable()
 export class CreateProductPointUseCase {
@@ -26,31 +18,38 @@ export class CreateProductPointUseCase {
     @Inject(PRODUCT_POINT_REPOSITORY)
     private readonly repo: IProductPointRepository,
 
-    @Inject(PRODUCT_VARIANT_REPOSITORY)
-    private readonly productVariantRepo: IProductVariantRepository,
-
-    @Inject(UNIT_REPOSITORY)
-    private readonly unitRepo: IUnitRepository,
-
-    @Inject(POINT_REPOSITORY)
-    private readonly pointRepo: IPointRepository,
+    private readonly uescaseProductVariant: FindOneProductVariantUseCase,
+    private readonly usecaseUnit: FindOneUnitUseCase,
+    private readonly usecaseFindNameCode: FindNameCodePointUseCase,
   ) {}
 
   async execute(dto: CreateProductPointDto): Promise<ProductPoint> {
-    const product_variant = await this.productVariantRepo.findById(
+    const { product_variant, unit, point } = await this.loadrelations(dto);
+
+    await this.validation(product_variant, unit);
+    const points_per_unit = 1 * point.value.points_multiplier;
+
+    return this.repo.save(
+      new ProductPoint({
+        product_variant,
+        unit,
+        points_per_unit,
+        is_active: dto.is_active,
+        effective_date: new Date(dto.effective_date),
+      }),
+    );
+  }
+
+  async loadrelations(dto: CreateProductPointDto) {
+    const product_variant = await this.uescaseProductVariant.execute(
       dto.product_variant_id,
     );
-    if (!product_variant)
-      throw new BadRequestException('Product Variant not found');
+    const unit = await this.usecaseUnit.execute(dto.unit_id);
+    const point = await this.usecaseFindNameCode.execute(PointNameCode.PRODUCT);
+    return { product_variant, unit, point };
+  }
 
-    const unit = await this.unitRepo.findById(dto.unit_id);
-    if (!unit) throw new BadRequestException('Unit not found');
-
-    // if (!unit.is_active) throw new BadRequestException('Unit is not active');
-
-    // if (!product_variant.is_active)
-    //   throw new BadRequestException('Product Variant is not active');
-
+  async validation(product_variant: ProductVariant, unit: Unit) {
     if (product_variant.value.id && unit.value.id) {
       const existing = await this.repo.findByProductVariantAndUnit(
         product_variant.value.id,
@@ -59,20 +58,5 @@ export class CreateProductPointUseCase {
       if (existing)
         throw new BadRequestException('Product Point already exists');
     }
-
-    const point = await this.pointRepo.findByNameCode(PointNameCode.PRODUCT);
-    if (!point) throw new BadRequestException('Point config not found');
-
-    const points_per_unit = 1 * point.value.points_multiplier;
-
-    const entity = new ProductPoint({
-      product_variant,
-      unit,
-      points_per_unit,
-      is_active: dto.is_active ?? true,
-      effective_date: new Date(dto.effective_date),
-    });
-
-    return this.repo.save(entity);
   }
 }

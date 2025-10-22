@@ -21,7 +21,6 @@ export class CreateProductDto {
   @IsString()
   barcode?: string;
 
-  @IsOptional()
   @IsBoolean()
-  is_active?: boolean;
+  is_active: boolean;
 }

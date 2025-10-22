@@ -14,22 +14,26 @@ export class UpdatePointUseCase {
   ) {}
 
   async execute(id: number, dto: UpdatePointDto): Promise<Point> {
+    const point = await this.validation_point(id, dto);
+    return this.pointRepo.save(point);
+  }
+
+  async validation_point(id: number, dto: UpdatePointDto): Promise<Point> {
     const point = await this.pointRepo.findById(id);
     if (!point) throw new BadRequestException('Point not found');
 
-    if (dto.name) {
-      const existing = await this.pointRepo.findByName(dto.name);
-      if (existing && existing.value.id !== id) {
-        throw new BadRequestException('Point name already exists');
-      }
-      // point.name = dto.name;
+    const existing = await this.pointRepo.findByName(dto.name);
+    if (existing && existing.value.id !== id) {
+      throw new BadRequestException('Point name already exists');
+    }
+
+    if (dto.name !== undefined) {
       point.update({ name: dto.name });
     }
 
     if (dto.points_multiplier !== undefined) {
-      // point.points_multiplier = dto.points_multiplier;
       point.update({ points_multiplier: dto.points_multiplier });
     }
-    return this.pointRepo.save(point);
+    return point;
   }
 }

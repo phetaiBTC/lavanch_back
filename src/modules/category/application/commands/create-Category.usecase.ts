@@ -7,31 +7,41 @@ import { Category } from '../../domain/category.entity';
 import { CreateCategoryDto } from '../../dto/create-Category.dto';
 import { UpdateCategoryUseCase } from './update-Category.usecase';
 import { CategoryMapper } from '../../infrastructure/category.mapper';
+import { FindOneCategoryUseCase } from '../queries/findOne-Category.usecase';
+import { FindNameCategoryUseCase } from '../queries/findName-Category.usecase';
+import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
 
 @Injectable()
 export class CreateCategoryUseCase {
   constructor(
     @Inject(CATEGORY_REPOSITORY)
     private readonly categoryRepo: ICategoryRepository,
+    private readonly usecaseFindOne: FindOneCategoryUseCase,
+    private readonly usecaseFindName: FindNameCategoryUseCase,
+
+    private readonly validateUniqueField: UniqueValidatorService,
   ) {}
 
   async execute(dto: CreateCategoryDto): Promise<Category> {
-    let parent: Category | null = null;
+    const parent = await this.valdation_category(dto);
+    return this.categoryRepo.save(
+      new Category({
+        ...dto,
+        parent,
+      }),
+    );
+  }
+
+  
+  async valdation_category(dto: CreateCategoryDto): Promise<Category | null> {
+    await this.validateUniqueField.validateUniqueField(
+      () => this.usecaseFindName.execute(dto.name),
+      'Category name already exists',
+    );
     if (dto.parentId) {
-      parent = await this.categoryRepo.findById(dto.parentId);
-      if (!parent) throw new BadRequestException('Parent category not found');
+      const parent = await this.usecaseFindOne.execute(dto.parentId);
+      return parent;
     }
-    const existingCategory = await this.categoryRepo.findByName(dto.name);
-    if (existingCategory)
-      throw new BadRequestException('Category already exists');
-
-    const category = new Category({
-      name: dto.name,
-      description: dto.description,
-      parent: parent,
-      is_active: dto.is_active ?? true,
-    });
-
-    return this.categoryRepo.save(category);
+    return null;
   }
 }

@@ -10,7 +10,7 @@ export class CreateProductPointDto {
   points_per_unit?: number;
 
   @IsBoolean()
-  is_active?: boolean;
+  is_active: boolean;
 
   @IsDateString()
   effective_date: string;

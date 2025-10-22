@@ -1,44 +1,25 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ProductLot } from '../../domain/product_lot.entity';
 import { CreateProductLotDto } from '../../dto/create-ProductLot.dto';
 import {
   PRODUCT_LOT_REPOSITORY,
   type IProductLotRepository,
 } from '../../domain/product_lot.repository';
-import {
-  type IProductVariantRepository,
-  PRODUCT_VARIANT_REPOSITORY,
-} from 'src/modules/product_variant/domain/product_variant.repository';
-import {
-  CURRENCIES_REPOSITORY,
-  type ICurrenciesRepository,
-} from 'src/modules/currencies/domain/currencies.repository';
+import { FindOneProductVariantUseCase } from 'src/modules/product_variant/application/queries/findOne-ProductVariant.usecase';
+import { FindOneCurrenciesUseCase } from 'src/modules/currencies/application/queries/findOne-Currencies.usecase';
 
 @Injectable()
 export class CreateProductLotUseCase {
   constructor(
     @Inject(PRODUCT_LOT_REPOSITORY)
     private readonly repo: IProductLotRepository,
-    @Inject(PRODUCT_VARIANT_REPOSITORY)
-    private readonly productVariantRepo: IProductVariantRepository,
-    // @Inject(BRANCH_REPOSITORY)
-    // private readonly branchRepo:  IBranchRepository,
-    @Inject(CURRENCIES_REPOSITORY)
-    private readonly currencyRepo: ICurrenciesRepository,
+
+        private readonly findProductVariant: FindOneProductVariantUseCase,
+    private readonly usecaseFindoneCurrency: FindOneCurrenciesUseCase
   ) {}
 
   async execute(dto: CreateProductLotDto): Promise<ProductLot> {
-    const product_variant = await this.productVariantRepo.findById(
-      dto.product_variant_id,
-    );
-    if (!product_variant)
-      throw new BadRequestException('Product Variant not found');
-
-    // const branch = await this.branchRepo.findById(dto.branch_id);
-    // if (!branch) throw new BadRequestException('Branch not found');
-
-    const currency = await this.currencyRepo.findById(dto.cost_currency_id);
-    if (!currency) throw new BadRequestException('Currency not found');
+    const { product_variant, currency } = await this.loadrelations(dto);
 
     const entity = new ProductLot({
       product_variant,
@@ -47,7 +28,6 @@ export class CreateProductLotUseCase {
         ? new Date(dto.manufacture_date)
         : undefined,
       expiry_date: dto.expiry_date ? new Date(dto.expiry_date) : undefined,
-      //   branch,
       quantity: dto.quantity ?? 0,
       cost_price_local: dto.cost_price_local,
       cost_currency: currency,
@@ -56,5 +36,11 @@ export class CreateProductLotUseCase {
     });
 
     return this.repo.save(entity);
+  }
+
+  async loadrelations(dto: CreateProductLotDto) {
+    const product_variant = await this.findProductVariant.execute(dto.product_variant_id);
+    const currency = await this.usecaseFindoneCurrency.execute(dto.cost_currency_id);
+    return { product_variant, currency }
   }
 }

@@ -3,11 +3,11 @@ import { ProductVariantProps } from '../interface/product_variant.interface';
 import { Product } from 'src/modules/product/domain/product.entity';
 
 export class ProductVariant extends ShardEntity<ProductVariantProps> {
-  name: string;
-  sku?: string;
-  barcode?: string;
-  product: Product | null;
-  is_active: boolean;
+  private readonly name: string;
+  private readonly sku?: string;
+  private readonly barcode?: string;
+  private readonly product: Product | null;
+  private readonly is_active: boolean;
 
   constructor(props: ProductVariantProps) {
     super(props);
@@ -30,5 +30,20 @@ export class ProductVariant extends ShardEntity<ProductVariantProps> {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
     };
+  }
+
+  public activate(is_active: boolean) {
+    (this as any).is_active = is_active;
+  }
+
+  update(
+    props: Partial<
+      Omit<ProductVariantProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
+    return new ProductVariant({
+      ...this.value,
+      ...props,
+    });
   }
 }

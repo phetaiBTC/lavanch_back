@@ -8,8 +8,6 @@ import {
   PRODUCT_REPOSITORY,
   type IProductRepository,
 } from '../../domain/product.repository';
-import { Product } from '../../domain/product.entity';
-import { CreateProductDto } from '../../dto/create-Product.dto';
 @Injectable()
 export class HardDeleteProductUseCase {
   constructor(

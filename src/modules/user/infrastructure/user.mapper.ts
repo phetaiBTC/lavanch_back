@@ -1,11 +1,6 @@
 import { User } from '../domain/user.entity';
 import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { UserResponse } from '../interface/user.interface';
-import { formatDate } from 'src/shared/utils/dayjs.util';
-import {
-  IPagination,
-  PaginatedResponse,
-} from 'src/shared/interface/pagination.interface';
 import { PermissionMapper } from 'src/modules/permission/infrastructure/permission.mapper';
 import { RoleMapper } from 'src/modules/role/infrastructure/role.mapper';
 import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';

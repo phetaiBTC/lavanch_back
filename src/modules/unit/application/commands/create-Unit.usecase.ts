@@ -26,6 +26,6 @@ export class CreateUnitUseCase {
       is_active: dto.is_active ?? true
     });
 
-    return this.unitRepo.create(unit);
+    return this.unitRepo.save(unit);
   }
 }

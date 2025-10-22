@@ -3,44 +3,40 @@ import {
   PRODUCT_REPOSITORY,
   type IProductRepository,
 } from '../../domain/product.repository';
-import {
-  CATEGORY_REPOSITORY,
-  type ICategoryRepository,
-} from 'src/modules/category/domain/category.repository';
 import { Product } from '../../domain/product.entity';
 import { CreateProductDto } from '../../dto/create-Product.dto';
-import { CategoryMapper } from 'src/modules/category/infrastructure/category.mapper';
+import { FindOneCategoryUseCase } from 'src/modules/category/application/queries/findOne-Category.usecase';
 
 @Injectable()
 export class CreateProductUseCase {
   constructor(
     @Inject(PRODUCT_REPOSITORY)
     private readonly productRepo: IProductRepository,
-    @Inject(CATEGORY_REPOSITORY)
-    private readonly categoryRepo: ICategoryRepository,
+
+    private readonly usecaseFindOneCategory: FindOneCategoryUseCase,
   ) {}
 
   async execute(dto: CreateProductDto): Promise<Product> {
-    const categoryDomain = await this.categoryRepo.findById(dto.categoryId);
-    if (!categoryDomain) throw new BadRequestException('Category not found');
+    const categoryDomain = await this.usecaseFindOneCategory.execute(
+      dto.categoryId,
+    );
+    await this.validation_product(dto);
+    return this.productRepo.save(
+      new Product({
+        ...dto,
+        category: categoryDomain,
+      }),
+    );
+  }
 
+  async validation_product(dto: CreateProductDto) {
     const existingProduct = await this.productRepo.findName(dto.name);
-    if(existingProduct) throw new BadRequestException('Product nam already exists');
-
+    if (existingProduct)
+      throw new BadRequestException('Product nam already exists');
     if (dto.barcode) {
       const existingBarcode = await this.productRepo.findByBarcode(dto.barcode);
-      if (existingBarcode) throw new BadRequestException('Product Barcode already exists');
+      if (existingBarcode)
+        throw new BadRequestException('Product Barcode already exists');
     }
-
-    const product = new Product({
-      name: dto.name,
-      brand: dto.brand,
-      category: categoryDomain,
-      description: dto.description,
-      barcode: dto.barcode,
-      is_active: dto.is_active ?? true,
-    });
-
-    return this.productRepo.save(product);
   }
 }

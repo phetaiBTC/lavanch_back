@@ -116,4 +116,5 @@ export class PointController extends BaseController<
   }
 
   //  custom endpoints only for Point
+  
 }
