@@ -51,18 +51,19 @@ export class CreateProductPointUseCase {
     // if (!product_variant.is_active)
     //   throw new BadRequestException('Product Variant is not active');
 
-    if (product_variant.id && unit.id) {
+    if (product_variant.value.id && unit.value.id) {
       const existing = await this.repo.findByProductVariantAndUnit(
-        product_variant.id,
-        unit.id,
+        product_variant.value.id,
+        unit.value.id,
       );
-      if (existing) throw new BadRequestException('Product Point already exists');
+      if (existing)
+        throw new BadRequestException('Product Point already exists');
     }
 
     const point = await this.pointRepo.findByNameCode(PointNameCode.PRODUCT);
     if (!point) throw new BadRequestException('Point config not found');
 
-    const points_per_unit = 1 * point.points_multiplier;
+    const points_per_unit = 1 * point.value.points_multiplier;
 
     const entity = new ProductPoint({
       product_variant,
@@ -72,6 +73,6 @@ export class CreateProductPointUseCase {
       effective_date: new Date(dto.effective_date),
     });
 
-    return this.repo.create(entity);
+    return this.repo.save(entity);
   }
 }

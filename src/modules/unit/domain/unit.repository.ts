@@ -1,12 +1,6 @@
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { Unit } from './unit.entity';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { IRemoveRepository } from 'src/shared/interface/removeRepository.interface';
+import { IBaseRepository } from 'src/shared/BaseModule/domain/base.repository';
 export const UNIT_REPOSITORY = Symbol('UNIT_REPOSITORY');
-export interface IUnitRepository extends IRemoveRepository {
-  findAll(query: PaginationDto): Promise<PaginatedResponse<Unit>>;
-  findById(id: number): Promise<Unit | null>;
-  create(unit: Unit): Promise<Unit>;
-  update(unit: Unit): Promise<Unit>;
+export interface IUnitRepository extends IBaseRepository<Unit> {
   findByName(name: string): Promise<Unit | null>;
 }

@@ -65,7 +65,7 @@
 import { ProductVariant } from '../domain/product_variant.entity';
 import { ProductVariantResponse } from '../interface/product_variant.interface';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 import { ProductMapper } from 'src/modules/product/infrastructure/product.mapper';
 
 class ProductVariantMapperClass extends BaseMapper<

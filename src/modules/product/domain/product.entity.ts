@@ -1,14 +1,14 @@
-import { ShardEntity } from 'src/shared/entity/base.entity';
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 import { ProductProps } from '../interface/product.interface';
 import { Category } from 'src/modules/category/domain/category.entity';
 
 export class Product extends ShardEntity<ProductProps> {
-  name: string;
-  brand: string;
-  category?: Category | null;
-  description?: string;
-  barcode?: string;
-  is_active: boolean;
+  private name: string;
+  private brand: string;
+  private category?: Category | null;
+  private description?: string;
+  private barcode?: string;
+  private is_active: boolean;
 
   constructor(props: ProductProps) {
     super(props);
@@ -33,5 +33,15 @@ export class Product extends ShardEntity<ProductProps> {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
     };
+  }
+  update(
+    props: Partial<
+      Omit<ProductProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
+    return new Product({
+      ...this.value,
+      ...props,
+    });
   }
 }

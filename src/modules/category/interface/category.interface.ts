@@ -1,4 +1,4 @@
-import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/interface/Base.interface";
+import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/BaseModule/interface/Base.interface";
 import { Category } from "../domain/category.entity";
 
 export interface CategoryProps extends ShardInterfaceProps {

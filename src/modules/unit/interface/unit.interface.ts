@@ -1,7 +1,7 @@
 import {
   ShardInterfaceProps,
   ShardInterfaceResponse,
-} from 'src/shared/interface/Base.interface';
+} from 'src/shared/BaseModule/interface/Base.interface';
 
 export interface UnitProps extends ShardInterfaceProps {
   name: string;

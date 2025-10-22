@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   CATEGORY_REPOSITORY,
   type ICategoryRepository,
@@ -15,16 +20,17 @@ export class UpdateCategoryUseCase {
 
   async execute(id: number, dto: UpdateCategoryDto): Promise<Category> {
     const category = await this.categoryRepo.findById(id);
-    if (!category) throw new NotFoundException(`Category with id ${id} not found`);
+    if (!category)
+      throw new NotFoundException(`Category with id ${id} not found`);
 
     const existingCategory = await this.categoryRepo.findByName(dto.name);
-    if (existingCategory && existingCategory.id !== id)
+    if (existingCategory && existingCategory.value.id !== id)
       throw new BadRequestException('Category already exists');
 
     if (dto.parentId) {
       const parent = await this.categoryRepo.findById(dto.parentId);
       if (!parent) throw new BadRequestException('Parent category not found');
-      category.parent = parent;
+      category.update({ parent });
     }
     if (dto.childrenIds && dto.childrenIds.length > 0) {
       const children = await Promise.all(
@@ -32,11 +38,15 @@ export class UpdateCategoryUseCase {
       );
       if (children.some((c): c is null => c === null))
         throw new BadRequestException('Children category not found');
-      category.children = children.filter((c): c is Category => c != null);
+      category.update({
+        children: children.filter((c): c is Category => c != null),
+      });
     }
-    if (dto.name !== undefined) category.name = dto.name;
-    if (dto.description !== undefined) category.description = dto.description;
 
-    return this.categoryRepo.update(category);
+    category.update({
+      name: dto.name,
+      description: dto.description,
+    });
+    return this.categoryRepo.save(category);
   }
 }

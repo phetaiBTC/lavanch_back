@@ -28,6 +28,6 @@ export class CreateUserUseCase {
       email: dto.email,
       username: dto.username,
     });
-    return this.userRepo.create(user);
+    return this.userRepo.save(user);
   }
 }

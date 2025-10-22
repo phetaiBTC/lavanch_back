@@ -1,23 +1,19 @@
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 import { CurrenciesProps } from '../interface/currencies.interface';
-export class Currencies {
-  private id?: number;
+export class Currencies extends ShardEntity<CurrenciesProps> {
   private code: string;
   private symbol: string;
   private is_active: boolean;
   private name: string;
-  private createdAt: Date;
-  private updatedAt: Date;
-  private deletedAt: Date | null;
+
   constructor(props: CurrenciesProps) {
-    this.id = props.id;
+    super(props);
     this.code = props.code;
     this.name = props.name;
     this.symbol = props.symbol;
     this.is_active = props.is_active ?? true;
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
   }
+
   get value() {
     return {
       id: this.id,
@@ -31,11 +27,10 @@ export class Currencies {
     };
   }
 
-  update(props: Partial<CurrenciesProps>): Currencies {
+  update(props: Partial<Omit<CurrenciesProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>): Currencies {
     return new Currencies({
       ...this.value,
-      ...props,
-      updatedAt: new Date(),
-    });
+      ...props
+    })
   }
 }

@@ -93,7 +93,7 @@ import { FindAllProductPointUseCase } from './application/queries/find-ProductPo
 import { HardDeleteProductPointUseCase } from './application/commands/hard-ProductPoint.usecase';
 import { SoftDeleteProductPointUseCase } from './application/commands/soft-ProductPoint.usecase';
 import { RestoreProductPointUseCase } from './application/commands/restore-ProductPoint.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('product_point')
 export class ProductPointController extends BaseController<

@@ -19,6 +19,6 @@ export class UpdateUserUseCase {
     const user = await this.userRepo.findById(id);
     if (!user) throw new NotFoundException('User not found');
     if (dto.username) user.changeUsername(dto.username);
-    return this.userRepo.update(user);
+    return this.userRepo.save(user);
   }
 }

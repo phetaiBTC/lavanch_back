@@ -16,9 +16,7 @@ export class UpdateActiveCategoryUseCase {
   async execute(id: number, dto: ActiveCategoryDto): Promise<Category> {
     const category = await this.categoryRepo.findById(id);
     if (!category) throw new BadRequestException('Category not found');
-
-    if (dto.is_active !== undefined) category.is_active = dto.is_active;
-
-    return this.categoryRepo.update(category);
+    const updatedCategory = category.update({ is_active: dto.is_active });
+    return this.categoryRepo.save(updatedCategory);
   }
 }

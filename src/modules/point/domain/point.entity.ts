@@ -1,11 +1,11 @@
-import { ShardEntity } from "src/shared/entity/base.entity";
-import { PointNameCode } from "src/shared/enum/point-name-code";
-import { PointProps } from "../interface/point.interface";
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
+import { PointNameCode } from 'src/shared/enum/point-name-code';
+import { PointProps } from '../interface/point.interface';
 
 export class Point extends ShardEntity<PointProps> {
-  name: string;
-  points_multiplier: number;
-  name_code: PointNameCode;
+  private name: string;
+  private points_multiplier: number;
+  private name_code: PointNameCode;
 
   constructor(props: PointProps) {
     super(props);
@@ -24,5 +24,15 @@ export class Point extends ShardEntity<PointProps> {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
     };
+  }
+  update(
+    props: Partial<
+      Omit<PointProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ): Point {
+    return new Point({
+      ...this.value,
+      ...props,
+    });
   }
 }

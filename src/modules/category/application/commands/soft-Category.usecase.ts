@@ -18,7 +18,7 @@ export class SoftDeleteCategoryUseCase {
     const category = await this.categoryRepo.findById(id);
     if (!category)
       throw new NotFoundException('Cannot delete Category not found');
-    if (category.children.length > 0)
+    if (category.value.children.length > 0)
       throw new BadRequestException('Cannot delete Category has children');
     return this.categoryRepo.softDelete(id);
   }

@@ -1,22 +1,18 @@
 import { Currencies } from 'src/modules/currencies/domain/currencies.entity';
+import {
+  ShardInterfaceResponse,
+  ShardInterfaceProps,
+} from 'src/shared/BaseModule/interface/Base.interface';
 
-export interface CurrencyRatesProps {
-  id?: number | null;
+export interface CurrencyRatesProps extends ShardInterfaceProps {
   from_currency_id: Currencies;
   to_currency_id: Currencies;
   rate: number;
   rate_date: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date | null;
 }
-export interface CurrencyRatesResponse {
-  id: number;
+export interface CurrencyRatesResponse extends ShardInterfaceResponse {
   from_currency_id: Currencies;
   to_currency_id: Currencies;
   rate: number;
   rate_date: Date;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
 }

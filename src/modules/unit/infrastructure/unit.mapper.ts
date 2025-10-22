@@ -58,7 +58,7 @@
 import { Unit } from '../domain/unit.entity';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { UnitResponse } from '../interface/unit.interface';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 
 class UnitMapperClass extends BaseMapper<Unit, UnitOrm, UnitResponse> {
   toDomain = (schema: UnitOrm): Unit => {

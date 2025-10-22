@@ -28,7 +28,7 @@ export class ResetPasswordUserUseCase {
       const user = await this.findByEmail.execute(email);
       if (!user) throw new NotFoundException('User not found');
       await user.changePassword(dto.password);
-      return this.userRepo.update(user);
+      return this.userRepo.save(user);
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Token has expired');

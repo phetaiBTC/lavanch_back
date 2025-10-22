@@ -1,5 +1,5 @@
 import { UnitProps } from '../interface/unit.interface';
-import { ShardEntity } from 'src/shared/entity/base.entity';
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 
 export class Unit extends ShardEntity<UnitProps> {
   name: string;
@@ -27,4 +27,16 @@ export class Unit extends ShardEntity<UnitProps> {
       deletedAt: this.deletedAt,
     };
   }
+
+  update (
+    props: Partial<
+      Omit<UnitProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
+    return new Unit({
+      ...this.value,
+      ...props,
+    });
+  }
 }
+
