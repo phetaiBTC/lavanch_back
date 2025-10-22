@@ -5,14 +5,12 @@ import {
   PRODUCT_POINT_REPOSITORY,
   type IProductPointRepository,
 } from '../../domain/product_point.repository';
-import {
-  type IUnitRepository,
-  UNIT_REPOSITORY,
-} from 'src/modules/unit/domain/unit.repository';
-import {
-  type IProductVariantRepository,
-  PRODUCT_VARIANT_REPOSITORY,
-} from 'src/modules/product_variant/domain/product_variant.repository';
+import { PointNameCode } from 'src/shared/enum/point-name-code';
+import { FindOneProductVariantUseCase } from 'src/modules/product_variant/application/queries/findOne-ProductVariant.usecase';
+import { FindOneUnitUseCase } from 'src/modules/unit/application/queries/findOne-Unit.usecase';
+import { FindNameCodePointUseCase } from 'src/modules/point/application/queries/findNameCode-Point.usecase';
+import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
+import { Unit } from 'src/modules/unit/domain/unit.entity';
 
 @Injectable()
 export class UpdateProductPointUseCase {
@@ -20,37 +18,52 @@ export class UpdateProductPointUseCase {
     @Inject(PRODUCT_POINT_REPOSITORY)
     private readonly repo: IProductPointRepository,
 
-    @Inject(PRODUCT_VARIANT_REPOSITORY)
-    private readonly productVariantRepo: IProductVariantRepository,
-
-    @Inject(UNIT_REPOSITORY)
-    private readonly unitRepo: IUnitRepository,
+    private readonly usecaseProductVariant: FindOneProductVariantUseCase,
+    private readonly usecaseUnit: FindOneUnitUseCase,
+    private readonly usecaseFindNameCode: FindNameCodePointUseCase,
   ) {}
 
   async execute(id: number, dto: UpdateProductPointDto): Promise<ProductPoint> {
     const existing = await this.repo.findById(id);
     if (!existing) throw new BadRequestException('ProductPoint not found');
 
-    const product_variant = await this.productVariantRepo.findById(
-      dto.product_variant_id,
-    );
-    if (!product_variant)
-      throw new BadRequestException('Product Variant not found');
+    const { product_variant, unit} = await this.loadRelations(dto, existing);
 
-    const unit = await this.unitRepo.findById(dto.unit_id);
-    if (!unit) throw new BadRequestException('Unit not found');
-
-    // existing.product_variant = product_variant;
-    // existing.unit = unit;
-    // existing.points_per_unit = dto.points_per_unit ?? existing.points_per_unit;
-    // existing.effective_date = new Date(dto.effective_date);
+    await this.validation(product_variant, unit, id);
 
     existing.update({
       product_variant,
       unit,
-      points_per_unit: dto.points_per_unit ?? existing.value.points_per_unit,
-      effective_date: new Date(dto.effective_date),
+      points_per_unit : dto.points_per_unit ?? existing.value.points_per_unit,
+      effective_date: dto.effective_date ? new Date(dto.effective_date) : existing.value.effective_date,
     });
+
     return this.repo.save(existing);
+  }
+
+  private async loadRelations(dto: UpdateProductPointDto, existing: ProductPoint) {
+    const product_variant = dto.product_variant_id
+      ? await this.usecaseProductVariant.execute(dto.product_variant_id)
+      : existing.value.product_variant;
+
+    const unit = dto.unit_id
+      ? await this.usecaseUnit.execute(dto.unit_id)
+      : existing.value.unit;
+
+    const point = await this.usecaseFindNameCode.execute(PointNameCode.PRODUCT);
+
+    return { product_variant, unit, point };
+  }
+
+  private async validation(product_variant: ProductVariant | null , unit: Unit | null, currentId: number) {
+    if (!product_variant?.value.id || !unit?.value.id) return;
+    if (product_variant.value.id && unit.value.id) {
+      const existing = await this.repo.findByProductVariantAndUnit(
+        product_variant.value.id,
+        unit.value.id,
+      );
+      if (existing && existing.value.id !== currentId)
+        throw new BadRequestException('Product Point already exists');
+    }
   }
 }

@@ -10,43 +10,58 @@ import {
 } from '../../domain/category.repository';
 import { Category } from '../../domain/category.entity';
 import { UpdateCategoryDto } from '../../dto/update-Category.dto';
+import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
+import { FindOneCategoryUseCase } from '../queries/findOne-Category.usecase';
+import { FindNameCategoryUseCase } from '../queries/findName-Category.usecase';
 
 @Injectable()
 export class UpdateCategoryUseCase {
   constructor(
     @Inject(CATEGORY_REPOSITORY)
     private readonly categoryRepo: ICategoryRepository,
+
+    private readonly validateUniqueField: UniqueValidatorService,
+    private readonly usecaseFindOne: FindOneCategoryUseCase,
+    private readonly usecaseFindName: FindNameCategoryUseCase,
   ) {}
 
   async execute(id: number, dto: UpdateCategoryDto): Promise<Category> {
-    const category = await this.categoryRepo.findById(id);
-    if (!category)
-      throw new NotFoundException(`Category with id ${id} not found`);
+    await this.validation_category_name(id, dto);
+    const category = await this.validation_category(id, dto);
+    return this.categoryRepo.save(category);
+  }
 
-    const existingCategory = await this.categoryRepo.findByName(dto.name);
-    if (existingCategory && existingCategory.value.id !== id)
-      throw new BadRequestException('Category already exists');
+  async validation_category_name(id: number, dto: UpdateCategoryDto) {
+    await this.validateUniqueField.validateUniqueField(async () => {
+      const variant = await this.usecaseFindName.execute(dto.name);
+      return variant?.value.id === id ? undefined : variant;
+    }, 'Category already exists');
+  }
 
-    if (dto.parentId) {
-      const parent = await this.categoryRepo.findById(dto.parentId);
-      if (!parent) throw new BadRequestException('Parent category not found');
+  async validation_category(
+    id: number,
+    dto: UpdateCategoryDto,
+  ): Promise<Category> {
+    const category = await this.usecaseFindOne.execute(id);
+
+    if (dto.parentId && dto.parentId !== category.value.parent?.value.id) {
+      const parent = await this.usecaseFindOne.execute(dto.parentId);
       category.update({ parent });
     }
-    if (dto.childrenIds && dto.childrenIds.length > 0) {
+    if (dto.childrenIds && dto.childrenIds.length) {
       const children = await Promise.all(
-        dto.childrenIds.map((id) => this.categoryRepo.findById(id)),
+        dto.childrenIds.map((id) =>
+          this.usecaseFindOne.execute(id).then((c) => c ?? null),
+        ),
       );
-      if (children.some((c): c is null => c === null))
+      const validChildren = children.filter((c): c is Category => c !== null);
+      if (validChildren.length !== dto.childrenIds.length)
         throw new BadRequestException('Children category not found');
-      category.update({
-        children: children.filter((c): c is Category => c != null),
-      });
+      category.update({ children: validChildren });
     }
-
-    category.update({
-      name: dto.name,
-      description: dto.description,
-    });
-    return this.categoryRepo.save(category);
+    if (dto.name !== undefined) category.value.name = dto.name;
+    if (dto.description !== undefined)
+      category.value.description = dto.description;
+    return category;
   }
 }

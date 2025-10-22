@@ -23,7 +23,6 @@ export class CreateCategoryDto {
   @IsNumber({}, { each: true })
   childrenIds?: number[];
 
-  @IsOptional()
   @IsBoolean()
-  is_active?: boolean;
+  is_active: boolean;
 }

@@ -12,6 +12,8 @@ import { FindOneCategoryUseCase } from './application/queries/findOne-Category.u
 import { FindAllCategoryUseCase } from './application/queries/find-Category.usecase';
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
 import { UpdateActiveCategoryUseCase } from './application/commands/ีactive-Category.usecase';
+import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
+import { FindNameCategoryUseCase } from './application/queries/findName-Category.usecase';
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryOrm])],
   controllers: [CategoryController],
@@ -24,7 +26,10 @@ import { UpdateActiveCategoryUseCase } from './application/commands/ีactive-Ca
     RestoreCategoryUseCase,
     FindOneCategoryUseCase,
     FindAllCategoryUseCase,
-    UpdateActiveCategoryUseCase
+    UpdateActiveCategoryUseCase,
+    FindNameCategoryUseCase,
+    UniqueValidatorService
+    
   ],
   exports: [
     { provide: CATEGORY_REPOSITORY, useClass: CategoryRepositoryImpl },
@@ -35,7 +40,10 @@ import { UpdateActiveCategoryUseCase } from './application/commands/ีactive-Ca
     RestoreCategoryUseCase,
     FindOneCategoryUseCase,
     FindAllCategoryUseCase,
-    UpdateActiveCategoryUseCase
+    UpdateActiveCategoryUseCase,
+    FindNameCategoryUseCase,
+    UniqueValidatorService
+    
   ]
 })
 export class CategoryModule {}

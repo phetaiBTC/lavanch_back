@@ -9,15 +9,13 @@ export class CreateProductVariantDto {
   @IsString()
   sku?: string;
 
-  @IsOptional()
   @IsString()
-  barcode?: string;
+  barcode: string;
 
   @IsNotEmpty()
   @IsNumber()
   productId: number;
 
-  @IsOptional()
   @IsBoolean()
-  is_active?: boolean;
+  is_active: boolean;
 }

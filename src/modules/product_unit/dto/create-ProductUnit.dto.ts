@@ -14,5 +14,5 @@ export class CreateProductUnitDto {
   quantity_per_unit: number;
 
   @IsBoolean()
-  is_base_unit?: boolean;
+  is_base_unit: boolean;
 }

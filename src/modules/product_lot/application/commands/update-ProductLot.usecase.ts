@@ -5,50 +5,28 @@ import {
   PRODUCT_LOT_REPOSITORY,
   type IProductLotRepository,
 } from '../../domain/product_lot.repository';
-import {
-  type IProductVariantRepository,
-  PRODUCT_VARIANT_REPOSITORY,
-} from 'src/modules/product_variant/domain/product_variant.repository';
-import {
-  CURRENCIES_REPOSITORY,
-  type ICurrenciesRepository,
-} from 'src/modules/currencies/domain/currencies.repository';
+import { FindOneProductVariantUseCase } from 'src/modules/product_variant/application/queries/findOne-ProductVariant.usecase';
+import { FindOneCurrenciesUseCase } from 'src/modules/currencies/application/queries/findOne-Currencies.usecase';
 
 @Injectable()
 export class UpdateProductLotUseCase {
   constructor(
     @Inject(PRODUCT_LOT_REPOSITORY)
     private readonly repo: IProductLotRepository,
-    @Inject(PRODUCT_VARIANT_REPOSITORY)
-    private readonly productVariantRepo: IProductVariantRepository,
-    // @Inject(BRANCH_REPOSITORY)
-    // private readonly branchRepo: IBranchRepository,
-    @Inject(CURRENCIES_REPOSITORY)
-    private readonly currencyRepo: ICurrenciesRepository,
+    private readonly findProductVariant: FindOneProductVariantUseCase,
+    private readonly usecaseFindoneCurrency: FindOneCurrenciesUseCase
   ) {}
 
   async execute(id: number, dto: UpdateProductLotDto): Promise<ProductLot> {
     const entity = await this.repo.findById(id);
     if (!entity) throw new BadRequestException('Product Lot not found');
 
+    const { product_variant, currency } = await this.loadrelations(dto);
+
     if (dto.product_variant_id) {
-      const product_variant = await this.productVariantRepo.findById(
-        dto.product_variant_id,
-      );
-      if (!product_variant)
-        throw new BadRequestException('Product Variant not found');
       entity.update({ product_variant });
     }
-
-    // if (dto.branch_id) {
-    //   const branch = await this.branchRepo.findById(dto.branch_id);
-    //   if (!branch) throw new BadRequestException('Branch not found');
-    //   entity.branch = branch;
-    // }
-
     if (dto.cost_currency_id) {
-      const currency = await this.currencyRepo.findById(dto.cost_currency_id);
-      if (!currency) throw new BadRequestException('Currency not found');
       entity.update({ cost_currency: currency });
     }
 
@@ -66,4 +44,10 @@ export class UpdateProductLotUseCase {
 
     return this.repo.save(entity);
   }
+
+    async loadrelations(dto: UpdateProductLotDto) {
+      const product_variant = await this.findProductVariant.execute(dto.product_variant_id);
+      const currency = await this.usecaseFindoneCurrency.execute(dto.cost_currency_id);
+      return { product_variant, currency }
+    }
 }
