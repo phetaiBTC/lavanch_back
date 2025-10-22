@@ -4,16 +4,16 @@ import { ProductVariant } from 'src/modules/product_variant/domain/product_varia
 import { Currencies } from 'src/modules/currencies/domain/currencies.entity';
 
 export class ProductLot extends ShardEntity<ProductLotProps> {
-  product_variant: ProductVariant;
-  lot_number: string;
-  manufacture_date?: Date;
-  expiry_date?: Date;
-//   branch: Branch;
-  quantity: number;
-  cost_price_local: number;
-  cost_currency: Currencies | null;
-  cost_price_original: number;
-  fx_rate: number;
+  private product_variant: ProductVariant;
+  private lot_number: string;
+  private manufacture_date?: Date;
+  private expiry_date?: Date;
+  //   branch: Branch;
+  private quantity: number;
+  private cost_price_local: number;
+  private cost_currency: Currencies | null;
+  private cost_price_original: number;
+  private fx_rate: number;
 
   constructor(props: ProductLotProps) {
     super(props);
@@ -36,7 +36,7 @@ export class ProductLot extends ShardEntity<ProductLotProps> {
       lot_number: this.lot_number,
       manufacture_date: this.manufacture_date,
       expiry_date: this.expiry_date,
-    //   branch: this.branch,
+      //   branch: this.branch,
       quantity: this.quantity,
       cost_price_local: this.cost_price_local,
       cost_currency: this.cost_currency,
@@ -46,5 +46,16 @@ export class ProductLot extends ShardEntity<ProductLotProps> {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
     };
+  }
+
+  update(
+    props: Partial<
+      Omit<ProductLotProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
+    return new ProductLot({
+      ...this.value,
+      ...props,
+    });
   }
 }

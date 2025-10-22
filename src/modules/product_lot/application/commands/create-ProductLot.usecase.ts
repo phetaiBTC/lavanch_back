@@ -55,6 +55,6 @@ export class CreateProductLotUseCase {
       fx_rate: dto.fx_rate,
     });
 
-    return this.repo.create(entity);
+    return this.repo.save(entity);
   }
 }

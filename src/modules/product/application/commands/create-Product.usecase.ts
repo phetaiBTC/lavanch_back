@@ -41,6 +41,6 @@ export class CreateProductUseCase {
       is_active: dto.is_active ?? true,
     });
 
-    return this.productRepo.create(product);
+    return this.productRepo.save(product);
   }
 }

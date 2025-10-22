@@ -17,14 +17,10 @@ export class ActiveProductUseCase {
     @Inject(PRODUCT_REPOSITORY)
     private readonly productRepo: IProductRepository,
   ) {}
-
   async execute(id: number, dto: ActiveDto): Promise<Product> {
     const product = await this.productRepo.findById(id);
     if (!product) throw new BadRequestException('Product not found');
-    const updatedProduct = new Product({
-      ...product,
-      is_active: dto.is_active ?? product.is_active,
-    });
-    return this.productRepo.update(updatedProduct);
+    product.update({ is_active: dto.is_active });
+    return this.productRepo.save(product);
   }
 }
