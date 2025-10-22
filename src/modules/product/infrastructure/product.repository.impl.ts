@@ -80,7 +80,7 @@ import { IProductRepository } from '../domain/product.repository';
 import { Product } from '../domain/product.entity';
 import { ProductMapper } from './product.mapper';
 import { ProductOrm } from 'src/database/typeorm/product.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
@@ -91,17 +91,17 @@ export class ProductRepositoryImpl
 {
   constructor(
     @InjectRepository(ProductOrm)
-    private readonly productRepo: Repository<ProductOrm>,
+    readonly productRepo: Repository<ProductOrm>,
   ) {
     super(productRepo, ProductMapper, 'product', 'name');
   }
 
   async findAll(query: PaginationDto): Promise<PaginatedResponse<Product>> {
-  return super.findAll(query, [
-    { relation: 'product.category', as: 'category' },
-    { relation: 'category.parent', as: 'parent' },
-    { relation: 'category.children', as: 'children' },
-  ]);
+    return super.findAll(query, [
+      { relation: 'product.category', as: 'category' },
+      { relation: 'category.parent', as: 'parent' },
+      { relation: 'category.children', as: 'children' },
+    ]);
   }
 
   async findName(name: string): Promise<Product | null> {

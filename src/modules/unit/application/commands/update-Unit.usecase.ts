@@ -19,25 +19,17 @@ export class UpdateUnitUseCase {
   ) {}
 
   async execute(id: number, dto: UpdateUnitDto): Promise<Unit> {
-    const existing = await this.unitRepo.findById(id);
-    if (!existing) {
-      throw new NotFoundException('Unit not found');
-    }
+    const [unit, exists] = await Promise.all([
+      this.unitRepo.findById(id),
+      this.unitRepo.findByName(dto.name),
+    ]);
+    if (!unit) throw new NotFoundException('Unit not found');
 
-    if (dto.name && dto.name !== existing.value.name) {
-      const duplicate = await this.unitRepo.findByName(dto.name);
-      if (duplicate) {
-        throw new BadRequestException('Unit name already exists');
-      }
-    }
+    if (dto.name && dto.name !== unit.value.name && exists)
+      throw new BadRequestException('Unit name already exists');
 
-    const updatedUnit = new Unit({
-      ...existing.value,
-      name: dto.name ?? existing.value.name,
-      name_en: dto.name_en ?? existing.value.name_en,
-      abbreviation: dto.abbreviation ?? existing.value.abbreviation,
-    });
+    unit.update(dto);
 
-    return this.unitRepo.update(updatedUnit);
+    return this.unitRepo.save(unit);
   }
 }

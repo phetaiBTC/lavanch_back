@@ -100,7 +100,7 @@
 import { ProductLot } from '../domain/product_lot.entity';
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { ProductLotResponse } from '../interface/product_lot.interface';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 import { ProductVariantMapper } from 'src/modules/product_variant/infrastructure/product_variant.mapper';
 import { CurrenciesMapper } from 'src/modules/currencies/infrastructure/currencies.mapper';
 

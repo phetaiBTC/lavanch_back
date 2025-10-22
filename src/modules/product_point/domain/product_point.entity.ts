@@ -1,4 +1,4 @@
-import { ShardEntity } from 'src/shared/entity/base.entity';
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 import { ProductPointProps } from '../interface/product_point.interface';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
 import { Unit } from 'src/modules/unit/domain/unit.entity';

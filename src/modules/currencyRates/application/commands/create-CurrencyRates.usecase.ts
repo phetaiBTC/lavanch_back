@@ -22,7 +22,7 @@ export class CreateCurrencyRatesUseCase {
 
     if (!from || !to) throw new NotFoundException('Currency not found');
 
-    return this.currencyratesRepo.create(
+    return this.currencyratesRepo.save(
       new CurrencyRates({ ...dto, from_currency_id: from, to_currency_id: to }),
     );
   }

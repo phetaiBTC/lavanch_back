@@ -22,7 +22,7 @@ export class UpdateCurrenciesUseCase {
     }
 
     const updated: Currencies = existing.update(dto);
-    return this.currenciesRepo.update(updated);
+    return this.currenciesRepo.save(updated);
   }
 
   private async ensureUniqueCode(code: string) {

@@ -69,7 +69,7 @@
 import { Category } from '../domain/category.entity';
 import { CategoryResponse } from '../interface/category.interface';
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 
 class CategoryMapperClass extends BaseMapper<Category, CategoryOrm, CategoryResponse> {
   toDomain = (schema: CategoryOrm): Category => {

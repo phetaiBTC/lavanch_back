@@ -75,7 +75,7 @@ import { SoftDeleteProductUseCase } from './application/commands/soft-Product.us
 import { RestoreProductUseCase } from './application/commands/restore-Product.usecase';
 import { ActiveProductUseCase } from './application/commands/active-Product.usecase';
 import { ActiveDto } from 'src/shared/dto/avtive.dto';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('product')
 export class ProductController extends BaseController<

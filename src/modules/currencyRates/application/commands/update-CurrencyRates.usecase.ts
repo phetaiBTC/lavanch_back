@@ -34,6 +34,6 @@ export class UpdateCurrencyRatesUseCase {
       from_currency_id: from,
       to_currency_id: to,
     });
-    return this.currencyratesRepo.update(updated);
+    return this.currencyratesRepo.save(updated);
   }
 }

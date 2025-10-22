@@ -1,5 +1,5 @@
 import { PointNameCode } from "src/shared/enum/point-name-code";
-import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/interface/Base.interface";
+import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/BaseModule/interface/Base.interface";
 
 export interface PointProps extends ShardInterfaceProps { 
   name: string;

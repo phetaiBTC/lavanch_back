@@ -25,7 +25,7 @@ export class VerifyUserUseCase {
       if (user.value.is_verified)
         throw new UnauthorizedException('User already verified');
       user.verify();
-      return await this.userRepo.update(user);
+      return await this.userRepo.save(user);
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Token has expired');

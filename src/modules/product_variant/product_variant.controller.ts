@@ -13,7 +13,7 @@ import { HardDeleteProductVariantUseCase } from './application/commands/hard-Pro
 import { SoftDeleteProductVariantUseCase } from './application/commands/soft-ProductVariant.usecase';
 import { RestoreProductVariantUseCase } from './application/commands/restore-ProductVariant.usecase';
 import { ActiveProductVariantUseCase } from './application/commands/active-ProductVariant.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
 
 @Controller('product_variant')

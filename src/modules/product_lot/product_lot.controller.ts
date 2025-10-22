@@ -93,7 +93,7 @@ import { FindAllProductLotUseCase } from './application/queries/find-ProductLot.
 import { HardDeleteProductLotUseCase } from './application/commands/hard-ProductLot.usecase';
 import { SoftDeleteProductLotUseCase } from './application/commands/soft-ProductLot.usecase';
 import { RestoreProductLotUseCase } from './application/commands/restore-ProductLot.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('product_lot')
 export class ProductLotController extends BaseController<

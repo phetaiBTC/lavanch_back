@@ -57,7 +57,7 @@
 import { Point } from '../domain/point.entity';
 import { PointOrm } from 'src/database/typeorm/point.orm-entity';
 import { PointResponse } from '../interface/point.interface';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 
 class PointMapperClass extends BaseMapper<Point, PointOrm, PointResponse> {
   toDomain = (schema: PointOrm): Point => {

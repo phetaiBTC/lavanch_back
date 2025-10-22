@@ -96,7 +96,7 @@ import { HardDeleteUnitUseCase } from './application/commands/hard-Unit.usecase'
 import { SoftDeleteUnitUseCase } from './application/commands/soft-Unit.usecase';
 import { RestoreUnitUseCase } from './application/commands/restore-Unit.usecase';
 import { ActiveUnitUseCase } from './application/commands/active-Unit.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('unit')
 export class UnitController extends BaseController<

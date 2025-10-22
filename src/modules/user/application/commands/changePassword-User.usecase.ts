@@ -22,6 +22,6 @@ export class ChangePasswordUserUseCase {
     if (!(await user.compare(dto.oldPassword)))
       throw new UnauthorizedException('invalid credentials');
     await user.changePassword(dto.newPassword);
-    return this.userRepo.update(user);
+    return this.userRepo.save(user);
   }
 }

@@ -2,8 +2,8 @@ import { ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
-import { BaseMapper } from '../mappers/base.mapper';
-import { IBaseRepository } from './IBaseRepository';
+import { BaseMapper } from './base.mapper';
+import { IBaseRepository } from '../domain/base.repository';
 
 export abstract class BaseRepository<
   TDomain,
@@ -40,24 +40,27 @@ export abstract class BaseRepository<
     });
   }
 
-  async findById(id: number): Promise<TDomain | null> {
-    const entity = await this.repository.findOne({ where: { id } as any });
+  async findById(id: number, relations?: string[]): Promise<TDomain | null> {
+    const entity = await this.repository.findOne({
+      where: { id } as any,
+      relations,
+      withDeleted: true,
+    });
     return entity ? this.mapper.toDomain(entity) : null;
   }
 
-  async create(domain: TDomain): Promise<TDomain> {
-    const entity = this.repository.create(this.mapper.toSchema(domain) as any);
-    const saved = await this.repository.save(entity);
-    const savedEntity = Array.isArray(saved) ? saved[0] : saved;
-    return this.mapper.toDomain(savedEntity);
+  async save(domain: TDomain): Promise<TDomain> {
+    const entity = this.repository.create(this.mapper.toSchema(domain));
+    await this.repository.save(entity);
+    return this.mapper.toDomain(entity);
   }
 
-  async update(domain: TDomain): Promise<TDomain> {
-    const saved = await this.repository.save(
-      this.mapper.toSchema(domain) as any,
-    );
-    return this.mapper.toDomain(saved);
-  }
+  // async update(domain: TDomain): Promise<TDomain> {
+  //   const saved = await this.repository.save(
+  //     this.mapper.toSchema(domain) as any,
+  //   );
+  //   return this.mapper.toDomain(saved);
+  // }
 
   async hardDelete(id: number): Promise<{ message: string }> {
     await this.repository.delete(id);

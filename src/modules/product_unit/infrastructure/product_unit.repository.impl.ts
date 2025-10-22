@@ -75,7 +75,7 @@ import { IProductUnitRepository } from '../domain/product_unit.repository';
 import { ProductUnit } from '../domain/product_unit.entity';
 import { ProductUnitMapper } from './product_unit.mapper';
 import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 

@@ -70,7 +70,7 @@
 import { ProductUnit } from '../domain/product_unit.entity';
 import { ProductUnitResponse } from '../interface/product_unit.interface';
 import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
-import { BaseMapper } from 'src/shared/mappers/base.mapper';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 import { ProductVariantMapper } from 'src/modules/product_variant/infrastructure/product_variant.mapper';
 import { UnitMapper } from 'src/modules/unit/infrastructure/unit.mapper';
 

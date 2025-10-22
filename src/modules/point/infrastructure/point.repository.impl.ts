@@ -71,7 +71,7 @@ import { PointMapper } from './point.mapper';
 import { IPointRepository } from '../domain/point.repository';
 import { PointResponse } from '../interface/point.interface';
 import { PointNameCode } from 'src/shared/enum/point-name-code';
-import { BaseRepository } from 'src/shared/ฺRepository/BaseRepository';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { Repository } from 'typeorm';
 
 @Injectable()

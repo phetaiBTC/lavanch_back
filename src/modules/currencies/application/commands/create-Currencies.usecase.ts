@@ -13,7 +13,7 @@ export class CreateCurrenciesUseCase {
   ) {}
   async execute(dto: CreateCurrenciesDto): Promise<Currencies> {
     await this.ensureUniqueCode(dto.code);
-    return this.currenciesRepo.create(new Currencies(dto));
+    return this.currenciesRepo.save(new Currencies(dto));
   }
 
   private async ensureUniqueCode(code: string) {

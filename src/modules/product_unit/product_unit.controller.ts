@@ -11,7 +11,7 @@ import { FindAllProductUnitUseCase } from './application/queries/find-ProductUni
 import { HardDeleteProductUnitUseCase } from './application/commands/hard-ProductUnit.usecase';
 import { SoftDeleteProductUnitUseCase } from './application/commands/soft-ProductUnit.usecase';
 import { RestoreProductUnitUseCase } from './application/commands/restore-ProductUnit.usecase';
-import { BaseController } from 'src/shared/Controller/BaseController';
+import { BaseController } from 'src/shared/BaseModule/BaseController';
 import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
 
 @Controller('product_unit')

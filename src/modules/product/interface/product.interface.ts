@@ -1,7 +1,7 @@
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
 import { Category } from 'src/modules/category/domain/category.entity';
 import { CategoryResponse } from 'src/modules/category/interface/category.interface';
-import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/interface/Base.interface";
+import { ShardInterfaceProps, ShardInterfaceResponse } from "src/shared/BaseModule/interface/Base.interface";
 
 export interface ProductProps extends ShardInterfaceProps {
   name: string;

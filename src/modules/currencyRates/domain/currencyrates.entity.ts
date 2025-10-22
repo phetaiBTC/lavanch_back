@@ -1,24 +1,21 @@
 import { Currencies } from 'src/modules/currencies/domain/currencies.entity';
 import { CurrencyRatesProps } from '../interface/currencyrates.interface';
-export class CurrencyRates {
-  private id: number | null;
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
+
+export class CurrencyRates extends ShardEntity<CurrencyRatesProps> {
   private from_currency_id: Currencies;
   private to_currency_id: Currencies;
   private rate: number;
   private rate_date: Date;
-  private createdAt: Date;
-  private updatedAt: Date;
-  private deletedAt: Date | null;
+
   constructor(props: CurrencyRatesProps) {
-    this.id = props.id ?? null;
+    super(props);
     this.from_currency_id = props.from_currency_id;
     this.to_currency_id = props.to_currency_id;
     this.rate = props.rate;
     this.rate_date = props.rate_date;
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
   }
+
   get value() {
     return {
       id: this.id,
@@ -31,7 +28,12 @@ export class CurrencyRates {
       deletedAt: this.deletedAt,
     };
   }
-  update(props: Partial<CurrencyRatesProps>): CurrencyRates {
+
+  update(
+    props: Partial<
+      Omit<CurrencyRatesProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
     return new CurrencyRates({
       ...this.value,
       ...props,

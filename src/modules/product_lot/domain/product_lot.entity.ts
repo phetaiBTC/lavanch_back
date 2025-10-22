@@ -1,4 +1,4 @@
-import { ShardEntity } from 'src/shared/entity/base.entity';
+import { ShardEntity } from 'src/shared/BaseModule/domain/base.entity';
 import { ProductLotProps } from '../interface/product_lot.interface';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
 import { Currencies } from 'src/modules/currencies/domain/currencies.entity';
