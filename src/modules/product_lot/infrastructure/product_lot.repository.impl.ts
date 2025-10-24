@@ -82,7 +82,7 @@ export class ProductLotRepositoryImpl
 {
   constructor(
     @InjectRepository(ProductLotOrm)
-    private readonly productLotRepo: Repository<ProductLotOrm>,
+    protected readonly productLotRepo: Repository<ProductLotOrm>,
   ) {
     super(productLotRepo, ProductLotMapper, 'product_lot', 'name');
   }
