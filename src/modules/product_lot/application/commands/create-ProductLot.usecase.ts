@@ -14,7 +14,7 @@ export class CreateProductLotUseCase {
     @Inject(PRODUCT_LOT_REPOSITORY)
     private readonly repo: IProductLotRepository,
 
-        private readonly findProductVariant: FindOneProductVariantUseCase,
+    private readonly findProductVariant: FindOneProductVariantUseCase,
     private readonly usecaseFindoneCurrency: FindOneCurrenciesUseCase
   ) {}
 
