@@ -3,15 +3,16 @@ import {
   PRODUCT_POINT_REPOSITORY,
   type IProductPointRepository,
 } from '../../domain/product_point.repository';
+import { FindOneProductPointUseCase } from '../queries/findOne-ProductPoint.usecase';
 @Injectable()
 export class SoftDeleteProductPointUseCase {
   constructor(
     @Inject(PRODUCT_POINT_REPOSITORY)
     private readonly product_pointRepo: IProductPointRepository,
+    private readonly usecaseFIndOneProductPoint: FindOneProductPointUseCase,
   ) {}
   async execute(id: number): Promise<{ message: string }> {
-    const product_point = await this.product_pointRepo.findById(id);
-    if (!product_point) throw new NotFoundException('ProductPoint not found');
+    await this.usecaseFIndOneProductPoint.execute(id);
     return this.product_pointRepo.softDelete(id);
   }
 }

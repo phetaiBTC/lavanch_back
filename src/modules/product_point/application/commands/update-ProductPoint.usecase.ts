@@ -11,6 +11,7 @@ import { FindOneUnitUseCase } from 'src/modules/unit/application/queries/findOne
 import { FindNameCodePointUseCase } from 'src/modules/point/application/queries/findNameCode-Point.usecase';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
 import { Unit } from 'src/modules/unit/domain/unit.entity';
+import { FindOneProductPointUseCase } from '../queries/findOne-ProductPoint.usecase';
 
 @Injectable()
 export class UpdateProductPointUseCase {
@@ -21,12 +22,12 @@ export class UpdateProductPointUseCase {
     private readonly usecaseProductVariant: FindOneProductVariantUseCase,
     private readonly usecaseUnit: FindOneUnitUseCase,
     private readonly usecaseFindNameCode: FindNameCodePointUseCase,
+        private readonly usecaseFIndOneProductPoint: FindOneProductPointUseCase,
+
   ) {}
 
   async execute(id: number, dto: UpdateProductPointDto): Promise<ProductPoint> {
-    const existing = await this.repo.findById(id);
-    if (!existing) throw new BadRequestException('ProductPoint not found');
-
+    const existing = await this.usecaseFIndOneProductPoint.execute(id);
     const { product_variant, unit} = await this.loadRelations(dto, existing);
 
     await this.validation(product_variant, unit, id);

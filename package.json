@@ -24,7 +24,8 @@
     "migration:revert": "pnpm run typeorm migration:revert -d ./src/database/data-source.ts",
     "migration:show": "pnpm run typeorm migration:show -d ./src/database/data-source.ts",
     "migration:drop": "pnpm run typeorm migration:drop -d ./src/database/data-source.ts",
-    "seed": "ts-node -r tsconfig-paths/register ./src/database/seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register ./src/database/seed.ts",
+    "make:module": "tsx scripts/make-module.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.911.0",
@@ -51,6 +52,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sharp": "^0.34.4",
+    "tsx": "^4.20.6",
     "typeorm": "^0.3.26"
   },
   "devDependencies": {
