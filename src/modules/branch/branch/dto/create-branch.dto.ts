@@ -28,4 +28,8 @@ export class CreateBranchDto {
   @IsOptional()
   @IsNumber()
   shifts_id?: number;
+
+  // @IsOptional()
+  // @IsBoolean()
+  // is_active?: boolean;
 }

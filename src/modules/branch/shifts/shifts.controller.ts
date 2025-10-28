@@ -21,6 +21,7 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { ShiftsMapper } from './infrastructure/shifts.mapper';
 import { ShiftsResponse } from './interface/shifts.interface';
 import { UpdateShiftsUseCase } from './application/commands/update-shifts.usecase';
+import { Public } from 'src/shared/decorator/auth.decorator';
 
 @Controller('shifts')
 export class ShiftsController {

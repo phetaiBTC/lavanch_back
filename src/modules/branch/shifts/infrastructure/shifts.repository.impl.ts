@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShiftsOrm } from 'src/database/typeorm/shifts.orm-entity';
+import { BranchesOrm } from 'src/database/typeorm/branches.orm-entity';
 import { IShiftsRepository } from '../domain/shifts.repository';
 import { Shifts } from '../domain/shifts.entity';
 import { ShiftsMapper } from './shifts.mapper';
@@ -47,6 +48,19 @@ export class ShiftsRepositoryImpl implements IShiftsRepository {
   }
 
   async hardDelete(id: number): Promise<{ message: string }> {
+   
+    const branchRepo = this.shiftsRepo.manager.getRepository(BranchesOrm);
+    const dependentCount = await branchRepo.count({ where: { shifts_id: id } });
+    if (dependentCount > 0) {
+      await branchRepo
+        .createQueryBuilder()
+        .update(BranchesOrm)
+      
+        .set({ shifts_id: () => 'NULL' })
+        .where('shifts_id = :id', { id })
+        .execute();
+    }
+
     await this.shiftsRepo.delete(id);
     return { message: 'hard delete successfully' };
   }

@@ -21,6 +21,7 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { BranchMapper } from './infrastructure/branch.mapper';
 import { BranchResponse } from './interface/branch.interface';
 import { UpdateBranchUseCase } from './application/commands/update-branch.usecase';
+import { Public } from 'src/shared/decorator/auth.decorator';
 
 @Controller('branches')
 export class BranchController {
@@ -33,7 +34,7 @@ export class BranchController {
     private readonly findOneBranchUseCase: FindOneBranchUseCase,
     private readonly findAllBranchUseCase: FindAllBranchUseCase,
   ) {}
-
+   @Public()
   @Post()
   async create(@Body() dto: CreateBranchDto): Promise<BranchResponse> {
     return BranchMapper.toResponse(await this.createBranchUseCase.execute(dto));

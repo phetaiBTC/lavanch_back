@@ -16,7 +16,7 @@ import { WalletTransaction } from '../../domain/wallet-transaction.entity';
 import { CreateWalletTransactionDto } from '../../dto/create-wallet-transaction.dto';
 import { DataSource } from 'typeorm';
 import type { ITransactionManager } from 'src/database/transaction/transaction.interface';
-import { Inject as NestInject } from '@nestjs/common';
+import { TRANSACTION_MANAGER_SERVICE } from 'src/shared/constants/inject-key';
 
 /**
  * CreateWalletTransactionUseCase
@@ -42,10 +42,10 @@ export class CreateWalletTransactionUseCase {
     private readonly transactionRepo: IWalletTransactionRepository,
     @Inject(BRANCH_REPOSITORY)
     private readonly branchRepo: IBranchRepository,
-    @NestInject(DataSource)
-    private readonly dataSource: DataSource,
-    @Inject('ITransactionManager')
-    private readonly transactionManager: ITransactionManager,
+  @Inject(DataSource)
+  private readonly dataSource: DataSource,
+  @Inject(TRANSACTION_MANAGER_SERVICE)
+  private readonly transactionManager: ITransactionManager,
   ) {}
 
   async execute(dto: CreateWalletTransactionDto): Promise<WalletTransaction> {

@@ -16,6 +16,12 @@ import { FileModule } from './modules/files/file.module';
 import { ImagesModule } from './modules/images/images.module';
 import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
+import { BranchModule } from './modules/branch/branch/branch.module';
+import { ShiftsModule } from './modules/branch/shifts/shifts.module';
+import { ExpenseCategoryModule } from './modules/branch/expense_categories/expense-category.module';
+import { BranchExpenseModule } from './modules/branch/branch_expenses/branch-expense.module';
+import { WalletAdjustmentModule } from './modules/branch/wallet_adjustments/wallet-adjustment.module';
+import { WalletTransactionModule } from './modules/branch/wallet_transactions/wallet-transaction.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -47,7 +53,13 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
     FileModule,
     ImagesModule,
     CurrencyRatesModule,
-    CurrenciesModule
+    CurrenciesModule,
+    BranchModule,
+    ShiftsModule,
+    ExpenseCategoryModule,
+    BranchExpenseModule,
+    WalletAdjustmentModule,
+    WalletTransactionModule,
   ],
   controllers: [],
   providers: [
