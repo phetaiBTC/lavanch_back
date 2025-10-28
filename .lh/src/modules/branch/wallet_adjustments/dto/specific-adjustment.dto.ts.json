@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/modules/branch/wallet_adjustments/dto/specific-adjustment.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1761666027096,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1761673120991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,12 +12,8 @@\n \r\n   @IsOptional()\r\n   @IsString()\r\n   description?: string;\r\n-\r\n-  @IsNotEmpty()\r\n-  @IsNumber()\r\n-  created_by: number;\r\n }\r\n \r\n export class CreateWithdrawAdjustmentDto {\r\n   @IsNotEmpty()\r\n@@ -31,12 +27,8 @@\n \r\n   @IsOptional()\r\n   @IsString()\r\n   description?: string;\r\n-\r\n-  @IsNotEmpty()\r\n-  @IsNumber()\r\n-  created_by: number;\r\n }\r\n \r\n export class CreateFoundAdjustmentDto {\r\n   @IsNotEmpty()\r\n@@ -50,12 +42,8 @@\n \r\n   @IsOptional()\r\n   @IsString()\r\n   description?: string;\r\n-\r\n-  @IsNotEmpty()\r\n-  @IsNumber()\r\n-  created_by: number;\r\n }\r\n \r\n export class CreateLostAdjustmentDto {\r\n   @IsNotEmpty()\r\n@@ -69,9 +57,5 @@\n \r\n   @IsOptional()\r\n   @IsString()\r\n   description?: string;\r\n-\r\n-  @IsNotEmpty()\r\n-  @IsNumber()\r\n-  created_by: number;\r\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1761666027096,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsNumber, IsString, IsOptional, Min } from 'class-validator';\r\n\r\nexport class CreateDepositAdjustmentDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0.01)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  created_by: number;\r\n}\r\n\r\nexport class CreateWithdrawAdjustmentDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0.01)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  created_by: number;\r\n}\r\n\r\nexport class CreateFoundAdjustmentDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0.01)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  created_by: number;\r\n}\r\n\r\nexport class CreateLostAdjustmentDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0.01)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  created_by: number;\r\n}"
+        }
+    ]
+}

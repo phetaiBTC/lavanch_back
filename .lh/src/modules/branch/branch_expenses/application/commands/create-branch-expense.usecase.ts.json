@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/branch/branch_expenses/application/commands/create-branch-expense.usecase.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1761673129121,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1761673129121,
+            "name": "Commit-0",
+            "content": "import { Injectable, Inject } from '@nestjs/common';\r\nimport {\r\n  BRANCH_EXPENSE_REPOSITORY,\r\n  type IBranchExpenseRepository,\r\n} from '../../domain/branch-expense.repository';\r\nimport { BranchExpense } from '../../domain/branch-expense.entity';\r\nimport { CreateBranchExpenseDto } from '../../dto/create-branch-expense.dto';\r\n\r\n@Injectable()\r\nexport class CreateBranchExpenseUseCase {\r\n  constructor(\r\n    @Inject(BRANCH_EXPENSE_REPOSITORY)\r\n    private readonly expenseRepo: IBranchExpenseRepository,\r\n  ) {}\r\n\r\n  /**\r\n   * Create a new branch expense with PENDING status\r\n   * The expense will be created but won't affect wallet balance until approved\r\n   */\r\n  async execute(dto: CreateBranchExpenseDto, createdBy: number): Promise<BranchExpense> {\r\n    // Generate unique expense number\r\n    const expenseNo = await this.expenseRepo.generateExpenseNo();\r\n\r\n    // Create expense with PENDING status\r\n    const expense = new BranchExpense({\r\n      ...dto,\r\n      expense_no: expenseNo,\r\n      expense_date: new Date(dto.expense_date),\r\n      status: 'PENDING',\r\n      created_by: createdBy,\r\n    });\r\n\r\n    return this.expenseRepo.create(expense);\r\n  }\r\n}\r\n"
+        }
+    ]
+}
