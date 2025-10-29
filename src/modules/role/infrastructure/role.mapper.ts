@@ -1,25 +1,20 @@
-import { RoleOrm } from 'src/database/typeorm/role.orm-entity';
-import { formatDate } from 'src/shared/utils/dayjs.util';
-import {
-  IPagination,
-  PaginatedResponse,
-} from 'src/shared/interface/pagination.interface';
 import { Role } from '../domain/role.entity';
+import { RoleOrm } from 'src/database/typeorm/role.orm-entity';
 import { RoleResponse } from '../interface/role.interface';
 import { PermissionMapper } from 'src/modules/permission/infrastructure/permission.mapper';
-export const RoleMapper = {
-  toDomain(schema: RoleOrm): Role {
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
+class RoleMapperClass extends BaseMapper<Role, RoleOrm, RoleResponse> {
+  toDomain = (schema: RoleOrm): Role => {
     return new Role({
       id: schema.id,
       code: schema.code,
       permissions: schema.permissions.map((permission) =>
         PermissionMapper.toDomain(permission),
       ),
-      createdAt: schema.createdAt,
-      updatedAt: schema.updatedAt,
-      deletedAt: schema.deletedAt,
+      ...this.getTimestampsFromSchema(schema),
     });
-  },
+  };
+
   toSchema(domain: Role): RoleOrm {
     const schema = new RoleOrm();
     if (domain.value.id != null) schema.id = domain.value.id;
@@ -28,7 +23,8 @@ export const RoleMapper = {
       PermissionMapper.toSchema(permission),
     );
     return schema;
-  },
+  }
+
   toResponse(domain: Role): RoleResponse {
     return {
       id: domain.value.id!,
@@ -36,20 +32,9 @@ export const RoleMapper = {
       permissions: domain.value.permissions.map((permission) =>
         PermissionMapper.toResponse(permission),
       ),
-      createdAt: formatDate(domain.value.createdAt),
-      updatedAt: formatDate(domain.value.updatedAt),
-      deletedAt: domain.value.deletedAt
-        ? formatDate(domain.value.deletedAt)
-        : null,
+      ...this.getFormattedTimestamps(domain),
     };
-  },
-  toResponseList(domain: {
-    data: Role[];
-    pagination: IPagination;
-  }): PaginatedResponse<RoleResponse> {
-    return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
-      pagination: domain.pagination,
-    };
-  },
-};
+  }
+}
+
+export const RoleMapper = new RoleMapperClass();

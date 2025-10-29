@@ -1,0 +1,96 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T00:00:00.000Z",
+  "__export_source": "chatgpt-gpt5",
+  "resources": [
+    {
+      "_id": "wrk_product",
+      "parentId": null,
+      "_type": "workspace",
+      "name": "Product API",
+      "scope": "collection"
+    },
+    {
+      "_id": "fld_product",
+      "_type": "request_group",
+      "parentId": "wrk_product",
+      "name": "Product"
+    },
+    {
+      "_id": "req_create_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Create Product",
+      "method": "POST",
+      "url": "http://localhost:3000/product",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Laptop X1\",\n  \"brand\": \"TechBrand\",\n  \"categoryId\": 1,\n  \"description\": \"Powerful business laptop\",\n  \"barcode\": \"9876543210000\",\n  \"is_active\": true\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_get_all_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Get All Products",
+      "method": "GET",
+      "url": "http://localhost:3000/product?page=1&limit=10",
+      "headers": []
+    },
+    {
+      "_id": "req_get_one_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Get One Product",
+      "method": "GET",
+      "url": "http://localhost:3000/product/1",
+      "headers": []
+    },
+    {
+      "_id": "req_update_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Update Product",
+      "method": "PATCH",
+      "url": "http://localhost:3000/product/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Laptop X1 Pro\",\n  \"brand\": \"TechBrand\",\n  \"description\": \"Updated business laptop\",\n  \"is_active\": false\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_soft_delete_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Soft Delete Product",
+      "method": "DELETE",
+      "url": "http://localhost:3000/product/soft/1",
+      "headers": []
+    },
+    {
+      "_id": "req_hard_delete_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Hard Delete Product",
+      "method": "DELETE",
+      "url": "http://localhost:3000/product/hard/1",
+      "headers": []
+    },
+    {
+      "_id": "req_restore_product",
+      "parentId": "fld_product",
+      "_type": "request",
+      "name": "Restore Product",
+      "method": "PATCH",
+      "url": "http://localhost:3000/product/restore/1",
+      "headers": []
+    }
+  ]
+}

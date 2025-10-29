@@ -1,0 +1,98 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T03:45:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2025.3.1",
+  "resources": [
+    {
+      "_id": "wrk_product_lot_api",
+      "_type": "workspace",
+      "name": "Product Lot API",
+      "description": "Workspace for ProductLotController API",
+      "scope": "collection"
+    },
+    {
+      "_id": "req_create_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Create Product Lot",
+      "url": "http://localhost:3000/product_lot",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"product_variant_id\": 1,\n  \"lot_number\": \"LOT123\",\n  \"manufacture_date\": \"2025-10-01\",\n  \"expiry_date\": \"2026-10-01\",\n  \"branch_id\": 1,\n  \"quantity\": 100,\n  \"cost_price_local\": 500,\n  \"cost_currency_id\": 1,\n  \"cost_price_original\": 450,\n  \"fx_rate\": 1.11\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_all_product_lots",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Get All Product Lots",
+      "url": "http://localhost:3000/product_lot",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_get_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Get Product Lot by ID",
+      "url": "http://localhost:3000/product_lot/1",
+      "method": "GET",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_update_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Update Product Lot",
+      "url": "http://localhost:3000/product_lot/1",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"quantity\": 200,\n  \"cost_price_local\": 550\n}"
+      },
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_soft_delete_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Soft Delete Product Lot",
+      "url": "http://localhost:3000/product_lot/soft/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_hard_delete_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Hard Delete Product Lot",
+      "url": "http://localhost:3000/product_lot/hard/1",
+      "method": "DELETE",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    },
+    {
+      "_id": "req_restore_product_lot",
+      "_type": "request",
+      "parentId": "wrk_product_lot_api",
+      "name": "Restore Product Lot",
+      "url": "http://localhost:3000/product_lot/restore/1",
+      "method": "PATCH",
+      "body": {},
+      "headers": [],
+      "authentication": {}
+    }
+  ]
+}

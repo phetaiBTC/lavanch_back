@@ -15,15 +15,12 @@ export class CreateCurrencyRatesUseCase {
   ) {}
 
   async execute(dto: CreateCurrencyRatesDto): Promise<CurrencyRates> {
-    const [from, to] = await Promise.all([
+    const [from_currency_id, to_currency_id] = await Promise.all([
       this.findOneCurrencyUseCase.execute(dto.from_currency_id),
       this.findOneCurrencyUseCase.execute(dto.to_currency_id),
     ]);
-
-    if (!from || !to) throw new NotFoundException('Currency not found');
-
-    return this.currencyratesRepo.create(
-      new CurrencyRates({ ...dto, from_currency_id: from, to_currency_id: to }),
+    return this.currencyratesRepo.save(
+      new CurrencyRates({ ...dto, from_currency_id, to_currency_id }),
     );
   }
 }

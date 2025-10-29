@@ -14,6 +14,13 @@ import { RoleModule } from './modules/role/role.module';
 import { AddressModule } from './modules/address/address.module';
 import { FileModule } from './modules/files/file.module';
 import { ImagesModule } from './modules/images/images.module';
+import { CategoryModule } from './modules/category/category.module';
+import { PointModule } from './modules/point/point.module';
+import { UnitModule } from './modules/unit/unit.module';
+import { ProductModule } from './modules/product/product.module';
+import { ProductUnitModule } from './modules/product_unit/product_unit.module';
+import { ProductVariantModule } from './modules/product_variant/product_variant.module';
+import { ProductPointModule } from './modules/product_point/product_point.module';
 import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { BranchModule } from './modules/branch/branch/branch.module';
@@ -22,6 +29,8 @@ import { ExpenseCategoryModule } from './modules/branch/expense_categories/expen
 import { BranchExpenseModule } from './modules/branch/branch_expenses/branch-expense.module';
 import { WalletAdjustmentModule } from './modules/branch/wallet_adjustments/wallet-adjustment.module';
 import { WalletTransactionModule } from './modules/branch/wallet_transactions/wallet-transaction.module';
+import { ProductLotModule } from './modules/product_lot/product_lot.module';
+import { UniqueValidatorService } from './shared/utils/pass.notfound.util';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -52,6 +61,13 @@ import { WalletTransactionModule } from './modules/branch/wallet_transactions/wa
     AddressModule,
     FileModule,
     ImagesModule,
+    CategoryModule,
+    PointModule,
+    UnitModule,
+    ProductModule,
+    ProductUnitModule,
+    ProductVariantModule,
+    ProductPointModule,
     CurrencyRatesModule,
     CurrenciesModule,
     BranchModule,
@@ -60,13 +76,14 @@ import { WalletTransactionModule } from './modules/branch/wallet_transactions/wa
     BranchExpenseModule,
     WalletAdjustmentModule,
     WalletTransactionModule,
+    ProductLotModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    }
     // {
     //   provide: APP_GUARD,
     //   useClass: PermissionGuard,

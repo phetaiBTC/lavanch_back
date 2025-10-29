@@ -1,0 +1,40 @@
+
+import { Point } from '../domain/point.entity';
+import { PointOrm } from 'src/database/typeorm/point.orm-entity';
+import { PointResponse } from '../interface/point.interface';
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
+
+class PointMapperClass extends BaseMapper<Point, PointOrm, PointResponse> {
+  toDomain = (schema: PointOrm): Point => {
+    return new Point({
+      id: schema.id,
+      name: schema.name,
+      points_multiplier: schema.points_multiplier,
+      name_code: schema.name_code,
+      ...this.getTimestampsFromSchema(schema),
+    });
+  };
+
+  toSchema = (domain: Point): PointOrm => {
+    const schema = new PointOrm();
+    if (domain.value.id != null) schema.id = domain.value.id;
+    if (domain.value.name != null) schema.name = domain.value.name;
+    if (domain.value.points_multiplier != null)
+      schema.points_multiplier = domain.value.points_multiplier;
+    if (domain.value.name_code != null)
+      schema.name_code = domain.value.name_code;
+    return schema;
+  };
+
+  toResponse = (domain: Point): PointResponse => {
+    return {
+      id: domain.value.id!,
+      name: domain.value.name,
+      points_multiplier: domain.value.points_multiplier,
+      name_code: domain.value.name_code,
+      ...this.getFormattedTimestamps(domain),
+    };
+  };
+}
+
+export const PointMapper = new PointMapperClass();

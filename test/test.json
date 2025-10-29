@@ -1,0 +1,96 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T00:00:00.000Z",
+  "__export_source": "chatgpt-gpt5",
+  "resources": [
+    {
+      "_id": "wrk_product_variant",
+      "parentId": null,
+      "_type": "workspace",
+      "name": "Product Variant API",
+      "scope": "collection"
+    },
+    {
+      "_id": "fld_product_variant",
+      "_type": "request_group",
+      "parentId": "wrk_product_variant",
+      "name": "Product Variant"
+    },
+    {
+      "_id": "req_create_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Create Product Variant",
+      "method": "POST",
+      "url": "http://localhost:3000/product_variant",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Variant A\",\n  \"sku\": \"SKU-001\",\n  \"barcode\": \"1234567890123\",\n  \"productId\": 1,\n  \"is_active\": true\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_get_all_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Get All Product Variants",
+      "method": "GET",
+      "url": "http://localhost:3000/product_variant?page=1&limit=10",
+      "headers": []
+    },
+    {
+      "_id": "req_get_one_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Get One Product Variant",
+      "method": "GET",
+      "url": "http://localhost:3000/product_variant/1",
+      "headers": []
+    },
+    {
+      "_id": "req_update_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Update Product Variant",
+      "method": "PATCH",
+      "url": "http://localhost:3000/product_variant/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Updated Variant A\",\n  \"sku\": \"SKU-001-UPDATED\",\n  \"is_active\": false\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_soft_delete_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Soft Delete Product Variant",
+      "method": "DELETE",
+      "url": "http://localhost:3000/product_variant/soft/1",
+      "headers": []
+    },
+    {
+      "_id": "req_hard_delete_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Hard Delete Product Variant",
+      "method": "DELETE",
+      "url": "http://localhost:3000/product_variant/hard/1",
+      "headers": []
+    },
+    {
+      "_id": "req_restore_product_variant",
+      "parentId": "fld_product_variant",
+      "_type": "request",
+      "name": "Restore Product Variant",
+      "method": "PATCH",
+      "url": "http://localhost:3000/product_variant/restore/1",
+      "headers": []
+    }
+  ]
+}

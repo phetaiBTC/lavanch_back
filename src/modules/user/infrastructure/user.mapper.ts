@@ -1,15 +1,11 @@
 import { User } from '../domain/user.entity';
 import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { UserResponse } from '../interface/user.interface';
-import { formatDate } from 'src/shared/utils/dayjs.util';
-import {
-  IPagination,
-  PaginatedResponse,
-} from 'src/shared/interface/pagination.interface';
 import { PermissionMapper } from 'src/modules/permission/infrastructure/permission.mapper';
 import { RoleMapper } from 'src/modules/role/infrastructure/role.mapper';
-export const UserMapper = {
-  toDomain(schema: UserOrm): User {
+import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
+class UserMapperClass extends BaseMapper<User, UserOrm, UserResponse> {
+  toDomain = (schema: UserOrm): User => {
     return new User({
       id: schema.id,
       username: schema.username,
@@ -20,11 +16,9 @@ export const UserMapper = {
       permission: schema.permissions.map((permission) =>
         PermissionMapper.toDomain(permission),
       ),
-      createdAt: schema.createdAt,
-      updatedAt: schema.updatedAt,
-      deletedAt: schema.deletedAt,
+      ...this.getTimestampsFromSchema(schema),
     });
-  },
+  };
   toSchema(domain: User): UserOrm {
     const schema = new UserOrm();
     if (domain.value.id != null) schema.id = domain.value.id;
@@ -37,7 +31,7 @@ export const UserMapper = {
     );
     schema.is_verified = domain.value.is_verified;
     return schema;
-  },
+  }
   toResponse(domain: User): UserResponse {
     return {
       id: domain.value.id!,
@@ -48,20 +42,9 @@ export const UserMapper = {
       permissions: domain.value.permissions.map((permission) =>
         PermissionMapper.toResponse(permission),
       ),
-      createdAt: formatDate(domain.value.createdAt),
-      updatedAt: formatDate(domain.value.updatedAt),
-      deletedAt: domain.value.deletedAt
-        ? formatDate(domain.value.deletedAt)
-        : null,
+      ...this.getFormattedTimestamps(domain),
     };
-  },
-  toResponseList(domain: {
-    data: User[];
-    pagination: IPagination;
-  }): PaginatedResponse<UserResponse> {
-    return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
-      pagination: domain.pagination,
-    };
-  },
-};
+  }
+}
+
+export const UserMapper = new UserMapperClass();

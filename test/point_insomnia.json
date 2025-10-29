@@ -1,0 +1,96 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-21T00:00:00.000Z",
+  "__export_source": "chatgpt-gpt5",
+  "resources": [
+    {
+      "_id": "wrk_point",
+      "parentId": null,
+      "_type": "workspace",
+      "name": "Point API",
+      "scope": "collection"
+    },
+    {
+      "_id": "fld_point",
+      "_type": "request_group",
+      "parentId": "wrk_point",
+      "name": "Point"
+    },
+    {
+      "_id": "req_create_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Create Point",
+      "method": "POST",
+      "url": "http://localhost:3000/point",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Referral Bonus\",\n  \"points_multiplier\": 1.5,\n  \"name_code\": \"REFERRAL_BONUS\"\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_get_all_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Get All Points",
+      "method": "GET",
+      "url": "http://localhost:3000/point?page=1&limit=10",
+      "headers": []
+    },
+    {
+      "_id": "req_get_one_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Get One Point",
+      "method": "GET",
+      "url": "http://localhost:3000/point/1",
+      "headers": []
+    },
+    {
+      "_id": "req_update_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Update Point",
+      "method": "PATCH",
+      "url": "http://localhost:3000/point/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Updated Referral Bonus\",\n  \"points_multiplier\": 2.0\n}"
+      },
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ]
+    },
+    {
+      "_id": "req_soft_delete_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Soft Delete Point",
+      "method": "DELETE",
+      "url": "http://localhost:3000/point/soft/1",
+      "headers": []
+    },
+    {
+      "_id": "req_hard_delete_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Hard Delete Point",
+      "method": "DELETE",
+      "url": "http://localhost:3000/point/hard/1",
+      "headers": []
+    },
+    {
+      "_id": "req_restore_point",
+      "parentId": "fld_point",
+      "_type": "request",
+      "name": "Restore Point",
+      "method": "PATCH",
+      "url": "http://localhost:3000/point/restore/1",
+      "headers": []
+    }
+  ]
+}
