@@ -23,7 +23,6 @@ import { ProductPointModule } from './modules/product_point/product_point.module
 import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { ProductLotModule } from './modules/product_lot/product_lot.module';
-import { UniqueValidatorService } from './shared/utils/pass.notfound.util';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
