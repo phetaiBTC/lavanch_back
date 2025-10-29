@@ -69,7 +69,7 @@ import { UniqueValidatorService } from './shared/utils/pass.notfound.util';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: PermissionGuard,
