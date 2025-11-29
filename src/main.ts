@@ -18,10 +18,7 @@ async function bootstrap() {
   //   origin: process.env.FRONTEND_URL,
   //   credentials: true,
   // });
-  app.enableCors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  });
+  app.enableCors();
 
   await app.listen(process.env.PORT || 4000);
 }
