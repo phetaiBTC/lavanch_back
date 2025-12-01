@@ -24,14 +24,14 @@ import { FindAllProductPriceUseCase } from './application/queries/find-ProductPr
     FindOneProductPriceUseCase,
     FindAllProductPriceUseCase,
   ],
-    exports: [
-        CreateProductPriceUseCase,
-        UpdateProductPriceUseCase,
-        HardDeleteProductPriceUseCase,
-        SoftDeleteProductPriceUseCase,
-        RestoreProductPriceUseCase,
-        FindOneProductPriceUseCase,
-        FindAllProductPriceUseCase,
-    ],
+  exports: [
+    CreateProductPriceUseCase,
+    UpdateProductPriceUseCase,
+    HardDeleteProductPriceUseCase,
+    SoftDeleteProductPriceUseCase,
+    RestoreProductPriceUseCase,
+    FindOneProductPriceUseCase,
+    FindAllProductPriceUseCase,
+  ],
 })
 export class ProductPriceModule {}

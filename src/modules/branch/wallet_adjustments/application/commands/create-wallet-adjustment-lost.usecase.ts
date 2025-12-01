@@ -1,8 +1,8 @@
-import { 
-  Injectable, 
-  Inject, 
-  NotFoundException, 
-  BadRequestException 
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   WALLET_ADJUSTMENT_REPOSITORY,
@@ -18,7 +18,10 @@ import {
 } from '../../../wallet_transactions/domain/wallet-transaction.repository';
 import { WalletAdjustment } from '../../domain/wallet-adjustment.entity';
 import { WalletTransaction } from '../../../wallet_transactions/domain/wallet-transaction.entity';
-import { CreateWalletAdjustmentDto, AdjustmentTypeEnum } from '../../dto/create-wallet-adjustment.dto';
+import {
+  CreateWalletAdjustmentDto,
+  AdjustmentTypeEnum,
+} from '../../dto/create-wallet-adjustment.dto';
 import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
 import { DataSource } from 'typeorm';
 
@@ -39,7 +42,10 @@ export class CreateWalletAdjustmentLostUseCase {
    * Create a new wallet adjustment with automatic wallet transaction creation
    * This method handles ADD and DEDUCT operations correctly
    */
-  async execute(dto: CreateWalletAdjustmentDto, createdBy: number): Promise<WalletAdjustment> {
+  async execute(
+    dto: CreateWalletAdjustmentDto,
+    createdBy: number,
+  ): Promise<WalletAdjustment> {
     // Validate branch exists
     const branch = await this.branchRepo.findById(dto.branch_id);
     if (!branch) {
@@ -50,15 +56,17 @@ export class CreateWalletAdjustmentLostUseCase {
     const adjustmentNo = await this.adjustmentRepo.generateAdjustmentNo();
 
     // Get current wallet balance
-    const currentBalance = await this.branchRepo.getWalletBalance(dto.branch_id);
+    const currentBalance = await this.branchRepo.getWalletBalance(
+      dto.branch_id,
+    );
 
     // Calculate new balance - LOST always decreases balance
     const newBalance = currentBalance - dto.amount;
-    
+
     // Prevent negative balance for lost operations
     if (newBalance < 0) {
       throw new BadRequestException(
-        `Insufficient balance. Current: ${currentBalance}, Required: ${dto.amount}`
+        `Insufficient balance. Current: ${currentBalance}, Required: ${dto.amount}`,
       );
     }
 
@@ -89,7 +97,8 @@ export class CreateWalletAdjustmentLostUseCase {
       status: 'COMPLETED',
     });
 
-    const savedTransaction = await this.transactionRepo.create(walletTransaction);
+    const savedTransaction =
+      await this.transactionRepo.create(walletTransaction);
 
     // Update branch wallet balance
     await this.branchRepo.updateWalletBalance(dto.branch_id, newBalance);

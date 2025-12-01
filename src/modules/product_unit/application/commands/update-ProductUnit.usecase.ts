@@ -24,15 +24,14 @@ export class UpdateProductUnitUseCase {
   constructor(
     @Inject(PRODUCT_UNIT_REPOSITORY)
     private readonly productUnitRepo: IProductUnitRepository,
-    
+
     private readonly findProductVariant: FindOneProductVariantUseCase,
     private readonly findUnit: FindOneUnitUseCase,
-        private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
-
+    private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
   ) {}
 
   async execute(id: number, dto: UpdateProductUnitDto): Promise<ProductUnit> {
-    const productUnit = await this.usecaseFIndOneProductUnit.execute(id);;
+    const productUnit = await this.usecaseFIndOneProductUnit.execute(id);
     const { productVariant, unit } = await this.loadRelations(dto);
 
     await this.ensureProductUnitDoesNotExist(productVariant, unit, id);
@@ -41,8 +40,6 @@ export class UpdateProductUnitUseCase {
 
     return this.productUnitRepo.save(productUnit);
   }
-
-
 
   private async loadRelations(dto: UpdateProductUnitDto) {
     if (!dto.product_variant_id || !dto.unit_id)

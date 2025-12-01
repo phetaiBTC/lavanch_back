@@ -14,7 +14,6 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 @Entity('Product_unit')
 @Unique(['product_variant', 'unit'])
 export class ProductUnitOrm extends ShardOrm {
-
   @ManyToOne(() => ProductVariantOrm, (variant) => variant.units, {
     nullable: false,
   })

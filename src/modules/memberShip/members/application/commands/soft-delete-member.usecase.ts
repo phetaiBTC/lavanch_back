@@ -1,5 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { MEMBER_REPOSITORY, type IMemberRepository } from '../../domain/member.repository';
+import {
+  MEMBER_REPOSITORY,
+  type IMemberRepository,
+} from '../../domain/member.repository';
 
 @Injectable()
 export class SoftDeleteMemberUseCase {

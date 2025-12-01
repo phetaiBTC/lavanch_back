@@ -16,7 +16,9 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
     private readonly expenseRepo: Repository<BranchExpensesOrm>,
   ) {}
 
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<BranchExpense>> {
+  async findAll(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<BranchExpense>> {
     const qb = this.expenseRepo
       .createQueryBuilder('branch_expenses')
       .withDeleted()
@@ -79,7 +81,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const prefix = `EXP${year}${month}`;
-    
+
     const lastExpense = await this.expenseRepo
       .createQueryBuilder('expense')
       .where('expense.expense_no LIKE :prefix', { prefix: `${prefix}%` })
@@ -96,13 +98,17 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
   }
 
   async create(expense: BranchExpense): Promise<BranchExpense> {
-    const entity = this.expenseRepo.create(BranchExpenseMapper.toSchema(expense));
+    const entity = this.expenseRepo.create(
+      BranchExpenseMapper.toSchema(expense),
+    );
     const saved = await this.expenseRepo.save(entity);
     return BranchExpenseMapper.toDomain(saved);
   }
 
   async update(expense: BranchExpense): Promise<BranchExpense> {
-    const saved = await this.expenseRepo.save(BranchExpenseMapper.toSchema(expense));
+    const saved = await this.expenseRepo.save(
+      BranchExpenseMapper.toSchema(expense),
+    );
     return BranchExpenseMapper.toDomain(saved);
   }
 

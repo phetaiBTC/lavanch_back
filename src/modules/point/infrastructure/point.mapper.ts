@@ -1,4 +1,3 @@
-
 import { Point } from '../domain/point.entity';
 import { PointOrm } from 'src/database/typeorm/point.orm-entity';
 import { PointResponse } from '../interface/point.interface';

@@ -10,13 +10,17 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
 @Injectable()
-export class WalletTransactionRepositoryImpl implements IWalletTransactionRepository {
+export class WalletTransactionRepositoryImpl
+  implements IWalletTransactionRepository
+{
   constructor(
     @InjectRepository(WalletTransactionsOrm)
     private readonly transactionRepo: Repository<WalletTransactionsOrm>,
   ) {}
 
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<WalletTransaction>> {
+  async findAll(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<WalletTransaction>> {
     const qb = this.transactionRepo
       .createQueryBuilder('wallet_transactions')
       .withDeleted()

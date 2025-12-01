@@ -1,4 +1,3 @@
-
 import { Unit } from '../domain/unit.entity';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { UnitResponse } from '../interface/unit.interface';
@@ -41,6 +40,3 @@ class UnitMapperClass extends BaseMapper<Unit, UnitOrm, UnitResponse> {
 }
 
 export const UnitMapper = new UnitMapperClass();
-
-
-

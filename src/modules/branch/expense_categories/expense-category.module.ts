@@ -16,7 +16,10 @@ import { UpdateExpenseCategoryUseCase } from './application/commands/update-expe
   imports: [TypeOrmModule.forFeature([ExpenseCategoriesOrm])],
   controllers: [ExpenseCategoryController],
   providers: [
-    { provide: EXPENSE_CATEGORY_REPOSITORY, useClass: ExpenseCategoryRepositoryImpl },
+    {
+      provide: EXPENSE_CATEGORY_REPOSITORY,
+      useClass: ExpenseCategoryRepositoryImpl,
+    },
     CreateExpenseCategoryUseCase,
     UpdateExpenseCategoryUseCase,
     HardDeleteExpenseCategoryUseCase,

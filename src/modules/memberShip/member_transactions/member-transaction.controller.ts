@@ -20,7 +20,9 @@ export class MemberTransactionController {
     const result = await this.findAllUseCase.execute(query);
     return {
       ...result,
-      data: result.data.map((transaction) => MemberTransactionMapper.toResponse(transaction)),
+      data: result.data.map((transaction) =>
+        MemberTransactionMapper.toResponse(transaction),
+      ),
     };
   }
 
@@ -29,10 +31,15 @@ export class MemberTransactionController {
     @Param('memberId') memberId: string,
     @Query() query: PaginationDto,
   ) {
-    const result = await this.findByMemberUseCase.execute(Number(memberId), query);
+    const result = await this.findByMemberUseCase.execute(
+      Number(memberId),
+      query,
+    );
     return {
       ...result,
-      data: result.data.map((transaction) => MemberTransactionMapper.toResponse(transaction)),
+      data: result.data.map((transaction) =>
+        MemberTransactionMapper.toResponse(transaction),
+      ),
     };
   }
 

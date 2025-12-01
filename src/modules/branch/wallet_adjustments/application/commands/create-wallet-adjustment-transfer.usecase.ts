@@ -1,8 +1,8 @@
-import { 
-  Injectable, 
-  Inject, 
-  NotFoundException, 
-  BadRequestException 
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   WALLET_ADJUSTMENT_REPOSITORY,
@@ -40,7 +40,10 @@ export class CreateWalletAdjustmentTransferUseCase {
    * Create a wallet transfer between two branches
    * This method handles transfer with proper balance validation and atomic transactions
    */
-  async execute(dto: CreateWalletTransferDto, createdBy: number): Promise<WalletAdjustment> {
+  async execute(
+    dto: CreateWalletTransferDto,
+    createdBy: number,
+  ): Promise<WalletAdjustment> {
     // Validate sender and receiver are different branches
     if (dto.branch_id === dto.receiver_branch_id) {
       throw new BadRequestException('Cannot transfer to the same branch');
@@ -53,11 +56,15 @@ export class CreateWalletAdjustmentTransferUseCase {
     ]);
 
     if (!senderBranch) {
-      throw new NotFoundException(`Sender branch with ID ${dto.branch_id} not found`);
+      throw new NotFoundException(
+        `Sender branch with ID ${dto.branch_id} not found`,
+      );
     }
 
     if (!receiverBranch) {
-      throw new NotFoundException(`Receiver branch with ID ${dto.receiver_branch_id} not found`);
+      throw new NotFoundException(
+        `Receiver branch with ID ${dto.receiver_branch_id} not found`,
+      );
     }
 
     // Run everything in a database transaction for atomicity
@@ -78,7 +85,7 @@ export class CreateWalletAdjustmentTransferUseCase {
       // Prevent negative balance for sender
       if (newSenderBalance < 0) {
         throw new BadRequestException(
-          `Insufficient balance in sender branch. Current: ${senderBalance}, Required: ${dto.amount}`
+          `Insufficient balance in sender branch. Current: ${senderBalance}, Required: ${dto.amount}`,
         );
       }
 
@@ -88,7 +95,8 @@ export class CreateWalletAdjustmentTransferUseCase {
         adjustment_type: AdjustmentTypeEnum.DEDUCT,
         amount: dto.amount,
         reason: 'TRANSFER' as any, // Add TRANSFER to AdjustmentReasonEnum if needed
-        description: dto.description || `Transfer to branch ${dto.receiver_branch_id}`,
+        description:
+          dto.description || `Transfer to branch ${dto.receiver_branch_id}`,
         created_by: createdBy,
         adjustment_no: adjustmentNo,
         status: 'APPROVED',
@@ -115,7 +123,9 @@ export class CreateWalletAdjustmentTransferUseCase {
         status: 'COMPLETED',
       });
 
-      const savedTransferOut = await this.transactionRepo.create(transferOutTransaction);
+      const savedTransferOut = await this.transactionRepo.create(
+        transferOutTransaction,
+      );
 
       // Create TRANSFER_IN transaction for receiver branch
       const transferInTransaction = new WalletTransaction({
@@ -141,7 +151,10 @@ export class CreateWalletAdjustmentTransferUseCase {
       // Update both branch wallet balances
       await Promise.all([
         this.branchRepo.updateWalletBalance(dto.branch_id, newSenderBalance),
-        this.branchRepo.updateWalletBalance(dto.receiver_branch_id, newReceiverBalance),
+        this.branchRepo.updateWalletBalance(
+          dto.receiver_branch_id,
+          newReceiverBalance,
+        ),
       ]);
 
       // Link the outgoing transaction to the adjustment

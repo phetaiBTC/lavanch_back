@@ -3,7 +3,9 @@ import { ExpenseCategory } from './expense-category.entity';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { IRemoveRepository } from 'src/shared/interface/removeRepository.interface';
 
-export const EXPENSE_CATEGORY_REPOSITORY = Symbol('EXPENSE_CATEGORY_REPOSITORY');
+export const EXPENSE_CATEGORY_REPOSITORY = Symbol(
+  'EXPENSE_CATEGORY_REPOSITORY',
+);
 
 export interface IExpenseCategoryRepository extends IRemoveRepository {
   findAll(query: PaginationDto): Promise<PaginatedResponse<ExpenseCategory>>;

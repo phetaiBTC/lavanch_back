@@ -12,7 +12,6 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 @Entity({ name: 'tiered_prices' })
 @Index(['product_variant', 'unit', 'min_quantity'])
 export class TieredPriceOrm extends ShardOrm {
-
   @ManyToOne(() => ProductVariantOrm, (variant) => variant.tiered_prices, {
     nullable: false,
     onDelete: 'CASCADE',

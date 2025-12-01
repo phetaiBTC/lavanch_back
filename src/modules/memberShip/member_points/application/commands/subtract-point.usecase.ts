@@ -1,6 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { MEMBER_POINT_REPOSITORY, type IMemberPointRepository } from '../../domain/member-point.repository';
-import { MEMBER_TRANSACTION_REPOSITORY, type IMemberTransactionRepository } from '../../../member_transactions/domain/member-transaction.repository';
+import {
+  MEMBER_POINT_REPOSITORY,
+  type IMemberPointRepository,
+} from '../../domain/member-point.repository';
+import {
+  MEMBER_TRANSACTION_REPOSITORY,
+  type IMemberTransactionRepository,
+} from '../../../member_transactions/domain/member-transaction.repository';
 import { MemberPoint } from '../../domain/member-point.entity';
 import { MemberTransaction } from '../../../member_transactions/domain/member-transaction.entity';
 import { SubtractPointDto } from '../../dto/subtract-point.dto';
@@ -10,12 +16,12 @@ import type { ITransactionManager } from 'src/database/transaction/transaction.i
 
 /**
  * SubtractPointUseCase - Atomically subtracts points and logs transaction history
- * 
+ *
  * Business Flow:
  * 1. Subtract points from member_points table (validates sufficient balance)
  * 2. Log transaction in member_transactions table
  * 3. Both operations wrapped in DB transaction for atomicity
- * 
+ *
  * This ensures: every point redemption MUST have a matching history record
  */
 @Injectable()

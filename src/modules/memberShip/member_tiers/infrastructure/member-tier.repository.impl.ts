@@ -42,7 +42,9 @@ export class MemberTierRepositoryImpl implements IMemberTierRepository {
   }
 
   async update(memberTier: MemberTier): Promise<MemberTier> {
-    const saved = await this.tierRepo.save(MemberTierMapper.toSchema(memberTier));
+    const saved = await this.tierRepo.save(
+      MemberTierMapper.toSchema(memberTier),
+    );
     return MemberTierMapper.toDomain(saved);
   }
 

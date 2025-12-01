@@ -40,13 +40,22 @@ export class BranchesOrm extends ShardOrm {
   @Column({ type: 'boolean', default: true })
   is_active: boolean;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   wallet_balance: number;
 
   @OneToMany(() => WalletTransactionsOrm, (transaction) => transaction.branch)
   wallet_transactions: WalletTransactionsOrm[];
 
-  @OneToMany(() => WalletTransactionsOrm, (transaction) => transaction.related_branch)
+  @OneToMany(
+    () => WalletTransactionsOrm,
+    (transaction) => transaction.related_branch,
+  )
   related_transactions: WalletTransactionsOrm[];
 
   @OneToMany(() => BranchExpensesOrm, (expense) => expense.branch)

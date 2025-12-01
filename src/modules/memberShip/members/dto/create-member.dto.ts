@@ -1,4 +1,11 @@
-import { IsString, IsEmail, IsOptional, IsEnum, IsDateString, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsEnum,
+  IsDateString,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateMemberDto {
   @IsString()

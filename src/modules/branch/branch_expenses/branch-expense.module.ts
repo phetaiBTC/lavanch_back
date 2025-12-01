@@ -17,7 +17,10 @@ import { WalletTransactionModule } from '../wallet_transactions/wallet-transacti
   ],
   controllers: [BranchExpenseController],
   providers: [
-    { provide: BRANCH_EXPENSE_REPOSITORY, useClass: BranchExpenseRepositoryImpl },
+    {
+      provide: BRANCH_EXPENSE_REPOSITORY,
+      useClass: BranchExpenseRepositoryImpl,
+    },
     CreateBranchExpenseUseCase,
     ApproveExpenseUseCase,
     FindOneBranchExpenseUseCase,

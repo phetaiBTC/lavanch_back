@@ -43,7 +43,7 @@ export class SendEmailUserUseCase {
       'Reset Password',
       'resetPassword',
       {
-        verifyLink: `${this.configService.getOrThrow('FRONTEND_URL')}/reset-password?token=${emailToken}`,
+        verifyLink: `${this.configService.getOrThrow('FRONTEND_URL')}/auth/reset-password?token=${emailToken}`,
       },
     );
     return { message: 'Email sent' };

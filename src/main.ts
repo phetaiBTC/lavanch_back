@@ -13,7 +13,13 @@ async function bootstrap() {
       },
     }),
   );
+  // app.setGlobalPrefix('api');
+  // app.enableCors({
+  //   origin: process.env.FRONTEND_URL,
+  //   credentials: true,
+  // });
   app.enableCors();
+
   await app.listen(process.env.PORT || 4000);
 }
 bootstrap();

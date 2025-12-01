@@ -35,7 +35,9 @@ export class ExpenseCategoryController {
   ) {}
 
   @Post()
-  async create(@Body() dto: CreateExpenseCategoryDto): Promise<ExpenseCategoryResponse> {
+  async create(
+    @Body() dto: CreateExpenseCategoryDto,
+  ): Promise<ExpenseCategoryResponse> {
     return ExpenseCategoryMapper.toResponse(
       await this.createExpenseCategoryUseCase.execute(dto),
     );

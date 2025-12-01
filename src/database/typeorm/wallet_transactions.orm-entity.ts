@@ -1,4 +1,10 @@
-import { Entity, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { BranchesOrm } from './branches.orm-entity';
 import { UserOrm } from './user.orm-entity';
@@ -25,7 +31,9 @@ export class WalletTransactionsOrm extends ShardOrm {
   @Column({ nullable: false })
   branch_id: number;
 
-  @ManyToOne(() => BranchesOrm, (branch) => branch.wallet_transactions, { nullable: false })
+  @ManyToOne(() => BranchesOrm, (branch) => branch.wallet_transactions, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'branch_id' })
   branch: BranchesOrm;
 
@@ -53,7 +61,9 @@ export class WalletTransactionsOrm extends ShardOrm {
   @Column({ nullable: true })
   related_branch_id: number;
 
-  @ManyToOne(() => BranchesOrm, (branch) => branch.related_transactions, { nullable: true })
+  @ManyToOne(() => BranchesOrm, (branch) => branch.related_transactions, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'related_branch_id' })
   related_branch: BranchesOrm;
 
@@ -80,7 +90,11 @@ export class WalletTransactionsOrm extends ShardOrm {
   @JoinColumn({ name: 'approved_by' })
   approver: UserOrm;
 
-  @Column({ type: 'enum', enum: TransactionStatus, default: TransactionStatus.COMPLETED })
+  @Column({
+    type: 'enum',
+    enum: TransactionStatus,
+    default: TransactionStatus.COMPLETED,
+  })
   status: TransactionStatus;
 
   @CreateDateColumn()

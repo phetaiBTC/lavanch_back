@@ -1,4 +1,4 @@
 export enum PointNameCode {
-    PRODUCT ="product",
-    CUSTOMER = "customer"
+  PRODUCT = 'product',
+  CUSTOMER = 'customer',
 }

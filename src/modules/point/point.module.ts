@@ -24,7 +24,7 @@ import { FindNameCodePointUseCase } from './application/queries/findNameCode-Poi
     RestorePointUseCase,
     FindOnePointUseCase,
     FindAllPointUseCase,
-    FindNameCodePointUseCase
+    FindNameCodePointUseCase,
   ],
   exports: [
     { provide: POINT_REPOSITORY, useClass: PointRepositoryImpl },
@@ -35,7 +35,7 @@ import { FindNameCodePointUseCase } from './application/queries/findNameCode-Poi
     RestorePointUseCase,
     FindOnePointUseCase,
     FindAllPointUseCase,
-    FindNameCodePointUseCase
+    FindNameCodePointUseCase,
   ],
 })
 export class PointModule {}

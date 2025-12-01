@@ -39,7 +39,7 @@ import { FindNameProductVariantUseCase } from './application/queries/find-namePr
     ActiveProductVariantUseCase,
     UniqueValidatorService,
     FindBarcodeProductVariantUseCase,
-    FindNameProductVariantUseCase
+    FindNameProductVariantUseCase,
   ],
   exports: [
     {

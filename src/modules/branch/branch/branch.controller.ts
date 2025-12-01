@@ -34,26 +34,34 @@ export class BranchController {
     private readonly findOneBranchUseCase: FindOneBranchUseCase,
     private readonly findAllBranchUseCase: FindAllBranchUseCase,
   ) {}
-   @Public()
+  @Public()
   @Post()
   async create(@Body() dto: CreateBranchDto): Promise<BranchResponse> {
-    return BranchMapper.toResponse(await this.createBranchUseCase.execute(dto));
+    const branch = await this.createBranchUseCase.execute(dto);
+    // Reload with relations to get village data
+    const branchWithRelations = await this.findOneBranchUseCase.execute(
+      branch.value.id!,
+    );
+    return BranchMapper.toResponse(
+      branchWithRelations,
+      (branchWithRelations as any)._orm,
+    );
   }
 
   @Get()
   async findAll(
     @Query() query: PaginationDto,
   ): Promise<PaginatedResponse<BranchResponse>> {
-    return BranchMapper.toResponseList(
-      await this.findAllBranchUseCase.execute(query),
-    );
+    const result = await this.findAllBranchUseCase.execute(query);
+    const response = BranchMapper.toResponseList(result);
+    console.log('Branch findAll first item:', JSON.stringify(response.data[0], null, 2));
+    return response;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<BranchResponse> {
-    return BranchMapper.toResponse(
-      await this.findOneBranchUseCase.execute(id),
-    );
+    const branch = await this.findOneBranchUseCase.execute(id);
+    return BranchMapper.toResponse(branch, (branch as any)._orm);
   }
 
   @Patch(':id')
@@ -61,9 +69,10 @@ export class BranchController {
     @Param('id') id: number,
     @Body() dto: UpdateBranchDto,
   ): Promise<BranchResponse> {
-    return BranchMapper.toResponse(
-      await this.updateBranchUseCase.execute(id, dto),
-    );
+    const branch = await this.updateBranchUseCase.execute(id, dto);
+    // Reload with relations to get village data
+    const branchWithRelations = await this.findOneBranchUseCase.execute(id);
+    return BranchMapper.toResponse(branchWithRelations, (branchWithRelations as any)._orm);
   }
 
   @Delete('soft/:id')

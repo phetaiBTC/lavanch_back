@@ -20,14 +20,18 @@ export class BranchExpensesOrm extends ShardOrm {
   @Column({ nullable: false })
   branch_id: number;
 
-  @ManyToOne(() => BranchesOrm, (branch) => branch.expenses, { nullable: false })
+  @ManyToOne(() => BranchesOrm, (branch) => branch.expenses, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'branch_id' })
   branch: BranchesOrm;
 
   @Column({ nullable: false })
   expense_category_id: number;
 
-  @ManyToOne(() => ExpenseCategoriesOrm, (category) => category.expenses, { nullable: false })
+  @ManyToOne(() => ExpenseCategoriesOrm, (category) => category.expenses, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'expense_category_id' })
   expense_category: ExpenseCategoriesOrm;
 

@@ -65,7 +65,9 @@ export class MemberTransactionMapper {
   ): PaginatedResponse<MemberTransactionResponse> {
     return {
       ...paginated,
-      data: paginated.data.map((item) => MemberTransactionMapper.toResponse(item)),
+      data: paginated.data.map((item) =>
+        MemberTransactionMapper.toResponse(item),
+      ),
     };
   }
 }

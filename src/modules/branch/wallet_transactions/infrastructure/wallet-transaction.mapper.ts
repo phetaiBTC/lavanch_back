@@ -41,11 +41,16 @@ export const WalletTransactionMapper = {
     schema.amount = domain.value.amount;
     schema.balance_before = domain.value.balance_before;
     schema.balance_after = domain.value.balance_after;
-    if (domain.value.reference_type) schema.reference_type = domain.value.reference_type;
-    if (domain.value.reference_id) schema.reference_id = domain.value.reference_id;
-    if (domain.value.reference_no) schema.reference_no = domain.value.reference_no;
-    if (domain.value.related_branch_id) schema.related_branch_id = domain.value.related_branch_id;
-    if (domain.value.related_transaction_id) schema.related_transaction_id = domain.value.related_transaction_id;
+    if (domain.value.reference_type)
+      schema.reference_type = domain.value.reference_type;
+    if (domain.value.reference_id)
+      schema.reference_id = domain.value.reference_id;
+    if (domain.value.reference_no)
+      schema.reference_no = domain.value.reference_no;
+    if (domain.value.related_branch_id)
+      schema.related_branch_id = domain.value.related_branch_id;
+    if (domain.value.related_transaction_id)
+      schema.related_transaction_id = domain.value.related_transaction_id;
     if (domain.value.description) schema.description = domain.value.description;
     if (domain.value.notes) schema.notes = domain.value.notes;
     schema.created_by = domain.value.created_by;

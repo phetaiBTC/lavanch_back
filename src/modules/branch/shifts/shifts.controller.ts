@@ -51,9 +51,7 @@ export class ShiftsController {
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<ShiftsResponse> {
-    return ShiftsMapper.toResponse(
-      await this.findOneShiftsUseCase.execute(id),
-    );
+    return ShiftsMapper.toResponse(await this.findOneShiftsUseCase.execute(id));
   }
 
   @Patch(':id')

@@ -46,7 +46,6 @@ export class WalletAdjustmentController {
     private readonly findAllWalletAdjustmentUseCase: FindAllWalletAdjustmentUseCase,
   ) {}
 
-
   /**
    * Create a deposit adjustment (Immediately adds money to wallet)
    */
@@ -79,7 +78,10 @@ export class WalletAdjustmentController {
       reason: 'WITHDRAW' as any,
     };
     return WalletAdjustmentMapper.toResponse(
-      await this.createWithdrawAdjustmentUseCase.execute(adjustmentDto, user.id),
+      await this.createWithdrawAdjustmentUseCase.execute(
+        adjustmentDto,
+        user.id,
+      ),
     );
   }
 

@@ -1,7 +1,4 @@
-import {
-  ExecutionContext,
-  Injectable
-} from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from 'src/shared/decorator/auth.decorator';
@@ -17,10 +14,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const clazz = context.getClass();
     const handlerName = handler?.name ?? '<unknown_handler>';
     const className = clazz?.name ?? '<unknown_class>';
-    const isPublic = this.reflector.getAllAndOverride<boolean>(
-      IS_PUBLIC_KEY,
-      [handler, clazz],
-    );
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      handler,
+      clazz,
+    ]);
 
     // Debug logging to help diagnose unexpected 401s for @Public routes
     // These logs are temporary — they will print which handler/class and the

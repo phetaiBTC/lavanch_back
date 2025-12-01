@@ -19,6 +19,30 @@ export interface BranchResponse {
   name: string;
   address: string | null;
   village_id: number | null;
+  village?: {
+    id: number;
+    name: string;
+    name_en: string;
+    district: {
+      id: number;
+      name: string;
+      name_en: string;
+      province: {
+        id: number;
+        name: string;
+        name_en: string;
+      };
+    };
+  };
+  /**
+   * Flattened address helper object for easier frontend rendering
+   * Contains raw name (english if available, else default) for village, district, province
+   */
+  full_address?: {
+    village_name: string | null;
+    district_name: string | null;
+    province_name: string | null;
+  };
   phone: string | null;
   facebook: string | null;
   tiktok: string | null;

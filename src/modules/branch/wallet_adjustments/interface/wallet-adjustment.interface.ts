@@ -20,6 +20,10 @@ export interface WalletAdjustmentResponse {
   id: number;
   adjustment_no: string;
   branch_id: number;
+  branch?: {
+    id: number;
+    name: string;
+  };
   adjustment_type: string;
   amount: number;
   reason: string;

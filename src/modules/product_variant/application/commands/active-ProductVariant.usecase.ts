@@ -1,4 +1,4 @@
-import {Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   PRODUCT_VARIANT_REPOSITORY,
   type IProductVariantRepository,
@@ -18,7 +18,7 @@ export class ActiveProductVariantUseCase {
 
   async execute(id: number, dto: ActiveDto): Promise<ProductVariant> {
     const existingVariant = await this.usecaseFindProductVariant.execute(id);
-    if (dto.is_active) existingVariant.activate(dto.is_active); ;
+    if (dto.is_active) existingVariant.activate(dto.is_active);
     return this.productVariantRepo.save(existingVariant);
   }
 }

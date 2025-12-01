@@ -1,5 +1,8 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { MEMBER_REPOSITORY, type IMemberRepository } from '../../domain/member.repository';
+import {
+  MEMBER_REPOSITORY,
+  type IMemberRepository,
+} from '../../domain/member.repository';
 import { Member } from '../../domain/member.entity';
 import { UpdateMemberDto } from '../../dto/update-member.dto';
 
@@ -24,7 +27,8 @@ export class UpdateMemberUseCase {
       birthday: dto.birthday ? new Date(dto.birthday) : existing.value.birthday,
       gender: dto.gender ?? existing.value.gender,
       tier_id: dto.tier_id ?? existing.value.tier_id,
-      registered_branch_id: dto.registered_branch_id ?? existing.value.registered_branch_id,
+      registered_branch_id:
+        dto.registered_branch_id ?? existing.value.registered_branch_id,
     });
 
     return await this.memberRepo.update(updated);

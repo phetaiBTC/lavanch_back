@@ -25,6 +25,10 @@ import { FindAllMemberTierUseCase } from './application/queries/find-member-tier
     FindOneMemberTierUseCase,
     FindAllMemberTierUseCase,
   ],
-  exports: [MEMBER_TIER_REPOSITORY, FindOneMemberTierUseCase, FindAllMemberTierUseCase],
+  exports: [
+    MEMBER_TIER_REPOSITORY,
+    FindOneMemberTierUseCase,
+    FindAllMemberTierUseCase,
+  ],
 })
 export class MemberTierModule {}

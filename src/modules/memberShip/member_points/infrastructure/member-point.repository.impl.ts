@@ -47,7 +47,9 @@ export class MemberPointRepositoryImpl implements IMemberPointRepository {
   }
 
   async create(memberPoint: MemberPoint): Promise<MemberPoint> {
-    const entity = this.pointRepo.create(MemberPointMapper.toSchema(memberPoint));
+    const entity = this.pointRepo.create(
+      MemberPointMapper.toSchema(memberPoint),
+    );
     const saved = await this.pointRepo.save(entity);
     return MemberPointMapper.toDomain(saved);
   }

@@ -10,29 +10,60 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
 @Injectable()
-export class WalletAdjustmentRepositoryImpl implements IWalletAdjustmentRepository {
+export class WalletAdjustmentRepositoryImpl
+  implements IWalletAdjustmentRepository
+{
   constructor(
     @InjectRepository(WalletAdjustmentsOrm)
     private readonly adjustmentRepo: Repository<WalletAdjustmentsOrm>,
   ) {}
 
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<WalletAdjustment>> {
+  async findAll(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<WalletAdjustment & { _orm?: WalletAdjustmentsOrm }>> {
     const qb = this.adjustmentRepo
       .createQueryBuilder('wallet_adjustments')
       .withDeleted()
       .leftJoinAndSelect('wallet_adjustments.branch', 'branch')
       .leftJoinAndSelect('wallet_adjustments.creator', 'creator');
 
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'wallet_adjustments.adjustment_no' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: WalletAdjustmentMapper.toDomain,
+    if (query.search) {
+      qb.andWhere(`wallet_adjustments.adjustment_no LIKE :kw`, {
+        kw: `%${query.search}%`,
+      });
+    }
+
+    if (query.is_active === 1) {
+      qb.andWhere(`wallet_adjustments.deletedAt IS NULL`);
+    } else if (query.is_active === 0) {
+      qb.andWhere(`wallet_adjustments.deletedAt IS NOT NULL`);
+    }
+
+    qb.orderBy(`wallet_adjustments.createdAt`, query.sort || 'DESC');
+
+    const skip = ((query.page || 1) - 1) * (query.limit || 10);
+    const [entities, total] = await qb
+      .skip(skip)
+      .take(query.limit || 10)
+      .getManyAndCount();
+
+    // Map to domain with ORM data attached
+    const data = entities.map(entity => {
+      const domain = WalletAdjustmentMapper.toDomain(entity);
+      (domain as any)._orm = entity;
+      return domain as WalletAdjustment & { _orm?: WalletAdjustmentsOrm };
     });
+
+    return {
+      data,
+      pagination: {
+        total,
+        count: entities.length,
+        limit: query.limit || 10,
+        totalPages: Math.ceil(total / (query.limit || 10)) || 1,
+        currentPage: query.page || 1,
+      },
+    };
   }
 
   async findByBranch(
@@ -70,7 +101,7 @@ export class WalletAdjustmentRepositoryImpl implements IWalletAdjustmentReposito
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const prefix = `ADJ${year}${month}`;
-    
+
     const lastAdjustment = await this.adjustmentRepo
       .createQueryBuilder('adjustment')
       .where('adjustment.adjustment_no LIKE :prefix', { prefix: `${prefix}%` })

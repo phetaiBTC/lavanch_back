@@ -19,7 +19,7 @@ import { GetVillageUseCase } from './application/queries/get-Village.usecase';
     },
     GetProvinceUseCase,
     GetDistrictUseCase,
-    GetVillageUseCase
+    GetVillageUseCase,
   ],
 })
 export class AddressModule {}

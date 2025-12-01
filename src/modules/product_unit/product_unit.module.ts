@@ -14,7 +14,11 @@ import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
 import { ProductVariantModule } from '../product_variant/product_variant.module';
 import { UnitModule } from '../unit/unit.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductUnitOrm]), ProductVariantModule, UnitModule],
+  imports: [
+    TypeOrmModule.forFeature([ProductUnitOrm]),
+    ProductVariantModule,
+    UnitModule,
+  ],
   controllers: [ProductUnitController],
   providers: [
     { provide: PRODUCT_UNIT_REPOSITORY, useClass: ProductUnitRepositoryImpl },

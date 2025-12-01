@@ -14,7 +14,9 @@ export class FindAllBranchExpenseUseCase {
     private readonly expenseRepo: IBranchExpenseRepository,
   ) {}
 
-  async execute(query: PaginationDto): Promise<PaginatedResponse<BranchExpense>> {
+  async execute(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<BranchExpense>> {
     return this.expenseRepo.findAll(query);
   }
 }

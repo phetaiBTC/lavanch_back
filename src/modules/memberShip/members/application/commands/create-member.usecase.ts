@@ -1,5 +1,8 @@
 import { Injectable, Inject, BadRequestException } from '@nestjs/common';
-import { MEMBER_REPOSITORY, type IMemberRepository } from '../../domain/member.repository';
+import {
+  MEMBER_REPOSITORY,
+  type IMemberRepository,
+} from '../../domain/member.repository';
 import { Member } from '../../domain/member.entity';
 import { CreateMemberDto } from '../../dto/create-member.dto';
 
@@ -14,7 +17,9 @@ export class CreateMemberUseCase {
     // Check if phone already exists
     const existing = await this.memberRepo.findByPhone(dto.phone);
     if (existing) {
-      throw new BadRequestException(`Phone number ${dto.phone} is already registered`);
+      throw new BadRequestException(
+        `Phone number ${dto.phone} is already registered`,
+      );
     }
 
     // Auto-generate member_no

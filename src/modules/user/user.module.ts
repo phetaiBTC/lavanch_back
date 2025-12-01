@@ -18,7 +18,7 @@ import { MailModule } from '../mail/mail.module';
 import { HardDeleteUserUseCase } from './application/commands/hard-User.usecase';
 import { RestoreUserUseCase } from './application/commands/restore-User.usecase';
 @Module({
-  imports: [TypeOrmModule.forFeature([UserOrm]),MailModule],
+  imports: [TypeOrmModule.forFeature([UserOrm]), MailModule],
   controllers: [UserController],
   providers: [
     {
@@ -38,8 +38,13 @@ import { RestoreUserUseCase } from './application/commands/restore-User.usecase'
     HardDeleteUserUseCase,
     SoftDeleteUserUseCase,
     HardDeleteUserUseCase,
-    RestoreUserUseCase
+    RestoreUserUseCase,
   ],
-  exports: [GetByEmailUserUseCase,GetOneUserUseCase,UpdateUserUseCase],
+  exports: [
+    GetByEmailUserUseCase,
+    GetOneUserUseCase,
+    UpdateUserUseCase,
+    CreateUserUseCase,
+  ],
 })
 export class UserModule {}

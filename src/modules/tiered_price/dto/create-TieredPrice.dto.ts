@@ -1,4 +1,10 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateTieredPriceDto {
   @IsNotEmpty()

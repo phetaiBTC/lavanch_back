@@ -10,14 +10,20 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
 @Injectable()
-export class ExpenseCategoryRepositoryImpl implements IExpenseCategoryRepository {
+export class ExpenseCategoryRepositoryImpl
+  implements IExpenseCategoryRepository
+{
   constructor(
     @InjectRepository(ExpenseCategoriesOrm)
     private readonly categoryRepo: Repository<ExpenseCategoriesOrm>,
   ) {}
 
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<ExpenseCategory>> {
-    const qb = this.categoryRepo.createQueryBuilder('expense_categories').withDeleted();
+  async findAll(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<ExpenseCategory>> {
+    const qb = this.categoryRepo
+      .createQueryBuilder('expense_categories')
+      .withDeleted();
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
@@ -41,13 +47,17 @@ export class ExpenseCategoryRepositoryImpl implements IExpenseCategoryRepository
   }
 
   async create(category: ExpenseCategory): Promise<ExpenseCategory> {
-    const entity = this.categoryRepo.create(ExpenseCategoryMapper.toSchema(category));
+    const entity = this.categoryRepo.create(
+      ExpenseCategoryMapper.toSchema(category),
+    );
     const saved = await this.categoryRepo.save(entity);
     return ExpenseCategoryMapper.toDomain(saved);
   }
 
   async update(category: ExpenseCategory): Promise<ExpenseCategory> {
-    const saved = await this.categoryRepo.save(ExpenseCategoryMapper.toSchema(category));
+    const saved = await this.categoryRepo.save(
+      ExpenseCategoryMapper.toSchema(category),
+    );
     return ExpenseCategoryMapper.toDomain(saved);
   }
 

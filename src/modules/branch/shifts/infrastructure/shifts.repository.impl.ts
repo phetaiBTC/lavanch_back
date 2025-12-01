@@ -48,14 +48,13 @@ export class ShiftsRepositoryImpl implements IShiftsRepository {
   }
 
   async hardDelete(id: number): Promise<{ message: string }> {
-   
     const branchRepo = this.shiftsRepo.manager.getRepository(BranchesOrm);
     const dependentCount = await branchRepo.count({ where: { shifts_id: id } });
     if (dependentCount > 0) {
       await branchRepo
         .createQueryBuilder()
         .update(BranchesOrm)
-      
+
         .set({ shifts_id: () => 'NULL' })
         .where('shifts_id = :id', { id })
         .execute();

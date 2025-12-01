@@ -1,5 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { MEMBER_TRANSACTION_REPOSITORY, type IMemberTransactionRepository } from '../../domain/member-transaction.repository';
+import {
+  MEMBER_TRANSACTION_REPOSITORY,
+  type IMemberTransactionRepository,
+} from '../../domain/member-transaction.repository';
 import { MemberTransaction } from '../../domain/member-transaction.entity';
 
 @Injectable()

@@ -9,7 +9,9 @@ export class MemberPointsOrm extends ShardOrm {
   @Column({ nullable: false })
   member_id: number;
 
-  @ManyToOne(() => MembersOrm, (member) => member.member_points, { nullable: false })
+  @ManyToOne(() => MembersOrm, (member) => member.member_points, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'member_id' })
   member: MembersOrm;
 
@@ -20,6 +22,12 @@ export class MemberPointsOrm extends ShardOrm {
   @JoinColumn({ name: 'branch_id' })
   branch: BranchesOrm;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   points: number;
 }

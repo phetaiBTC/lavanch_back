@@ -13,7 +13,10 @@ export class UpdateExpenseCategoryUseCase {
     private readonly categoryRepo: IExpenseCategoryRepository,
   ) {}
 
-  async execute(id: number, dto: UpdateExpenseCategoryDto): Promise<ExpenseCategory> {
+  async execute(
+    id: number,
+    dto: UpdateExpenseCategoryDto,
+  ): Promise<ExpenseCategory> {
     const category = await this.categoryRepo.findById(id);
     if (!category) throw new NotFoundException('Expense category not found');
 

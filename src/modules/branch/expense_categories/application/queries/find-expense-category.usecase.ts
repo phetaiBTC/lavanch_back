@@ -14,7 +14,9 @@ export class FindAllExpenseCategoryUseCase {
     private readonly categoryRepo: IExpenseCategoryRepository,
   ) {}
 
-  async execute(query: PaginationDto): Promise<PaginatedResponse<ExpenseCategory>> {
+  async execute(
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<ExpenseCategory>> {
     return this.categoryRepo.findAll(query);
   }
 }

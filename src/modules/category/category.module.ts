@@ -28,8 +28,7 @@ import { FindNameCategoryUseCase } from './application/queries/findName-Category
     FindAllCategoryUseCase,
     UpdateActiveCategoryUseCase,
     FindNameCategoryUseCase,
-    UniqueValidatorService
-    
+    UniqueValidatorService,
   ],
   exports: [
     { provide: CATEGORY_REPOSITORY, useClass: CategoryRepositoryImpl },
@@ -42,9 +41,7 @@ import { FindNameCategoryUseCase } from './application/queries/findName-Category
     FindAllCategoryUseCase,
     UpdateActiveCategoryUseCase,
     FindNameCategoryUseCase,
-    UniqueValidatorService
-    
-  ]
+    UniqueValidatorService,
+  ],
 })
 export class CategoryModule {}
-

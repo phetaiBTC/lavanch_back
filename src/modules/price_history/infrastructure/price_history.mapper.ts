@@ -27,7 +27,6 @@ export class PriceHistoryMapperClass extends BaseMapper<
     });
   };
 
-
   toSchema = (domain: PriceHistory): PriceHistoryOrm => {
     const schema = new PriceHistoryOrm();
     const value = domain.value;
@@ -54,7 +53,6 @@ export class PriceHistoryMapperClass extends BaseMapper<
     return schema;
   };
 
-  
   toResponse = (domain: PriceHistory): PriceHistoryResponse => {
     const v = domain.value;
     return {

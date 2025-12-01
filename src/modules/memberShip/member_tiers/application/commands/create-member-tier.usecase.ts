@@ -1,5 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { MEMBER_TIER_REPOSITORY, type IMemberTierRepository } from '../../domain/member-tier.repository';
+import {
+  MEMBER_TIER_REPOSITORY,
+  type IMemberTierRepository,
+} from '../../domain/member-tier.repository';
 import { MemberTier } from '../../domain/member-tier.entity';
 import { CreateMemberTierDto } from '../../dto/create-member-tier.dto';
 

@@ -32,7 +32,13 @@ export class MembersOrm extends ShardOrm {
   @JoinColumn({ name: 'tier_id' })
   tier: MemberTiersOrm;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   total_spending: number;
 
   @Column({ nullable: true })

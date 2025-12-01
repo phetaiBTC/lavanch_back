@@ -41,11 +41,13 @@ export const BranchExpenseMapper = {
     schema.expense_date = domain.value.expense_date;
     if (domain.value.description) schema.description = domain.value.description;
     if (domain.value.notes) schema.notes = domain.value.notes;
-    if (domain.value.receipt_image) schema.receipt_image = domain.value.receipt_image;
+    if (domain.value.receipt_image)
+      schema.receipt_image = domain.value.receipt_image;
     schema.created_by = domain.value.created_by;
     if (domain.value.approved_by) schema.approved_by = domain.value.approved_by;
     schema.status = domain.value.status as any;
-    if (domain.value.wallet_transaction_id) schema.wallet_transaction_id = domain.value.wallet_transaction_id;
+    if (domain.value.wallet_transaction_id)
+      schema.wallet_transaction_id = domain.value.wallet_transaction_id;
     return schema;
   },
 
@@ -67,7 +69,9 @@ export const BranchExpenseMapper = {
       wallet_transaction_id: domain.value.wallet_transaction_id ?? null,
       createdAt: formatDate(domain.value.createdAt),
       updatedAt: formatDate(domain.value.updatedAt),
-      deletedAt: domain.value.deletedAt ? formatDate(domain.value.deletedAt) : null,
+      deletedAt: domain.value.deletedAt
+        ? formatDate(domain.value.deletedAt)
+        : null,
     };
   },
 

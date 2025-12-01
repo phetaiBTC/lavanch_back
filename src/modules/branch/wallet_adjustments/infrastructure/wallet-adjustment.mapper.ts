@@ -40,16 +40,20 @@ export const WalletAdjustmentMapper = {
     schema.created_by = domain.value.created_by;
     if (domain.value.approved_by) schema.approved_by = domain.value.approved_by;
     schema.status = domain.value.status as any;
-    if (domain.value.wallet_transaction_id) schema.wallet_transaction_id = domain.value.wallet_transaction_id;
+    if (domain.value.wallet_transaction_id)
+      schema.wallet_transaction_id = domain.value.wallet_transaction_id;
     schema.adjustment_date = domain.value.adjustment_date;
     return schema;
   },
 
-  toResponse(domain: WalletAdjustment): WalletAdjustmentResponse {
+  toResponse(domain: WalletAdjustment, ormEntity?: WalletAdjustmentsOrm): WalletAdjustmentResponse {
     return {
       id: domain.value.id!,
       adjustment_no: domain.value.adjustment_no,
       branch_id: domain.value.branch_id,
+      branch: ormEntity?.branch
+        ? { id: ormEntity.branch.id, name: ormEntity.branch.name }
+        : undefined,
       adjustment_type: domain.value.adjustment_type,
       amount: domain.value.amount,
       reason: domain.value.reason,
@@ -61,16 +65,18 @@ export const WalletAdjustmentMapper = {
       adjustment_date: formatDate(domain.value.adjustment_date),
       createdAt: formatDate(domain.value.createdAt),
       updatedAt: formatDate(domain.value.updatedAt),
-      deletedAt: domain.value.deletedAt ? formatDate(domain.value.deletedAt) : null,
+      deletedAt: domain.value.deletedAt
+        ? formatDate(domain.value.deletedAt)
+        : null,
     };
   },
 
   toResponseList(domain: {
-    data: WalletAdjustment[];
+    data: (WalletAdjustment & { _orm?: WalletAdjustmentsOrm })[];
     pagination: IPagination;
   }): PaginatedResponse<WalletAdjustmentResponse> {
     return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
+      data: domain.data.map((item) => this.toResponse(item, (item as any)._orm)),
       pagination: domain.pagination,
     };
   },

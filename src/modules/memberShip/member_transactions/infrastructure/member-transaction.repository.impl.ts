@@ -10,7 +10,9 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
 @Injectable()
-export class MemberTransactionRepositoryImpl implements IMemberTransactionRepository {
+export class MemberTransactionRepositoryImpl
+  implements IMemberTransactionRepository
+{
   constructor(
     @InjectRepository(MemberTransactionsOrm)
     private readonly transactionRepo: Repository<MemberTransactionsOrm>,

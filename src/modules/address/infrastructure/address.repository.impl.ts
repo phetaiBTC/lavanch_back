@@ -14,7 +14,6 @@ import { VillageOrm } from 'src/database/typeorm/village.orm-entity';
 
 @Injectable()
 export class AddressRepositoryImpl implements IAddressRepository {
-  
   constructor(
     @InjectRepository(ProvinceOrm)
     private readonly provinceRepository: Repository<ProvinceOrm>,
@@ -40,6 +39,13 @@ export class AddressRepositoryImpl implements IAddressRepository {
   async getVillage(districtId: number): Promise<Village[]> {
     const villages = await this.villageRepository.find({
       where: { district: { id: districtId } },
+      relations: ['district', 'district.province'],
+    });
+    return villages.map((village) => VillageMapper.toDomain(village));
+  }
+
+  async getAllAddresses(): Promise<Village[]> {
+    const villages = await this.villageRepository.find({
       relations: ['district', 'district.province'],
     });
     return villages.map((village) => VillageMapper.toDomain(village));

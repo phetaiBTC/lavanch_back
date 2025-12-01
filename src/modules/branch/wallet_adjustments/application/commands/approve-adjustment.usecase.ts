@@ -19,7 +19,7 @@ import { AdjustmentTypeEnum } from '../../dto/create-wallet-adjustment.dto';
 
 /**
  * ApproveAdjustmentUseCase
- * 
+ *
  * This use case handles the approval or rejection of wallet adjustments.
  * When approved:
  * 1. Create a wallet transaction with type ADJUSTMENT
@@ -68,8 +68,8 @@ export class ApproveAdjustmentUseCase {
         : TransactionTypeEnum.WITHDRAW; // Use WITHDRAW to deduct balance
 
     // Create wallet transaction
-    const walletTransaction =
-      await this.createWalletTransactionUseCase.execute({
+    const walletTransaction = await this.createWalletTransactionUseCase.execute(
+      {
         branch_id: adjustment.value.branch_id,
         transaction_type: transactionType,
         amount: adjustment.value.amount,
@@ -80,7 +80,8 @@ export class ApproveAdjustmentUseCase {
         notes: adjustment.value.description,
         created_by: approvedBy,
         approved_by: approvedBy,
-      });
+      },
+    );
 
     // Approve adjustment and link wallet transaction
     const approved = adjustment.approve(

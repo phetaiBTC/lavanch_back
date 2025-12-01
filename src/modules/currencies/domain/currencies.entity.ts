@@ -27,10 +27,14 @@ export class Currencies extends ShardEntity<CurrenciesProps> {
     };
   }
 
-  update(props: Partial<Omit<CurrenciesProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>): Currencies {
+  update(
+    props: Partial<
+      Omit<CurrenciesProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ): Currencies {
     return new Currencies({
       ...this.value,
-      ...props
-    })
+      ...props,
+    });
   }
 }

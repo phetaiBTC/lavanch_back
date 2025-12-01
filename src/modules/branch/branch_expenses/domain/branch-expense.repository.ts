@@ -10,7 +10,10 @@ export interface IBranchExpenseRepository extends IRemoveRepository {
   findById(id: number): Promise<BranchExpense | null>;
   create(expense: BranchExpense): Promise<BranchExpense>;
   update(expense: BranchExpense): Promise<BranchExpense>;
-  findByBranch(branchId: number, query: PaginationDto): Promise<PaginatedResponse<BranchExpense>>;
+  findByBranch(
+    branchId: number,
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<BranchExpense>>;
   findByExpenseNo(expenseNo: string): Promise<BranchExpense | null>;
   generateExpenseNo(): Promise<string>;
 }

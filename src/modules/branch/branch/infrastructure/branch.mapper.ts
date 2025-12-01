@@ -41,12 +41,43 @@ export const BranchMapper = {
     return schema;
   },
 
-  toResponse(domain: Branch): BranchResponse {
+  toResponse(domain: Branch, ormEntity?: BranchesOrm): BranchResponse {
+    const village = ormEntity?.village;
+    const district = village?.district;
+    const province = district?.province;
     return {
       id: domain.value.id!,
       name: domain.value.name,
       address: domain.value.address ?? null,
       village_id: domain.value.village_id ?? null,
+      village: village
+        ? {
+            id: village.id,
+            name: village.name,
+            name_en: village.name_en,
+            district: district
+              ? {
+                  id: district.id,
+                  name: district.name,
+                  name_en: district.name_en,
+                  province: province
+                    ? {
+                        id: province.id,
+                        name: province.name,
+                        name_en: province.name_en,
+                      }
+                    : ({} as any),
+                }
+              : ({} as any),
+          }
+        : undefined,
+      full_address: village
+        ? {
+            village_name: village.name_en || village.name || null,
+            district_name: district?.name_en || district?.name || null,
+            province_name: province?.name_en || province?.name || null,
+          }
+        : undefined,
       phone: domain.value.phone ?? null,
       facebook: domain.value.facebook ?? null,
       tiktok: domain.value.tiktok ?? null,
@@ -62,11 +93,11 @@ export const BranchMapper = {
   },
 
   toResponseList(domain: {
-    data: Branch[];
+    data: (Branch & { _orm?: BranchesOrm })[];
     pagination: IPagination;
   }): PaginatedResponse<BranchResponse> {
     return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
+      data: domain.data.map((item) => this.toResponse(item, (item as any)._orm)),
       pagination: domain.pagination,
     };
   },

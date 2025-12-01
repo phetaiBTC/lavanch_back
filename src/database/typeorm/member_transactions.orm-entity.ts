@@ -8,7 +8,9 @@ export class MemberTransactionsOrm extends ShardOrm {
   @Column({ nullable: false })
   member_id: number;
 
-  @ManyToOne(() => MembersOrm, (member) => member.transactions, { nullable: false })
+  @ManyToOne(() => MembersOrm, (member) => member.transactions, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'member_id' })
   member: MembersOrm;
 
@@ -29,16 +31,40 @@ export class MemberTransactionsOrm extends ShardOrm {
   })
   type: string;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   total_amount: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   points_earned: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   points_redeemed: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2, default: 0, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: false,
+  })
   points_balance: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

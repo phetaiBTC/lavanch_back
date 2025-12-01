@@ -9,13 +9,16 @@ import {
   type IBranchExpenseRepository,
 } from '../../domain/branch-expense.repository';
 import { BranchExpense } from '../../domain/branch-expense.entity';
-import { ApproveExpenseDto, ApprovalAction } from '../../dto/approve-expense.dto';
+import {
+  ApproveExpenseDto,
+  ApprovalAction,
+} from '../../dto/approve-expense.dto';
 import { CreateWalletTransactionUseCase } from '../../../wallet_transactions/application/commands/create-wallet-transaction.usecase';
 import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
 
 /**
  * ApproveExpenseUseCase
- * 
+ *
  * This use case handles the approval or rejection of branch expenses.
  * When approved:
  * 1. Create a wallet transaction with type EXPENSE
@@ -31,7 +34,11 @@ export class ApproveExpenseUseCase {
     private readonly createWalletTransactionUseCase: CreateWalletTransactionUseCase,
   ) {}
 
-  async execute(id: number, dto: ApproveExpenseDto, approvedBy: number): Promise<BranchExpense> {
+  async execute(
+    id: number,
+    dto: ApproveExpenseDto,
+    approvedBy: number,
+  ): Promise<BranchExpense> {
     // Get expense
     const expense = await this.expenseRepo.findById(id);
     if (!expense) {
@@ -52,24 +59,23 @@ export class ApproveExpenseUseCase {
     }
 
     // APPROVE: Create wallet transaction to deduct from branch balance
-    const walletTransaction = await this.createWalletTransactionUseCase.execute({
-      branch_id: expense.value.branch_id,
-      transaction_type: TransactionTypeEnum.EXPENSE,
-      amount: expense.value.amount,
-      reference_type: 'EXPENSE',
-      reference_id: expense.value.id!,
-      reference_no: expense.value.expense_no,
-      description: `Expense: ${expense.value.description || expense.value.expense_no}`,
-      notes: expense.value.notes,
-      created_by: approvedBy,
-      approved_by: approvedBy,
-    });
+    const walletTransaction = await this.createWalletTransactionUseCase.execute(
+      {
+        branch_id: expense.value.branch_id,
+        transaction_type: TransactionTypeEnum.EXPENSE,
+        amount: expense.value.amount,
+        reference_type: 'EXPENSE',
+        reference_id: expense.value.id!,
+        reference_no: expense.value.expense_no,
+        description: `Expense: ${expense.value.description || expense.value.expense_no}`,
+        notes: expense.value.notes,
+        created_by: approvedBy,
+        approved_by: approvedBy,
+      },
+    );
 
     // Approve expense and link wallet transaction
-    const approved = expense.approve(
-      approvedBy,
-      walletTransaction.value.id!,
-    );
+    const approved = expense.approve(approvedBy, walletTransaction.value.id!);
 
     return this.expenseRepo.update(approved);
   }

@@ -13,10 +13,10 @@ import { JwtStrategy } from './application/queries/jwt.strategy';
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
         signOptions: { expiresIn: process.env.JWT_EXPIRATION },
-      })
-    })
+      }),
+    }),
   ],
-  providers: [ LoginAuthUseCase,JwtStrategy],
-  controllers: [AuthController]
+  providers: [LoginAuthUseCase, JwtStrategy],
+  controllers: [AuthController],
 })
 export class AuthModule {}

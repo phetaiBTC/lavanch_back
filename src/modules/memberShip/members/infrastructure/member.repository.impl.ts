@@ -44,7 +44,9 @@ export class MemberRepositoryImpl implements IMemberRepository {
   }
 
   async findByMemberNo(memberNo: string): Promise<Member | null> {
-    const entity = await this.memberRepo.findOne({ where: { member_no: memberNo } });
+    const entity = await this.memberRepo.findOne({
+      where: { member_no: memberNo },
+    });
     return entity ? MemberMapper.toDomain(entity) : null;
   }
 
@@ -65,7 +67,7 @@ export class MemberRepositoryImpl implements IMemberRepository {
     // Extract numeric part from MB000001 format
     const numericPart = parseInt(lastMember.member_no.replace('MB', ''), 10);
     const nextNumber = numericPart + 1;
-    
+
     // Pad with zeros to 6 digits
     return `MB${nextNumber.toString().padStart(6, '0')}`;
   }
@@ -113,7 +115,9 @@ export class MemberRepositoryImpl implements IMemberRepository {
 
     const qualifiedTier = await this.tierRepo
       .createQueryBuilder('tier')
-      .where('tier.min_spending <= :spending', { spending: member.total_spending })
+      .where('tier.min_spending <= :spending', {
+        spending: member.total_spending,
+      })
       .andWhere('tier.is_active = :active', { active: true })
       .orderBy('tier.min_spending', 'DESC')
       .getOne();

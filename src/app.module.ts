@@ -30,11 +30,11 @@ import { BranchExpenseModule } from './modules/branch/branch_expenses/branch-exp
 import { WalletAdjustmentModule } from './modules/branch/wallet_adjustments/wallet-adjustment.module';
 import { WalletTransactionModule } from './modules/branch/wallet_transactions/wallet-transaction.module';
 import { ProductLotModule } from './modules/product_lot/product_lot.module';
-import { UniqueValidatorService } from './shared/utils/pass.notfound.util';
 import { MemberTierModule } from './modules/memberShip/member_tiers/member-tier.module';
 import { MemberModule } from './modules/memberShip/members/member.module';
 import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
 import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -91,7 +91,7 @@ import { MemberTransactionModule } from './modules/memberShip/member_transaction
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }
+    },
     // {
     //   provide: APP_GUARD,
     //   useClass: PermissionGuard,

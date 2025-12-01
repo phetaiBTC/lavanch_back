@@ -17,7 +17,10 @@ export class CreateBranchExpenseUseCase {
    * Create a new branch expense with PENDING status
    * The expense will be created but won't affect wallet balance until approved
    */
-  async execute(dto: CreateBranchExpenseDto, createdBy: number): Promise<BranchExpense> {
+  async execute(
+    dto: CreateBranchExpenseDto,
+    createdBy: number,
+  ): Promise<BranchExpense> {
     // Generate unique expense number
     const expenseNo = await this.expenseRepo.generateExpenseNo();
 

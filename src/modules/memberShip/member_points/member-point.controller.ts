@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/AuthGuard';
 import { CreateMemberPointDto } from './dto/create-member-point.dto';
 import { AddPointDto } from './dto/add-point.dto';

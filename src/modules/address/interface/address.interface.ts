@@ -23,7 +23,7 @@ export interface DistrictResponse {
   id: number;
   name: string;
   name_en?: string;
-  province?: Province;
+  province?: ProvinceResponse;
 }
 
 // Village
@@ -37,5 +37,5 @@ export interface VillageResponse {
   id: number;
   name: string;
   name_en?: string;
-  district?: District;
+  district?: DistrictResponse;
 }

@@ -20,10 +20,10 @@ import { TRANSACTION_MANAGER_SERVICE } from 'src/shared/constants/inject-key';
 
 /**
  * CreateWalletTransactionUseCase
- * 
+ *
  * This use case handles the creation of wallet transactions and automatically updates
  * the branch wallet balance. It uses database transactions to ensure data consistency.
- * 
+ *
  * Logic Flow:
  * 1. Validate branch exists
  * 2. Get current wallet balance (balance_before)
@@ -42,10 +42,10 @@ export class CreateWalletTransactionUseCase {
     private readonly transactionRepo: IWalletTransactionRepository,
     @Inject(BRANCH_REPOSITORY)
     private readonly branchRepo: IBranchRepository,
-  @Inject(DataSource)
-  private readonly dataSource: DataSource,
-  @Inject(TRANSACTION_MANAGER_SERVICE)
-  private readonly transactionManager: ITransactionManager,
+    @Inject(DataSource)
+    private readonly dataSource: DataSource,
+    @Inject(TRANSACTION_MANAGER_SERVICE)
+    private readonly transactionManager: ITransactionManager,
   ) {}
 
   async execute(dto: CreateWalletTransactionDto): Promise<WalletTransaction> {
@@ -66,7 +66,11 @@ export class CreateWalletTransactionUseCase {
 
         // Calculate new balance based on transaction type
         const { newBalance, balanceBefore, balanceAfter } =
-          this.calculateBalance(currentBalance, dto.amount, dto.transaction_type);
+          this.calculateBalance(
+            currentBalance,
+            dto.amount,
+            dto.transaction_type,
+          );
 
         // Ensure balance doesn't go negative
         if (newBalance < 0) {
@@ -89,10 +93,7 @@ export class CreateWalletTransactionUseCase {
         await this.branchRepo.updateWalletBalance(dto.branch_id, newBalance);
 
         // Handle TRANSFER: Create corresponding transaction in related branch
-        if (
-          dto.transaction_type === 'TRANSFER_OUT' &&
-          dto.related_branch_id
-        ) {
+        if (dto.transaction_type === 'TRANSFER_OUT' && dto.related_branch_id) {
           await this.createTransferInTransaction(
             dto,
             savedTransaction.value.id!,
@@ -130,7 +131,9 @@ export class CreateWalletTransactionUseCase {
     } else if (subtractTypes.includes(transactionType)) {
       balanceAfter = balanceBefore - amount;
     } else {
-      throw new BadRequestException(`Invalid transaction type: ${transactionType}`);
+      throw new BadRequestException(
+        `Invalid transaction type: ${transactionType}`,
+      );
     }
 
     return {
@@ -150,7 +153,9 @@ export class CreateWalletTransactionUseCase {
     relatedTransactionId: number,
   ): Promise<void> {
     if (!originalDto.related_branch_id) {
-      throw new BadRequestException('Related branch ID is required for transfers');
+      throw new BadRequestException(
+        'Related branch ID is required for transfers',
+      );
     }
 
     // Validate related branch exists

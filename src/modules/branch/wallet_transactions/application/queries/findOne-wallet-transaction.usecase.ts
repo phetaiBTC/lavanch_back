@@ -14,7 +14,8 @@ export class FindOneWalletTransactionUseCase {
 
   async execute(id: number): Promise<WalletTransaction> {
     const transaction = await this.transactionRepo.findById(id);
-    if (!transaction) throw new NotFoundException('Wallet transaction not found');
+    if (!transaction)
+      throw new NotFoundException('Wallet transaction not found');
     return transaction;
   }
 }
