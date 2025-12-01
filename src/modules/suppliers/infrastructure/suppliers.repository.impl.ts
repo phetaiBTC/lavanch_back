@@ -25,7 +25,16 @@ export class SuppliersRepositoryImpl
   }
   async findAll(query: PaginationDto): Promise<PaginatedResponse<Suppliers>> {
     return super.findAll(query, [
-      { relation: 'suppliers.village', as: 'village' }
+      { relation: 'suppliers.village', as: 'village' },
+      { relation: 'village.district', as: 'district' },
+      { relation: 'district.province', as: 'province' },
+    ]);
+  }
+  async findById(id: number): Promise<Suppliers | null> {
+    return await super.findById(id, [
+      'village',
+      'village.district',
+      'village.district.province',
     ]);
   }
 }
