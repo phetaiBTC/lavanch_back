@@ -26,7 +26,7 @@ export abstract class BaseController<
     protected readonly findAllUseCase: IFindAllUseCase<TDomain>,
     protected readonly hardDeleteUseCase: IDeleteUseCase,
     protected readonly softDeleteUseCase: IDeleteUseCase,
-    protected readonly restoreUseCase: IRestoreUseCase,
+    protected readonly restoreUseCase: IRestoreUseCase
   ) {}
 
   @Post()

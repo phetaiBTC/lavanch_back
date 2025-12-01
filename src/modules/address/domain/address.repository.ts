@@ -8,4 +8,6 @@ export interface IAddressRepository {
   getProvince(): Promise<Province[]>;
   getDistrict(provinceId: number): Promise<District[]>;
   getVillage(districtId: number): Promise<Village[]>;
+  getOneProvinceUseCase(id: number): Promise<Province | null>;
+  getOneVillageUseCase(id: number): Promise<Village | null>;
 }
