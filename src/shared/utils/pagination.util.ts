@@ -19,9 +19,13 @@ export async function fetchWithPagination<T extends object, U>(query: {
   }
 
   if (query.is_active === Status.ACTIVE) {
-    query.qb.andWhere(`${query.qb.alias}.deletedAt IS NULL`);
-  } else {
-    query.qb.andWhere(`${query.qb.alias}.deletedAt IS NOT NULL`);
+    query.qb.andWhere(`${query.qb.alias}.is_active = :is_active`, {
+      is_active: true,
+    });
+  } else if (query.is_active === Status.INACTIVE) {
+    query.qb.andWhere(`${query.qb.alias}.is_active = :is_active`, {
+      is_active: false,
+    });
   }
 
   query.qb.orderBy(`${query.qb.alias}.createdAt`, query.sort || sortType.DESC);

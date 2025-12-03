@@ -1,10 +1,12 @@
 import { BranchProps } from '../interface/branch.interface';
+import { Village } from 'src/modules/address/domain/address.entity';
 
 export class Branch {
   private id?: number;
   private name: string;
   private address?: string;
   private village_id?: number;
+  private village?: Village;
   private phone?: string;
   private facebook?: string;
   private tiktok?: string;
@@ -20,6 +22,7 @@ export class Branch {
     this.name = props.name;
     this.address = props.address;
     this.village_id = props.village_id;
+    this.village = props.village;
     this.phone = props.phone;
     this.facebook = props.facebook;
     this.tiktok = props.tiktok;
@@ -37,6 +40,7 @@ export class Branch {
       name: this.name,
       address: this.address,
       village_id: this.village_id,
+      village: this.village,
       phone: this.phone,
       facebook: this.facebook,
       tiktok: this.tiktok,

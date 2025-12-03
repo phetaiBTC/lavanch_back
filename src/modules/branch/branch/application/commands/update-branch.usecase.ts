@@ -14,10 +14,19 @@ export class UpdateBranchUseCase {
   ) {}
 
   async execute(id: number, dto: UpdateBranchDto): Promise<Branch> {
+    console.log('Update branch - ID:', id, 'DTO:', dto);
+    
     const branch = await this.branchRepo.findById(id);
     if (!branch) throw new NotFoundException('Branch not found');
-
+    
+    console.log('Current branch data:', branch.value);
+    
     const updated = branch.update(dto);
-    return this.branchRepo.update(updated);
+    console.log('Updated branch data:', updated.value);
+    
+    const result = await this.branchRepo.update(updated);
+    console.log('Saved branch data:', result.value);
+    
+    return result;
   }
 }

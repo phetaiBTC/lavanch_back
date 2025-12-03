@@ -6,6 +6,7 @@ import {
   IPagination,
   PaginatedResponse,
 } from 'src/shared/interface/pagination.interface';
+import { VillageMapper } from 'src/modules/address/infrastructure/address.mapper';
 
 export const BranchMapper = {
   toDomain(schema: BranchesOrm): Branch {
@@ -14,6 +15,7 @@ export const BranchMapper = {
       name: schema.name,
       address: schema.address,
       village_id: schema.village_id,
+      village: schema.village ? VillageMapper.toDomain(schema.village) : undefined,
       phone: schema.phone,
       facebook: schema.facebook,
       tiktok: schema.tiktok,
@@ -32,6 +34,7 @@ export const BranchMapper = {
     schema.name = domain.value.name;
     if (domain.value.address) schema.address = domain.value.address;
     if (domain.value.village_id) schema.village_id = domain.value.village_id;
+    if (domain.value.village) schema.village = VillageMapper.toSchema(domain.value.village);
     if (domain.value.phone) schema.phone = domain.value.phone;
     if (domain.value.facebook) schema.facebook = domain.value.facebook;
     if (domain.value.tiktok) schema.tiktok = domain.value.tiktok;
@@ -47,6 +50,7 @@ export const BranchMapper = {
       name: domain.value.name,
       address: domain.value.address ?? null,
       village_id: domain.value.village_id ?? null,
+      village: domain.value.village ?? null,
       phone: domain.value.phone ?? null,
       facebook: domain.value.facebook ?? null,
       tiktok: domain.value.tiktok ?? null,

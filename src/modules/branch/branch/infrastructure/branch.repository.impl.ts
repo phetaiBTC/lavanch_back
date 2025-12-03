@@ -8,6 +8,7 @@ import { BranchMapper } from './branch.mapper';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
+import { BranchSummaryResponse } from '../interface/branch.interface';
 
 @Injectable()
 export class BranchRepositoryImpl implements IBranchRepository {
@@ -21,6 +22,8 @@ export class BranchRepositoryImpl implements IBranchRepository {
       .createQueryBuilder('branches')
       .withDeleted()
       .leftJoinAndSelect('branches.village', 'village')
+      .leftJoinAndSelect('village.district', 'district')
+      .leftJoinAndSelect('district.province', 'province')
       .leftJoinAndSelect('branches.shift', 'shift');
 
     return await fetchWithPagination({
@@ -38,7 +41,7 @@ export class BranchRepositoryImpl implements IBranchRepository {
   async findById(id: number): Promise<Branch | null> {
     const entity = await this.branchRepo.findOne({
       where: { id },
-      relations: ['village', 'shift'],
+      relations: ['village', 'village.district', 'village.district.province', 'shift'],
     });
     return entity ? BranchMapper.toDomain(entity) : null;
   }
@@ -97,5 +100,52 @@ export class BranchRepositoryImpl implements IBranchRepository {
   async restore(id: number): Promise<{ message: string }> {
     await this.branchRepo.restore(id);
     return { message: 'restore successfully' };
+  }
+
+  async getSummary(): Promise<BranchSummaryResponse> {
+    const branches = await this.branchRepo.find({
+      select: ['id', 'name', 'wallet_balance', 'is_active'],
+    });
+
+    const total_wallet_balance_per_branch = branches.map(branch => ({
+      branch_id: branch.id,
+      branch_name: branch.name,
+      wallet_balance: Number(branch.wallet_balance),
+    }));
+
+    const total_wallet_balance_all_branches = total_wallet_balance_per_branch
+      .reduce((sum, branch) => sum + branch.wallet_balance, 0);
+
+    const active_count = branches.filter(branch => branch.is_active).length;
+    const inactive_count = branches.filter(branch => !branch.is_active).length;
+
+    return {
+      total_wallet_balance_per_branch,
+      total_wallet_balance_all_branches,
+      active_count,
+      inactive_count,
+    };
+  }
+
+  async toggleStatus(id: number): Promise<Branch> {
+    const branch = await this.findById(id);
+    if (!branch) {
+      throw new NotFoundException(`Branch with ID ${id} not found`);
+    }
+
+    const updatedBranch = new Branch({
+      ...branch.value,
+      is_active: !branch.value.is_active,
+    });
+
+    return this.update(updatedBranch);
+  }
+
+  async deleteMultiple(ids: number[]): Promise<{ message: string; deletedCount: number }> {
+    const result = await this.branchRepo.softDelete(ids);
+    return {
+      message: `Successfully deleted ${result.affected || 0} branches`,
+      deletedCount: result.affected || 0,
+    };
   }
 }

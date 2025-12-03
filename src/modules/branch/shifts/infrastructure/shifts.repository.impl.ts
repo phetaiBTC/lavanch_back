@@ -6,7 +6,7 @@ import { BranchesOrm } from 'src/database/typeorm/branches.orm-entity';
 import { IShiftsRepository } from '../domain/shifts.repository';
 import { Shifts } from '../domain/shifts.entity';
 import { ShiftsMapper } from './shifts.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto, Status } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
@@ -18,17 +18,60 @@ export class ShiftsRepositoryImpl implements IShiftsRepository {
   ) {}
 
   async findAll(query: PaginationDto): Promise<PaginatedResponse<Shifts>> {
-    const qb = this.shiftsRepo.createQueryBuilder('shifts').withDeleted();
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'start_time' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: ShiftsMapper.toDomain,
-    });
+    const qb = this.shiftsRepo.createQueryBuilder('shifts');
+    
+    // Handle search
+    if (query.search) {
+      qb.andWhere('shifts.start_time LIKE :kw', {
+        kw: `%${query.search}%`,
+      });
+    }
+
+    // Handle is_active filter using deletedAt for soft deletion
+    if (query.is_active === Status.ACTIVE) {
+      qb.andWhere('shifts.deletedAt IS NULL');
+    } else if (query.is_active === Status.INACTIVE) {
+      qb.withDeleted().andWhere('shifts.deletedAt IS NOT NULL');
+    } else {
+      // For undefined or any other value, show both active and inactive
+      qb.withDeleted();
+    }
+
+    // Handle sorting
+    qb.orderBy('shifts.createdAt', query.sort || 'DESC');
+
+    // Handle pagination
+    if (query.type === 'page') {
+      const skip = ((query.page || 1) - 1) * (query.limit || 10);
+      const [entities, total] = await qb
+        .skip(skip)
+        .take(query.limit || 10)
+        .getManyAndCount();
+
+      return {
+        data: entities.map(ShiftsMapper.toDomain),
+        pagination: {
+          total,
+          count: entities.length,
+          limit: query.limit || 10,
+          totalPages: Math.ceil(total / (query.limit || 10)) || 1,
+          currentPage: query.page || 1,
+        },
+      };
+    } else {
+      // Get all without pagination
+      const [entities, total] = await qb.getManyAndCount();
+      return {
+        data: entities.map(ShiftsMapper.toDomain),
+        pagination: {
+          total,
+          count: entities.length,
+          limit: 0,
+          totalPages: 1,
+          currentPage: 1,
+        },
+      };
+    }
   }
 
   async findById(id: number): Promise<Shifts | null> {
