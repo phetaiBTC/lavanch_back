@@ -12,6 +12,7 @@ import { FindOneUnitUseCase } from './application/queries/findOne-Unit.usecase';
 import { FindAllUnitUseCase } from './application/queries/find-Unit.usecase';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { ActiveUnitUseCase } from './application/commands/active-Unit.usecase';
+import { CreateUnitDto } from './dto/create-Unit.dto';
 @Module({
   imports: [TypeOrmModule.forFeature([UnitOrm])],
   controllers: [UnitController],
@@ -25,6 +26,7 @@ import { ActiveUnitUseCase } from './application/commands/active-Unit.usecase';
     FindOneUnitUseCase,
     FindAllUnitUseCase,
     ActiveUnitUseCase,
+    // CreateUnitDto
   ],
   exports: [
     { provide: UNIT_REPOSITORY, useClass: UnitRepositoryImpl },

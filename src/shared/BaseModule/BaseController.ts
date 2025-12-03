@@ -26,11 +26,11 @@ export abstract class BaseController<
     protected readonly findAllUseCase: IFindAllUseCase<TDomain>,
     protected readonly hardDeleteUseCase: IDeleteUseCase,
     protected readonly softDeleteUseCase: IDeleteUseCase,
-    protected readonly restoreUseCase: IRestoreUseCase
+    protected readonly restoreUseCase: IRestoreUseCase,
   ) {}
 
   @Post()
-  async create(@Body() dto: TCreateDto): Promise<TResponse> {
+   async create(@Body() dto: TCreateDto): Promise<TResponse> {
     return this.mapper.toResponse(await this.createUseCase.execute(dto));
   }
 
