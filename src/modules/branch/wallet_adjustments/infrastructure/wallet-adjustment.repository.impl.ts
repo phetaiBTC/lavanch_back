@@ -20,7 +20,9 @@ export class WalletAdjustmentRepositoryImpl
 
   async findAll(
     query: PaginationDto,
-  ): Promise<PaginatedResponse<WalletAdjustment & { _orm?: WalletAdjustmentsOrm }>> {
+  ): Promise<
+    PaginatedResponse<WalletAdjustment & { _orm?: WalletAdjustmentsOrm }>
+  > {
     const qb = this.adjustmentRepo
       .createQueryBuilder('wallet_adjustments')
       .withDeleted()
@@ -33,9 +35,9 @@ export class WalletAdjustmentRepositoryImpl
       });
     }
 
-    if (query.is_active === 1) {
+    if (query.is_active === 'active') {
       qb.andWhere(`wallet_adjustments.deletedAt IS NULL`);
-    } else if (query.is_active === 0) {
+    } else if (query.is_active === 'inactive') {
       qb.andWhere(`wallet_adjustments.deletedAt IS NOT NULL`);
     }
 
@@ -48,7 +50,7 @@ export class WalletAdjustmentRepositoryImpl
       .getManyAndCount();
 
     // Map to domain with ORM data attached
-    const data = entities.map(entity => {
+    const data = entities.map((entity) => {
       const domain = WalletAdjustmentMapper.toDomain(entity);
       (domain as any)._orm = entity;
       return domain as WalletAdjustment & { _orm?: WalletAdjustmentsOrm };

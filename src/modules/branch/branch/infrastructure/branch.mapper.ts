@@ -97,7 +97,9 @@ export const BranchMapper = {
     pagination: IPagination;
   }): PaginatedResponse<BranchResponse> {
     return {
-      data: domain.data.map((item) => this.toResponse(item, (item as any)._orm)),
+      data: domain.data.map((item) =>
+        this.toResponse(item, (item as any)._orm),
+      ),
       pagination: domain.pagination,
     };
   },

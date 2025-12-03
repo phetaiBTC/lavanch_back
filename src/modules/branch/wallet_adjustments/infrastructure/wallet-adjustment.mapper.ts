@@ -46,7 +46,10 @@ export const WalletAdjustmentMapper = {
     return schema;
   },
 
-  toResponse(domain: WalletAdjustment, ormEntity?: WalletAdjustmentsOrm): WalletAdjustmentResponse {
+  toResponse(
+    domain: WalletAdjustment,
+    ormEntity?: WalletAdjustmentsOrm,
+  ): WalletAdjustmentResponse {
     return {
       id: domain.value.id!,
       adjustment_no: domain.value.adjustment_no,
@@ -76,7 +79,9 @@ export const WalletAdjustmentMapper = {
     pagination: IPagination;
   }): PaginatedResponse<WalletAdjustmentResponse> {
     return {
-      data: domain.data.map((item) => this.toResponse(item, (item as any)._orm)),
+      data: domain.data.map((item) =>
+        this.toResponse(item, (item as any)._orm),
+      ),
       pagination: domain.pagination,
     };
   },

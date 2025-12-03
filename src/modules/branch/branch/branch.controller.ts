@@ -54,7 +54,10 @@ export class BranchController {
   ): Promise<PaginatedResponse<BranchResponse>> {
     const result = await this.findAllBranchUseCase.execute(query);
     const response = BranchMapper.toResponseList(result);
-    console.log('Branch findAll first item:', JSON.stringify(response.data[0], null, 2));
+    console.log(
+      'Branch findAll first item:',
+      JSON.stringify(response.data[0], null, 2),
+    );
     return response;
   }
 
@@ -72,7 +75,10 @@ export class BranchController {
     const branch = await this.updateBranchUseCase.execute(id, dto);
     // Reload with relations to get village data
     const branchWithRelations = await this.findOneBranchUseCase.execute(id);
-    return BranchMapper.toResponse(branchWithRelations, (branchWithRelations as any)._orm);
+    return BranchMapper.toResponse(
+      branchWithRelations,
+      (branchWithRelations as any)._orm,
+    );
   }
 
   @Delete('soft/:id')
