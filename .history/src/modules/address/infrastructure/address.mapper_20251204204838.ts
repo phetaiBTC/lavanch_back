@@ -96,20 +96,7 @@ export const VillageMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-      district: domain.value.district
-        ? {
-            id: domain.value.district.value.id!,
-            name: domain.value.district.value.name,
-            name_en: domain.value.district.value.name_en,
-            province: domain.value.district.value.province
-              ? {
-                  id: domain.value.district.value.province.value.id!,
-                  name: domain.value.district.value.province.value.name,
-                  name_en: domain.value.district.value.province.value.name_en,
-                }
-              : undefined,
-          }
-        : undefined,
+      district: domain.value.district,
     }
   },
   toResponseList(domain: Village[]): VillageResponse[] {

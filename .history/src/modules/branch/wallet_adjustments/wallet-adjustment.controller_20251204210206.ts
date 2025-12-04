@@ -31,7 +31,7 @@ import { WalletAdjustmentMapper } from './infrastructure/wallet-adjustment.mappe
 import { WalletAdjustmentResponse } from './interface/wallet-adjustment.interface';
 import { JwtAuthGuard } from 'src/guards/AuthGuard';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
-import type { AuthPayload } from 'src/modules/auth/interface/auth.interface';
+import { AuthPayload } from 'src/modules/auth/interface/auth.interface';
 
 @Controller('wallet-adjustments')
 @UseGuards(JwtAuthGuard)

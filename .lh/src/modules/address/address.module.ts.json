@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/address/address.module.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1764856523966,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1764856523966,
+            "name": "Commit-0",
+            "content": "import { Module } from '@nestjs/common';\r\nimport { TypeOrmModule } from '@nestjs/typeorm';\r\nimport { ProvinceOrm } from 'src/database/typeorm/province.orm-entity';\r\nimport { DistrictOrm } from 'src/database/typeorm/district.orm-entity';\r\nimport { VillageOrm } from 'src/database/typeorm/village.orm-entity';\r\nimport { AddressController } from './address.controller';\r\nimport { AddressRepositoryImpl } from './infrastructure/address.repository.impl';\r\nimport { ADDRESS_REPOSITORY } from './domain/address.repository';\r\nimport { GetProvinceUseCase } from './application/queries/get-Province.usecase';\r\nimport { GetDistrictUseCase } from './application/queries/get-District.usecase';\r\nimport { GetVillageUseCase } from './application/queries/get-Village.usecase';\r\nimport { GetProvinceOneUseCase } from './application/queries/getOne-Province.usecase';\r\nimport { GetOneVillageUseCase } from './application/queries/getOne-Village.usecase';\r\n@Module({\r\n  imports: [TypeOrmModule.forFeature([ProvinceOrm, DistrictOrm, VillageOrm])],\r\n  controllers: [AddressController],\r\n  providers: [\r\n    {\r\n      provide: ADDRESS_REPOSITORY,\r\n      useClass: AddressRepositoryImpl,\r\n    },\r\n    GetProvinceUseCase,\r\n    GetDistrictUseCase,\r\n    GetVillageUseCase,\r\n    GetProvinceOneUseCase,\r\n    GetOneVillageUseCase,\r\n  ],\r\n  exports: [GetProvinceOneUseCase, GetOneVillageUseCase],\r\n})\r\nexport class AddressModule {}\r\n"
+        }
+    ]
+}

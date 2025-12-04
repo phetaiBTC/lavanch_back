@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/address/infrastructure/address.repository.impl.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1764856533754,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1764856533754,
+            "name": "Commit-0",
+            "content": "import { Injectable } from '@nestjs/common';\r\nimport { Repository } from 'typeorm';\r\nimport { InjectRepository } from '@nestjs/typeorm';\r\nimport { IAddressRepository } from '../domain/address.repository';\r\nimport { ProvinceOrm } from 'src/database/typeorm/province.orm-entity';\r\nimport { District, Province, Village } from '../domain/address.entity';\r\nimport {\r\n  DistrictMapper,\r\n  ProvinceMapper,\r\n  VillageMapper,\r\n} from './address.mapper';\r\nimport { DistrictOrm } from 'src/database/typeorm/district.orm-entity';\r\nimport { VillageOrm } from 'src/database/typeorm/village.orm-entity';\r\n\r\n@Injectable()\r\nexport class AddressRepositoryImpl implements IAddressRepository {\r\n  constructor(\r\n    @InjectRepository(ProvinceOrm)\r\n    private readonly provinceRepository: Repository<ProvinceOrm>,\r\n    @InjectRepository(DistrictOrm)\r\n    private readonly districtRepository: Repository<DistrictOrm>,\r\n    @InjectRepository(VillageOrm)\r\n    private readonly villageRepository: Repository<VillageOrm>,\r\n  ) {}\r\n\r\n  async getProvince(): Promise<Province[]> {\r\n    const provinces = await this.provinceRepository.find();\r\n    return provinces.map((province) => ProvinceMapper.toDomain(province));\r\n  }\r\n\r\n  async getDistrict(provinceId: number): Promise<District[]> {\r\n    const districts = await this.districtRepository.find({\r\n      where: { province: { id: provinceId } },\r\n      relations: ['province'],\r\n    });\r\n    return districts.map((district) => DistrictMapper.toDomain(district));\r\n  }\r\n\r\n  async getVillage(districtId: number): Promise<Village[]> {\r\n    const villages = await this.villageRepository.find({\r\n      where: { district: { id: districtId } },\r\n      relations: ['district', 'district.province'],\r\n    });\r\n    return villages.map((village) => VillageMapper.toDomain(village));\r\n  }\r\n\r\n  async getAllAddresses(): Promise<Village[]> {\r\n    const villages = await this.villageRepository.find({\r\n      relations: ['district', 'district.province'],\r\n    });\r\n    return villages.map((village) => VillageMapper.toDomain(village));\r\n  }\r\n\r\n  async getOneProvinceUseCase(id: number): Promise<Province | null> {\r\n    const province = await this.provinceRepository.findOne({\r\n      where: { id },\r\n    });\r\n    return province ? ProvinceMapper.toDomain(province) : null;\r\n  }\r\n\r\n  async getOneVillageUseCase(id: number): Promise<Village | null> {\r\n    const village = await this.villageRepository.findOne({\r\n      where: { id },\r\n      relations: ['district', 'district.province'],\r\n    });\r\n    return village ? VillageMapper.toDomain(village) : null;\r\n  }\r\n}\r\n"
+        }
+    ]
+}
