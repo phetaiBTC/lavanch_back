@@ -8,15 +8,16 @@ import { GetOneUserUseCase } from '../user/application/queries/getOne-User.useca
 import { UserResponse } from '../user/interface/user.interface';
 import { UserMapper } from '../user/infrastructure/user.mapper';
 import { CreateUserUseCase } from '../user/application/commands/create-User.usecase';
-import { CreateUserDto } from '../user/dto/create-User.dto';
-// import { RegisterUserDto } from './dto/register-Auth.dto';
+// import { CreateUserDto } from '../user/dto/create-User.dto';
+import { RegisterUserDto } from './dto/register-Auth.dto';
+import { RegisterUserUseCase } from './application/command/register-Auth.usecase';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginAuthUseCase,
     private readonly findOneUser: GetOneUserUseCase,
-    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly registerUserUseCase: RegisterUserUseCase,
   ) {}
 
   @Public()
@@ -27,8 +28,8 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  async register(@Body() body: CreateUserDto): Promise<UserResponse> {
-    return UserMapper.toResponse(await this.createUserUseCase.execute(body));
+  async register(@Body() body: RegisterUserDto): Promise<UserResponse> {
+    return UserMapper.toResponse(await this.registerUserUseCase.execute(body));
   }
   @Get('profile')
   async profile(@CurrentUser() user: AuthPayload): Promise<UserResponse> {

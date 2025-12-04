@@ -5,17 +5,18 @@ import {
 } from '../../domain/currencies.repository';
 import { Currencies } from '../../domain/currencies.entity';
 import { UpdateCurrenciesDto } from '../../dto/update-Currencies.dto';
+import { FindOneCurrenciesUseCase } from '../queries/findOne-Currencies.usecase';
 
 @Injectable()
 export class UpdateCurrenciesUseCase {
   constructor(
     @Inject(CURRENCIES_REPOSITORY)
     private readonly currenciesRepo: ICurrenciesRepository,
+    private readonly findOneCurrenciesUseCase: FindOneCurrenciesUseCase,
   ) {}
 
   async execute(id: number, dto: UpdateCurrenciesDto): Promise<Currencies> {
-    const existing = await this.currenciesRepo.findById(id);
-    if (!existing) throw new BadRequestException('Currency not found');
+    const existing = await this.findOneCurrenciesUseCase.execute(id);
 
     if (dto.code && dto.code !== existing.value.code) {
       await this.ensureUniqueCode(dto.code);

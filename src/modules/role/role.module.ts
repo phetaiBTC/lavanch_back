@@ -30,6 +30,6 @@ import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
     HardDeleteRoleUseCase,
     RestoreRoleUseCase,
   ],
-  exports: [],
+  exports: [GetOneRoleUseCase],
 })
 export class RoleModule {}

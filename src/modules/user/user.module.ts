@@ -17,8 +17,15 @@ import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usec
 import { MailModule } from '../mail/mail.module';
 import { HardDeleteUserUseCase } from './application/commands/hard-User.usecase';
 import { RestoreUserUseCase } from './application/commands/restore-User.usecase';
+import { PermissionModule } from '../permission/permission.module';
+import { RoleModule } from '../role/role.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([UserOrm]), MailModule],
+  imports: [
+    TypeOrmModule.forFeature([UserOrm]),
+    MailModule,
+    PermissionModule,
+    RoleModule,
+  ],
   controllers: [UserController],
   providers: [
     {
@@ -45,6 +52,10 @@ import { RestoreUserUseCase } from './application/commands/restore-User.usecase'
     GetOneUserUseCase,
     UpdateUserUseCase,
     CreateUserUseCase,
+      {
+      provide: USER_REPOSITORY,
+      useClass: UserRepositoryImpl,
+    },
   ],
 })
 export class UserModule {}

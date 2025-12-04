@@ -5,9 +5,12 @@ import { AuthController } from './auth.controller';
 
 import { LoginAuthUseCase } from './application/queries/login-Auth.usecase';
 import { JwtStrategy } from './application/queries/jwt.strategy';
+import { RegisterUserUseCase } from './application/command/register-Auth.usecase';
+import { MailModule } from '../mail/mail.module';
 @Module({
   imports: [
     UserModule,
+    MailModule,
     JwtModule.registerAsync({
       global: true,
       useFactory: () => ({
@@ -16,7 +19,7 @@ import { JwtStrategy } from './application/queries/jwt.strategy';
       }),
     }),
   ],
-  providers: [LoginAuthUseCase, JwtStrategy],
+  providers: [LoginAuthUseCase, RegisterUserUseCase, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

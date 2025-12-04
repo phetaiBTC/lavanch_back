@@ -32,9 +32,12 @@ import { ResetPasswordDto } from './dto/resetPassword-User.dto';
 import { SendEmailDto } from './dto/sendEmail-User.dto';
 import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usecase';
 import { Public } from 'src/shared/decorator/auth.decorator';
+import { BaseControllerSetup } from 'src/shared/BaseModule/base.controller';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('user')
-export class UserController extends BaseController<
+export class UserController extends BaseControllerSetup<
   User,
   UserOrm,
   UserResponse,
@@ -42,10 +45,10 @@ export class UserController extends BaseController<
   UpdateUserDto
 > {
   constructor(
-    createUserUseCase: CreateUserUseCase,
-    updateUserUseCase: UpdateUserUseCase,
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
     getOneUserUseCase: GetOneUserUseCase,
-    getUserUseCase: GetUserUseCase,
+    private readonly getUserUseCase: GetUserUseCase,
     hardDeleteUserUseCase: HardDeleteUserUseCase,
     softDeleteUserUseCase: SoftDeleteUserUseCase,
     restoreUserUseCase: RestoreUserUseCase,
@@ -54,16 +57,13 @@ export class UserController extends BaseController<
     private readonly resetPasswordUseCase: ResetPasswordUserUseCase,
     private readonly sendEmailUserUseCase: sendEmailUserUseCase,
   ) {
-    super(
-      UserMapper,
-      createUserUseCase,
-      updateUserUseCase,
-      getOneUserUseCase,
-      getUserUseCase,
-      hardDeleteUserUseCase,
-      softDeleteUserUseCase,
-      restoreUserUseCase,
-    );
+    super({
+      mapper: UserMapper,
+      findOne: getOneUserUseCase,
+      hardDelete: hardDeleteUserUseCase,
+      softDelete: softDeleteUserUseCase,
+      restore: restoreUserUseCase,
+    });
   }
 
   @Patch('change-password')
@@ -76,6 +76,26 @@ export class UserController extends BaseController<
     );
   }
 
+  @Post('')
+  async create(@Body() body: CreateUserDto): Promise<UserResponse> {
+    return UserMapper.toResponse(await this.createUserUseCase.execute(body));
+  }
+
+  @Get('')
+  async findAll(
+    @Query()
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<UserResponse>> {
+    return UserMapper.toResponseList(await this.getUserUseCase.execute(query));
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateUserDto,
+  ): Promise<UserResponse> {
+    return UserMapper.toResponse(await this.updateUserUseCase.execute(id, dto));
+  }
   @Public()
   @Patch('verify-email')
   async verifyEmail(@Query('token') token: string): Promise<UserResponse> {

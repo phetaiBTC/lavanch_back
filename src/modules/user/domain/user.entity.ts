@@ -57,4 +57,18 @@ export class User {
   async changePassword(newPassword: string) {
     this.password = await hashPassword(newPassword);
   }
+
+  update(
+    props: Partial<
+      Omit<
+        UserProps,
+        'id' | 'createdAt' | 'deletedAt' | 'updatedAt' | 'password' | 'email'
+      >
+    >,
+  ) {
+    return new User({
+      ...this.value,
+      ...props,
+    });
+  }
 }
