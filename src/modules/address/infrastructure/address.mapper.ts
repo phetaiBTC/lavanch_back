@@ -113,18 +113,7 @@ export const VillageMapper = {
       name: d.value.name,
       name_en: d.value.name_en,
       district: d.value.district
-        ? {
-            id: d.value.district.value.id!,
-            name: d.value.district.value.name,
-            name_en: d.value.district.value.name_en,
-            province: d.value.district.value.province
-              ? {
-                  id: d.value.district.value.province.value.id!,
-                  name: d.value.district.value.province.value.name,
-                  name_en: d.value.district.value.province.value.name_en,
-                }
-              : undefined,
-          }
+        ? DistrictMapper.toResponse(d.value.district)
         : undefined,
     }));
   },
