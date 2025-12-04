@@ -8,7 +8,8 @@ import { GetOneUserUseCase } from '../user/application/queries/getOne-User.useca
 import { UserResponse } from '../user/interface/user.interface';
 import { UserMapper } from '../user/infrastructure/user.mapper';
 import { CreateUserUseCase } from '../user/application/commands/create-User.usecase';
-import { CreateUserDto } from '../user/dto/create-User.dto';
+// import { CreateUserDto } from '../user/dto/create-User.dto';
+import { RegisterUserDto } from './dto/register-Auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  async register(@Body() body: CreateUserDto): Promise<UserResponse> {
+  async register(@Body() body: RegisterUserDto): Promise<UserResponse> {
     return UserMapper.toResponse(await this.createUserUseCase.execute(body));
   }
   @Get('profile')

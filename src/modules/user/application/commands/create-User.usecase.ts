@@ -7,6 +7,7 @@ import { User } from '../../domain/user.entity';
 import { CreateUserDto } from '../../dto/create-User.dto';
 import { hashPassword } from 'src/shared/utils/bcrypt.util';
 import { SendEmailUserUseCase } from 'src/modules/mail/application/sendMail-User.usecase';
+import { RegisterUserDto } from 'src/modules/auth/dto/register-Auth.dto';
 @Injectable()
 export class CreateUserUseCase {
   constructor(
@@ -14,7 +15,7 @@ export class CreateUserUseCase {
     private readonly sendEmailUserUseCase: SendEmailUserUseCase,
   ) {}
 
-  async execute(dto: CreateUserDto): Promise<User> {
+  async execute(dto: CreateUserDto | RegisterUserDto): Promise<User> {
     if (dto.password != dto.confirm_password)
       throw new BadRequestException('Passwords do not match');
     const userExists = await this.userRepo.findByEmail(dto.email);
