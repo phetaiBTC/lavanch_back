@@ -27,6 +27,8 @@ export const BranchExpenseMapper = {
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
       deletedAt: schema.deletedAt,
+      branch: schema.branch ? { id: schema.branch.id, name: schema.branch.name } : undefined,
+      expense_category: schema.expense_category ? { id: schema.expense_category.id, name: schema.expense_category.name } : undefined,
     });
   },
 
@@ -72,6 +74,8 @@ export const BranchExpenseMapper = {
       deletedAt: domain.value.deletedAt
         ? formatDate(domain.value.deletedAt)
         : null,
+      branch: domain.value.branch,
+      expense_category: domain.value.expense_category,
     };
   },
 

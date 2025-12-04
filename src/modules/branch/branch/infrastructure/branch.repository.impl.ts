@@ -192,6 +192,7 @@ export class BranchRepositoryImpl implements IBranchRepository {
   }
 
   async deleteMultiple(ids: number[]): Promise<void> {
+     await this.branchRepo.update(ids, { is_active: false });
     await this.branchRepo.softDelete(ids);
   }
 }

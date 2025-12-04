@@ -16,6 +16,9 @@ export interface BranchExpenseProps {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+  // Relations (optional for mapping)
+  branch?: { id: number; name: string };
+  expense_category?: { id: number; name: string };
 }
 
 export interface BranchExpenseResponse {
@@ -36,4 +39,7 @@ export interface BranchExpenseResponse {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  // Relations
+  branch?: { id: number; name: string };
+  expense_category?: { id: number; name: string };
 }

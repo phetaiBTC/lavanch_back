@@ -18,6 +18,8 @@ export class BranchExpense {
   private createdAt: Date;
   private updatedAt: Date;
   private deletedAt: Date | null;
+  private branch?: { id: number; name: string };
+  private expense_category?: { id: number; name: string };
 
   constructor(props: BranchExpenseProps) {
     this.id = props.id;
@@ -37,6 +39,8 @@ export class BranchExpense {
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt ?? new Date();
     this.deletedAt = props.deletedAt ?? null;
+    this.branch = props.branch;
+    this.expense_category = props.expense_category;
   }
 
   get value() {
@@ -58,6 +62,8 @@ export class BranchExpense {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
+      branch: this.branch,
+      expense_category: this.expense_category,
     };
   }
 

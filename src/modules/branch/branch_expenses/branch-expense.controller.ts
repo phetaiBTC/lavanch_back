@@ -10,16 +10,18 @@ import {
 } from '@nestjs/common';
 import { CreateBranchExpenseDto } from './dto/create-branch-expense.dto';
 import { ApproveExpenseDto } from './dto/approve-expense.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindBranchExpenseDto } from './dto/find-branch-expense.dto';
 import { CreateBranchExpenseUseCase } from './application/commands/create-branch-expense.usecase';
 import { ApproveExpenseUseCase } from './application/commands/approve-expense.usecase';
 import { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';
 import { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';
+import { GetBranchExpenseSummaryUseCase } from './application/queries/get-summary.usecase';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { BranchExpenseMapper } from './infrastructure/branch-expense.mapper';
 import { BranchExpenseResponse } from './interface/branch-expense.interface';
 import { JwtAuthGuard } from 'src/guards/AuthGuard';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
+import { SummaryResponse } from './domain/branch-expense.repository';
 
 @Controller('branch-expenses')
 @UseGuards(JwtAuthGuard)
@@ -29,6 +31,7 @@ export class BranchExpenseController {
     private readonly approveExpenseUseCase: ApproveExpenseUseCase,
     private readonly findOneBranchExpenseUseCase: FindOneBranchExpenseUseCase,
     private readonly findAllBranchExpenseUseCase: FindAllBranchExpenseUseCase,
+    private readonly getSummaryUseCase: GetBranchExpenseSummaryUseCase,
   ) {}
 
   /**
@@ -50,11 +53,21 @@ export class BranchExpenseController {
    */
   @Get()
   async findAll(
-    @Query() query: PaginationDto,
+    @Query() query: FindBranchExpenseDto,
   ): Promise<PaginatedResponse<BranchExpenseResponse>> {
     return BranchExpenseMapper.toResponseList(
       await this.findAllBranchExpenseUseCase.execute(query),
     );
+  }
+
+  /**
+   * Get summary statistics (total amount, counts by status)
+   */
+  @Get('summary')
+  async getSummary(
+    @Query() query: FindBranchExpenseDto,
+  ): Promise<SummaryResponse> {
+    return this.getSummaryUseCase.execute(query);
   }
 
   /**
@@ -80,6 +93,23 @@ export class BranchExpenseController {
   ): Promise<BranchExpenseResponse> {
     return BranchExpenseMapper.toResponse(
       await this.approveExpenseUseCase.execute(+id, dto, user.id),
+    );
+  }
+
+  /**
+   * Reject an expense (convenience endpoint)
+   */
+  @Patch(':id/reject')
+  async reject(
+    @Param('id') id: number,
+    @CurrentUser() user: any,
+  ): Promise<BranchExpenseResponse> {
+    return BranchExpenseMapper.toResponse(
+      await this.approveExpenseUseCase.execute(
+        +id,
+        { action: 'REJECT' as any },
+        user.id,
+      ),
     );
   }
 }

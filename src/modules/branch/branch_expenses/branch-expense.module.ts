@@ -8,6 +8,7 @@ import { CreateBranchExpenseUseCase } from './application/commands/create-branch
 import { ApproveExpenseUseCase } from './application/commands/approve-expense.usecase';
 import { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';
 import { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';
+import { GetBranchExpenseSummaryUseCase } from './application/queries/get-summary.usecase';
 import { WalletTransactionModule } from '../wallet_transactions/wallet-transaction.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { WalletTransactionModule } from '../wallet_transactions/wallet-transacti
     ApproveExpenseUseCase,
     FindOneBranchExpenseUseCase,
     FindAllBranchExpenseUseCase,
+    GetBranchExpenseSummaryUseCase,
   ],
   exports: [],
 })
