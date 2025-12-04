@@ -7,6 +7,7 @@ import { User } from '../../domain/user.entity';
 import { CreateUserDto } from '../../dto/create-User.dto';
 import { hashPassword } from 'src/shared/utils/bcrypt.util';
 import { SendEmailUserUseCase } from 'src/modules/mail/application/sendMail-User.usecase';
+import { RegisterUserDto } from 'src/modules/auth/dto/register-Auth.dto';
 @Injectable()
 export class CreateUserUseCase {
   constructor(

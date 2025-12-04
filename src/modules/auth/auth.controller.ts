@@ -9,6 +9,7 @@ import { UserResponse } from '../user/interface/user.interface';
 import { UserMapper } from '../user/infrastructure/user.mapper';
 import { CreateUserUseCase } from '../user/application/commands/create-User.usecase';
 import { CreateUserDto } from '../user/dto/create-User.dto';
+// import { RegisterUserDto } from './dto/register-Auth.dto';
 
 @Controller('auth')
 export class AuthController {
