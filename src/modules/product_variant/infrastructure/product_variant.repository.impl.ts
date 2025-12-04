@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,8 +21,11 @@ export class ProductVariantRepositoryImpl
     super(productVariantRepo, ProductVariantMapper, 'product_variant', 'name');
   }
 
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<ProductVariant>> {
-    return super.findAll(query);
+  async findAll(
+    query: PaginationDto,
+    joins?: { relation: string; as: string }[],
+  ): Promise<PaginatedResponse<ProductVariant>> {
+    return super.findAll(query, joins);
   }
   async findByName(name: string): Promise<ProductVariant | null> {
     return this.findByField('name', name);
