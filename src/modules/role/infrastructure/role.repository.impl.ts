@@ -26,7 +26,7 @@ export class RoleRepositoryImpl implements IRoleRepository {
       type: query.type,
       search: {
         kw: query.search,
-        field: 'code',
+        field: 'role.code',
       },
       is_active: query.is_active,
       sort: query.sort,

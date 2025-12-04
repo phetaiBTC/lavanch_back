@@ -41,48 +41,4 @@ export class CurrenciesController extends BaseController<
       restoreCurrenciesUseCase,
     );
   }
-  // @Post() async create(
-  //   @Body() dto: CreateCurrenciesDto,
-  // ): Promise<CurrenciesResponse> {
-  //   return CurrenciesMapper.toResponse(
-  //     await this.createCurrenciesUseCase.execute(dto),
-  //   );
-  // }
-  // @Get() async findAll(
-  //   @Query() query: PaginationDto,
-  // ): Promise<PaginatedResponse<CurrenciesResponse>> {
-  //   return CurrenciesMapper.toResponseList(
-  //     await this.findAllCurrenciesUseCase.execute(query),
-  //   );
-  // }
-  // @Get(':id') async findOne(
-  //   @Param('id') id: number,
-  // ): Promise<CurrenciesResponse> {
-  //   return CurrenciesMapper.toResponse(
-  //     await this.findOneCurrenciesUseCase.execute(id),
-  //   );
-  // }
-  // @Patch(':id') async update(
-  //   @Param('id') id: number,
-  //   @Body() dto: UpdateCurrenciesDto,
-  // ): Promise<CurrenciesResponse> {
-  //   return CurrenciesMapper.toResponse(
-  //     await this.updateCurrenciesUseCase.execute(id, dto),
-  //   );
-  // }
-  // @Delete('soft/:id') async softDelete(
-  //   @Param('id') id: number,
-  // ): Promise<{ message: string }> {
-  //   return await this.softDeleteCurrenciesUseCase.execute(+id);
-  // }
-  // @Delete('hard/:id') async hardDelete(
-  //   @Param('id') id: number,
-  // ): Promise<{ message: string }> {
-  //   return await this.hardDeleteCurrenciesUseCase.execute(+id);
-  // }
-  // @Patch('restore/:id') async restore(
-  //   @Param('id') id: number,
-  // ): Promise<{ message: string }> {
-  //   return await this.restoreCurrenciesUseCase.execute(+id);
-  // }
 }

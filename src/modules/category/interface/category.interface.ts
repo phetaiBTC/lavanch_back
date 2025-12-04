@@ -15,3 +15,4 @@ export interface CategoryResponse extends ShardInterfaceResponse {
   children: CategoryResponse[];
   is_active: boolean;
 }
+

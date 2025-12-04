@@ -75,7 +75,7 @@ export class UnitRepositoryImpl
 {
   constructor(
     @InjectRepository(UnitOrm)
-    private readonly unitRepo: Repository<UnitOrm>,
+    protected readonly unitRepo: Repository<UnitOrm>,
   ) {
     super(unitRepo, UnitMapper, 'unit', 'name');
   }

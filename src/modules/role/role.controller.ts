@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Query, Post, Get, Delete } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { Role } from './domain/role.entity';
 import { RoleOrm } from 'src/database/typeorm/role.orm-entity';
 import { RoleResponse } from './interface/role.interface';
@@ -12,8 +12,6 @@ import { HardDeleteRoleUseCase } from './application/commands/hard-Role.usecase'
 import { SoftDeleteRoleUseCase } from './application/commands/soft-Role.usecase';
 import { RestoreRoleUseCase } from './application/commands/restore-Role.usecase';
 import { BaseController } from 'src/shared/BaseModule/BaseController';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('role')
 export class RoleController extends BaseController<
@@ -43,5 +41,4 @@ export class RoleController extends BaseController<
       restoreRoleUseCase,
     );
   }
-
 }

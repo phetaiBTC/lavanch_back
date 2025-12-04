@@ -17,6 +17,7 @@ import { FindOneProductVariantUseCase } from 'src/modules/product_variant/applic
 import { FindOneUnitUseCase } from 'src/modules/unit/application/queries/findOne-Unit.usecase';
 import { ProductVariant } from 'src/modules/product_variant/domain/product_variant.entity';
 import { Unit } from 'src/modules/unit/domain/unit.entity';
+import { FindOneProductUnitUseCase } from '../queries/findOne-ProductUnit.usecase';
 
 @Injectable()
 export class UpdateProductUnitUseCase {
@@ -26,10 +27,12 @@ export class UpdateProductUnitUseCase {
     
     private readonly findProductVariant: FindOneProductVariantUseCase,
     private readonly findUnit: FindOneUnitUseCase,
+        private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
+
   ) {}
 
   async execute(id: number, dto: UpdateProductUnitDto): Promise<ProductUnit> {
-    const productUnit = await this.loadExistingProductUnit(id);
+    const productUnit = await this.usecaseFIndOneProductUnit.execute(id);;
     const { productVariant, unit } = await this.loadRelations(dto);
 
     await this.ensureProductUnitDoesNotExist(productVariant, unit, id);
@@ -39,11 +42,7 @@ export class UpdateProductUnitUseCase {
     return this.productUnitRepo.save(productUnit);
   }
 
-  private async loadExistingProductUnit(id: number) {
-    const existing = await this.productUnitRepo.findById(id);
-    if (!existing) throw new BadRequestException('ProductUnit not found');
-    return existing;
-  }
+
 
   private async loadRelations(dto: UpdateProductUnitDto) {
     if (!dto.product_variant_id || !dto.unit_id)

@@ -19,7 +19,7 @@ export class UserRepositoryImpl
     @InjectRepository(UserOrm)
     protected readonly repo: Repository<UserOrm>,
   ) {
-    super(repo, UserMapper, 'user', 'name');
+    super(repo, UserMapper, 'user', 'username');
   }
 
   async findById(id: number): Promise<User | null> {
