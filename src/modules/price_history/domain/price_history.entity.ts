@@ -17,7 +17,7 @@ export class PriceHistory extends ShardEntity<PriceHistoryProps> {
 
   constructor(props: PriceHistoryProps) {
     super(props);
-    this.product_variant = props.product_variant  || null;
+    this.product_variant = props.product_variant || null;
     this.unit = props.unit || null;
     this.old_cost_price = props.old_cost_price;
     this.new_cost_price = props.new_cost_price;
@@ -46,10 +46,10 @@ export class PriceHistory extends ShardEntity<PriceHistoryProps> {
     };
   }
 
-//   update(props: Partial<Omit<PriceHistoryProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>): PriceHistory {
-//     return new PriceHistory({
-//       ...this.value,
-//       ...props,
-//     });
-//   }
+  //   update(props: Partial<Omit<PriceHistoryProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>): PriceHistory {
+  //     return new PriceHistory({
+  //       ...this.value,
+  //       ...props,
+  //     });
+  //   }
 }

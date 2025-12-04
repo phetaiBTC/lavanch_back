@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   PRODUCT_UNIT_REPOSITORY,
   type IProductUnitRepository,
@@ -11,10 +16,10 @@ export class RestoreProductUnitUseCase {
   constructor(
     @Inject(PRODUCT_UNIT_REPOSITORY)
     private readonly product_unitRepo: IProductUnitRepository,
-        private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
+    private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
   ) {}
   async execute(id: number): Promise<{ message: string }> {
-        await this.usecaseFIndOneProductUnit.execute(id);
+    await this.usecaseFIndOneProductUnit.execute(id);
     return this.product_unitRepo.restore(id);
   }
 }

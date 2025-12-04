@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 import { RoleOrm } from '../typeorm/role.orm-entity';
-import { PermissionOrm } from '../typeorm/permission.orm-entity';
 import { UserOrm } from '../typeorm/user.orm-entity';
 import { hashPassword } from 'src/shared/utils/bcrypt.util';
 

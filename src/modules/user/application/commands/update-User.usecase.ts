@@ -1,9 +1,4 @@
-import {
-  
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   USER_REPOSITORY,
   type IUserRepository,

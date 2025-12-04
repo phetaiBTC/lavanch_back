@@ -23,9 +23,8 @@ export class ProductVariantRepositoryImpl
 
   async findAll(
     query: PaginationDto,
-    joins?: { relation: string; as: string }[],
   ): Promise<PaginatedResponse<ProductVariant>> {
-    return super.findAll(query, joins);
+    return super.findAll(query);
   }
   async findByName(name: string): Promise<ProductVariant | null> {
     return this.findByField('name', name);

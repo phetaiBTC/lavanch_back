@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/branch/branch_expenses/dto/create-branch-expense.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1761673124841,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1761673124841,
+            "name": "Commit-0",
+            "content": "import {\r\n  IsNotEmpty,\r\n  IsNumber,\r\n  IsString,\r\n  IsOptional,\r\n  IsDateString,\r\n  Min,\r\n} from 'class-validator';\r\n\r\nexport class CreateBranchExpenseDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  expense_category_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsNumber()\r\n  currency_id?: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsDateString()\r\n  expense_date: string;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  notes?: string;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  receipt_image?: string;\r\n}\r\n"
+        }
+    ]
+}

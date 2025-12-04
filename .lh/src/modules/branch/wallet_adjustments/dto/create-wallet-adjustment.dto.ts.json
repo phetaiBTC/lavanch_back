@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/branch/wallet_adjustments/dto/create-wallet-adjustment.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1761673126660,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1761673126660,
+            "name": "Commit-0",
+            "content": "import {\r\n  IsNotEmpty,\r\n  IsNumber,\r\n  IsString,\r\n  IsOptional,\r\n  IsEnum,\r\n  Min,\r\n} from 'class-validator';\r\n\r\nexport enum AdjustmentTypeEnum {\r\n  ADD = 'ADD',\r\n  DEDUCT = 'DEDUCT',\r\n}\r\n\r\nexport enum AdjustmentReasonEnum {\r\n  CORRECTION = 'CORRECTION',\r\n  DEPOSIT = 'DEPOSIT',\r\n  WITHDRAW = 'WITHDRAW',\r\n  LOST = 'LOST',\r\n  FOUND = 'FOUND',\r\n}\r\n\r\nexport class CreateWalletAdjustmentDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsEnum(AdjustmentTypeEnum)\r\n  adjustment_type: AdjustmentTypeEnum;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0)\r\n  amount: number;\r\n\r\n  @IsNotEmpty()\r\n  @IsEnum(AdjustmentReasonEnum)\r\n  reason: AdjustmentReasonEnum;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n}\r\n"
+        }
+    ]
+}

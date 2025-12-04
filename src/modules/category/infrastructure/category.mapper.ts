@@ -3,7 +3,11 @@ import { CategoryResponse } from '../interface/category.interface';
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
 import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 
-class CategoryMapperClass extends BaseMapper<Category, CategoryOrm, CategoryResponse> {
+class CategoryMapperClass extends BaseMapper<
+  Category,
+  CategoryOrm,
+  CategoryResponse
+> {
   toDomain = (schema: CategoryOrm): Category => {
     return new Category({
       id: schema.id,
@@ -44,9 +48,7 @@ class CategoryMapperClass extends BaseMapper<Category, CategoryOrm, CategoryResp
       id: domain.value.id!,
       name: domain.value.name,
       description: domain.value.description ?? '',
-      parent: domain.value.parent
-        ? this.toResponse(domain.value.parent)
-        : null,
+      parent: domain.value.parent ? this.toResponse(domain.value.parent) : null,
       children: domain.value.children
         ? domain.value.children.map((child) => this.toResponse(child))
         : [],

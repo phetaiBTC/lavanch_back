@@ -22,27 +22,31 @@ export class UpdateProductPointUseCase {
     private readonly usecaseProductVariant: FindOneProductVariantUseCase,
     private readonly usecaseUnit: FindOneUnitUseCase,
     private readonly usecaseFindNameCode: FindNameCodePointUseCase,
-        private readonly usecaseFIndOneProductPoint: FindOneProductPointUseCase,
-
+    private readonly usecaseFIndOneProductPoint: FindOneProductPointUseCase,
   ) {}
 
   async execute(id: number, dto: UpdateProductPointDto): Promise<ProductPoint> {
     const existing = await this.usecaseFIndOneProductPoint.execute(id);
-    const { product_variant, unit} = await this.loadRelations(dto, existing);
+    const { product_variant, unit } = await this.loadRelations(dto, existing);
 
     await this.validation(product_variant, unit, id);
 
     existing.update({
       product_variant,
       unit,
-      points_per_unit : dto.points_per_unit ?? existing.value.points_per_unit,
-      effective_date: dto.effective_date ? new Date(dto.effective_date) : existing.value.effective_date,
+      points_per_unit: dto.points_per_unit ?? existing.value.points_per_unit,
+      effective_date: dto.effective_date
+        ? new Date(dto.effective_date)
+        : existing.value.effective_date,
     });
 
     return this.repo.save(existing);
   }
 
-  private async loadRelations(dto: UpdateProductPointDto, existing: ProductPoint) {
+  private async loadRelations(
+    dto: UpdateProductPointDto,
+    existing: ProductPoint,
+  ) {
     const product_variant = dto.product_variant_id
       ? await this.usecaseProductVariant.execute(dto.product_variant_id)
       : existing.value.product_variant;
@@ -56,7 +60,11 @@ export class UpdateProductPointUseCase {
     return { product_variant, unit, point };
   }
 
-  private async validation(product_variant: ProductVariant | null , unit: Unit | null, currentId: number) {
+  private async validation(
+    product_variant: ProductVariant | null,
+    unit: Unit | null,
+    currentId: number,
+  ) {
     if (!product_variant?.value.id || !unit?.value.id) return;
     if (product_variant.value.id && unit.value.id) {
       const existing = await this.repo.findByProductVariantAndUnit(

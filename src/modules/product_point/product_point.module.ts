@@ -15,7 +15,12 @@ import { ProductVariantModule } from '../product_variant/product_variant.module'
 import { UnitModule } from '../unit/unit.module';
 import { PointModule } from '../point/point.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductPointOrm]), ProductVariantModule, UnitModule, PointModule],
+  imports: [
+    TypeOrmModule.forFeature([ProductPointOrm]),
+    ProductVariantModule,
+    UnitModule,
+    PointModule,
+  ],
   controllers: [ProductPointController],
   providers: [
     { provide: PRODUCT_POINT_REPOSITORY, useClass: ProductPointRepositoryImpl },

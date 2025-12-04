@@ -1,6 +1,4 @@
-import {
-  Controller
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { CreateProductPriceDto } from './dto/create-ProductPrice.dto';
 import { UpdateProductPriceDto } from './dto/update-ProductPrice.dto';
 import { CreateProductPriceUseCase } from './application/commands/create-ProductPrice.usecase';

@@ -26,8 +26,7 @@ import { CategoryModule } from '../category/category.module';
     FindOneProductUseCase,
     FindAllProductUseCase,
     ActiveProductUseCase,
-  ]
-  ,
+  ],
   exports: [
     { provide: PRODUCT_REPOSITORY, useClass: ProductRepositoryImpl },
     CreateProductUseCase,
@@ -38,7 +37,6 @@ import { CategoryModule } from '../category/category.module';
     FindOneProductUseCase,
     FindAllProductUseCase,
     ActiveProductUseCase,
-  ]
+  ],
 })
-
 export class ProductModule {}

@@ -5,6 +5,7 @@ import { join } from 'path';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
+import { TransactionModule } from './database/transaction/transaction.module';
 import { JwtAuthGuard } from './guards/AuthGuard';
 import { MailModule } from './modules/mail/mail.module';
 // import { PermissionGuard } from './guards/PermissionGuard';
@@ -22,8 +23,19 @@ import { ProductVariantModule } from './modules/product_variant/product_variant.
 import { ProductPointModule } from './modules/product_point/product_point.module';
 import { CurrencyRatesModule } from './modules/currencyRates/currencyRates.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
+import { BranchModule } from './modules/branch/branch/branch.module';
+import { ShiftsModule } from './modules/branch/shifts/shifts.module';
+import { ExpenseCategoryModule } from './modules/branch/expense_categories/expense-category.module';
+import { BranchExpenseModule } from './modules/branch/branch_expenses/branch-expense.module';
+import { WalletAdjustmentModule } from './modules/branch/wallet_adjustments/wallet-adjustment.module';
+import { WalletTransactionModule } from './modules/branch/wallet_transactions/wallet-transaction.module';
 import { ProductLotModule } from './modules/product_lot/product_lot.module';
+import { MemberTierModule } from './modules/memberShip/member_tiers/member-tier.module';
+import { MemberModule } from './modules/memberShip/members/member.module';
+import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
+import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
 import { suppliersModule } from './modules/suppliers/suppliers.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -45,6 +57,7 @@ import { suppliersModule } from './modules/suppliers/suppliers.module';
         migrationsTableName: 'migrations',
       }),
     }),
+    TransactionModule,
     UserModule,
     AuthModule,
     MailModule,
@@ -64,6 +77,10 @@ import { suppliersModule } from './modules/suppliers/suppliers.module';
     CurrenciesModule,
     suppliersModule,
     ProductLotModule,
+    MemberTierModule,
+    MemberModule,
+    MemberPointModule,
+    MemberTransactionModule,
   ],
   controllers: [],
   providers: [

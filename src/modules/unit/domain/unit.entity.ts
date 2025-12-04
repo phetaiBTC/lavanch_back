@@ -28,7 +28,7 @@ export class Unit extends ShardEntity<UnitProps> {
     };
   }
 
-  update (
+  update(
     props: Partial<
       Omit<UnitProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
     >,
@@ -39,4 +39,3 @@ export class Unit extends ShardEntity<UnitProps> {
     });
   }
 }
-

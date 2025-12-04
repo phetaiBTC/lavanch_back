@@ -35,7 +35,7 @@ export const ProvinceMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-    }
+    };
   },
 };
 
@@ -57,12 +57,24 @@ export const DistrictMapper = {
       schema.province = ProvinceMapper.toSchema(domain.value.province);
     return schema;
   },
-  toResponse(domain: District[]): DistrictResponse[] {
+  toResponse(domain: District): DistrictResponse {
+    return {
+      id: domain.value.id!,
+      name: domain.value.name,
+      name_en: domain.value.name_en,
+      province: domain.value.province
+        ? ProvinceMapper.toResponse(domain.value.province)
+        : undefined,
+    };
+  },
+  toResponseList(domain: District[]): DistrictResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
-      province: d.value.province,
+      province: d.value.province
+        ? ProvinceMapper.toResponse(d.value.province)
+        : undefined,
     }));
   },
 };
@@ -90,15 +102,19 @@ export const VillageMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-      district: domain.value.district,
-    }
+      district: domain.value.district
+        ? DistrictMapper.toResponse(domain.value.district)
+        : undefined,
+    };
   },
   toResponseList(domain: Village[]): VillageResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
-      district: d.value.district,
+      district: d.value.district
+        ? DistrictMapper.toResponse(d.value.district)
+        : undefined,
     }));
   },
 };

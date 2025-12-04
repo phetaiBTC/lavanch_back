@@ -20,7 +20,7 @@ export class CreatePointUseCase {
     const point = new Point({
       name: dto.name,
       points_multiplier: dto.points_multiplier ?? 1.0,
-      name_code: dto.name_code
+      name_code: dto.name_code,
     });
 
     return this.pointRepo.save(point);

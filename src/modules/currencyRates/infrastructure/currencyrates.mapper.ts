@@ -48,4 +48,3 @@ class CurrencyRatesMapperClass extends BaseMapper<
   };
 }
 export const CurrencyRatesMapper = new CurrencyRatesMapperClass();
-
