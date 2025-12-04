@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TieredPriceRepositoryImpl } from './infrastructure/tiered_price.repository.impl';
 import { TieredPriceController } from './tiered_price.controller';
 import { TIERED_PRICE_REPOSITORY } from './domain/tiered_price.repository';
-import { TieredPriceOrm } from 'src/database/typeorm/tiered-price.orm-entity';
 import { CreateTieredPriceUseCase } from './application/commands/create-TieredPrice.usecase';
 import { UpdateTieredPriceUseCase } from './application/commands/update-TieredPrice.usecase';
 import { HardDeleteTieredPriceUseCase } from './application/commands/hard-TieredPrice.usecase';
@@ -11,6 +10,7 @@ import { SoftDeleteTieredPriceUseCase } from './application/commands/soft-Tiered
 import { RestoreTieredPriceUseCase } from './application/commands/restore-TieredPrice.usecase';
 import { FindOneTieredPriceUseCase } from './application/queries/findOne-TieredPrice.usecase';
 import { FindAllTieredPriceUseCase } from './application/queries/find-TieredPrice.usecase';
+import { TieredPriceOrm } from 'src/database/typeorm/tiered-price.orm-entity';
 @Module({
   imports: [TypeOrmModule.forFeature([TieredPriceOrm])],
   controllers: [TieredPriceController],
