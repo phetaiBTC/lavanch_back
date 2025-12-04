@@ -9,6 +9,8 @@ import { ADDRESS_REPOSITORY } from './domain/address.repository';
 import { GetProvinceUseCase } from './application/queries/get-Province.usecase';
 import { GetDistrictUseCase } from './application/queries/get-District.usecase';
 import { GetVillageUseCase } from './application/queries/get-Village.usecase';
+import { GetProvinceOneUseCase } from './application/queries/getOne-Province.usecase';
+import { GetOneVillageUseCase } from './application/queries/getOne-Village.usecase';
 @Module({
   imports: [TypeOrmModule.forFeature([ProvinceOrm, DistrictOrm, VillageOrm])],
   controllers: [AddressController],
@@ -20,6 +22,12 @@ import { GetVillageUseCase } from './application/queries/get-Village.usecase';
     GetProvinceUseCase,
     GetDistrictUseCase,
     GetVillageUseCase,
+<<<<<<< HEAD
+=======
+    GetProvinceOneUseCase,
+    GetOneVillageUseCase,
+>>>>>>> master
   ],
+  exports: [GetProvinceOneUseCase, GetOneVillageUseCase],
 })
 export class AddressModule {}

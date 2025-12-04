@@ -1,4 +1,16 @@
+<<<<<<< HEAD
 import { Controller, Patch, Param, Body } from '@nestjs/common';
+=======
+import {
+  Controller,
+  Patch,
+  Param,
+  Body,
+  Post,
+  Get,
+  Query,
+} from '@nestjs/common';
+>>>>>>> master
 import { Unit } from './domain/unit.entity';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { UnitResponse } from './interface/unit.interface';
@@ -15,9 +27,12 @@ import { SoftDeleteUnitUseCase } from './application/commands/soft-Unit.usecase'
 import { RestoreUnitUseCase } from './application/commands/restore-Unit.usecase';
 import { ActiveUnitUseCase } from './application/commands/active-Unit.usecase';
 import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseControllerSetup } from 'src/shared/BaseModule/base.controller';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('unit')
-export class UnitController extends BaseController<
+export class UnitController extends BaseControllerSetup<
   Unit,
   UnitOrm,
   UnitResponse,
@@ -25,27 +40,42 @@ export class UnitController extends BaseController<
   UpdateUnitDto
 > {
   constructor(
-    createUnitUseCase: CreateUnitUseCase,
-    updateUnitUseCase: UpdateUnitUseCase,
-    findOneUnitUseCase: FindOneUnitUseCase,
-    findAllUnitUseCase: FindAllUnitUseCase,
-    hardDeleteUnitUseCase: HardDeleteUnitUseCase,
-    softDeleteUnitUseCase: SoftDeleteUnitUseCase,
-    restoreUnitUseCase: RestoreUnitUseCase,
-    private readonly updateActiveUnitUseCase: ActiveUnitUseCase, // custom
+    private readonly createUnitUseCase: CreateUnitUseCase,
+    private readonly updateUnitUseCase: UpdateUnitUseCase,
+    private readonly findAllUnitUseCase: FindAllUnitUseCase,
+    private readonly updateActiveUnitUseCase: ActiveUnitUseCase,
+    protected readonly findOneUnitUseCase: FindOneUnitUseCase,
+    protected readonly hardDeleteUnitUseCase: HardDeleteUnitUseCase,
+    protected readonly softDeleteUnitUseCase: SoftDeleteUnitUseCase,
+    protected readonly restoreUnitUseCase: RestoreUnitUseCase,
   ) {
-    super(
-      UnitMapper,
-      createUnitUseCase,
-      updateUnitUseCase,
-      findOneUnitUseCase,
-      findAllUnitUseCase,
-      hardDeleteUnitUseCase,
-      softDeleteUnitUseCase,
-      restoreUnitUseCase,
+    super({
+      mapper: UnitMapper,
+      findOne: findOneUnitUseCase,
+      hardDelete: hardDeleteUnitUseCase,
+      softDelete: softDeleteUnitUseCase,
+      restore: restoreUnitUseCase,
+    });
+  }
+  @Post('')
+  async create(@Body() dto: CreateUnitDto): Promise<UnitResponse> {
+    return UnitMapper.toResponse(await this.createUnitUseCase.execute(dto));
+  }
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateUnitDto,
+  ): Promise<UnitResponse> {
+    return UnitMapper.toResponse(await this.updateUnitUseCase.execute(id, dto));
+  }
+  @Get('')
+  async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponse<UnitResponse>> {
+    return UnitMapper.toResponseList(
+      await this.findAllUnitUseCase.execute(query),
     );
   }
-
   // custom endpoint only for Unit
   @Patch('active-update/:id')
   async activeUpdate(

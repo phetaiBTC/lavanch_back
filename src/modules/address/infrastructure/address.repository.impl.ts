@@ -44,10 +44,26 @@ export class AddressRepositoryImpl implements IAddressRepository {
     return villages.map((village) => VillageMapper.toDomain(village));
   }
 
+<<<<<<< HEAD
   async getAllAddresses(): Promise<Village[]> {
     const villages = await this.villageRepository.find({
       relations: ['district', 'district.province'],
     });
     return villages.map((village) => VillageMapper.toDomain(village));
+=======
+  async getOneProvinceUseCase(id: number): Promise<Province | null> {
+    const province = await this.provinceRepository.findOne({
+      where: { id },
+    });
+    return province ? ProvinceMapper.toDomain(province) : null;
+  }
+
+  async getOneVillageUseCase(id: number): Promise<Village | null> {
+    const village = await this.villageRepository.findOne({
+      where: { id },
+      relations: ['district', 'district.province'],
+    });
+    return village ? VillageMapper.toDomain(village) : null;
+>>>>>>> master
   }
 }

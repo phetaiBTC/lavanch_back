@@ -8,12 +8,17 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
+      transformOptions: { enableImplicitConversion: true },
+      stopAtFirstError: false,
+      validationError: { target: false, value: false }, // security
     }),
   );
+<<<<<<< HEAD
   // app.setGlobalPrefix('api');
+=======
+
+  app.setGlobalPrefix('api');
+>>>>>>> master
   // app.enableCors({
   //   origin: process.env.FRONTEND_URL,
   //   credentials: true,

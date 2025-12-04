@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { DistrictOrm } from './district.orm-entity';
+import { SuppliersOrm } from './suppliers.orm-entity';
 @Entity('village')
 export class VillageOrm {
   @PrimaryGeneratedColumn()
@@ -13,4 +14,7 @@ export class VillageOrm {
 
   @ManyToOne(() => DistrictOrm, (district) => district.villages)
   district: DistrictOrm;
+
+  @OneToMany(() => SuppliersOrm, (suppliers) => suppliers.village)
+  suppliers: SuppliersOrm[];
 }

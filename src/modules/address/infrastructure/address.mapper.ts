@@ -23,12 +23,19 @@ export const ProvinceMapper = {
     if (domain.value.name_en != null) schema.name_en = domain.value.name_en;
     return schema;
   },
-  toResponse(domain: Province[]): ProvinceResponse[] {
+  toResponseList(domain: Province[]): ProvinceResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
     }));
+  },
+  toResponse(domain: Province): ProvinceResponse {
+    return {
+      id: domain.value.id!,
+      name: domain.value.name,
+      name_en: domain.value.name_en,
+    }
   },
 };
 
@@ -84,7 +91,15 @@ export const VillageMapper = {
       schema.district = DistrictMapper.toSchema(domain.value.district);
     return schema;
   },
-  toResponse(domain: Village[]): VillageResponse[] {
+  toResponse(domain: Village): VillageResponse {
+    return {
+      id: domain.value.id!,
+      name: domain.value.name,
+      name_en: domain.value.name_en,
+      district: domain.value.district,
+    }
+  },
+  toResponseList(domain: Village[]): VillageResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,

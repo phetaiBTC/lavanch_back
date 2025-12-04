@@ -30,11 +30,15 @@ import { BranchExpenseModule } from './modules/branch/branch_expenses/branch-exp
 import { WalletAdjustmentModule } from './modules/branch/wallet_adjustments/wallet-adjustment.module';
 import { WalletTransactionModule } from './modules/branch/wallet_transactions/wallet-transaction.module';
 import { ProductLotModule } from './modules/product_lot/product_lot.module';
+<<<<<<< HEAD
 import { MemberTierModule } from './modules/memberShip/member_tiers/member-tier.module';
 import { MemberModule } from './modules/memberShip/members/member.module';
 import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
 import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
 
+=======
+import { suppliersModule } from './modules/suppliers/suppliers.module';
+>>>>>>> master
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -74,12 +78,16 @@ import { MemberTransactionModule } from './modules/memberShip/member_transaction
     ProductPointModule,
     CurrencyRatesModule,
     CurrenciesModule,
+<<<<<<< HEAD
     BranchModule,
     ShiftsModule,
     ExpenseCategoryModule,
     BranchExpenseModule,
     WalletAdjustmentModule,
     WalletTransactionModule,
+=======
+    suppliersModule,
+>>>>>>> master
     ProductLotModule,
     MemberTierModule,
     MemberModule,

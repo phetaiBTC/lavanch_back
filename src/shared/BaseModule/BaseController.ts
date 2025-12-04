@@ -30,7 +30,7 @@ export abstract class BaseController<
   ) {}
 
   @Post()
-  async create(@Body() dto: TCreateDto): Promise<TResponse> {
+   async create(@Body() dto: TCreateDto): Promise<TResponse> {
     return this.mapper.toResponse(await this.createUseCase.execute(dto));
   }
 
