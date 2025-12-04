@@ -26,20 +26,20 @@ import { JwtModule } from '@nestjs/jwt';
           from: config.getOrThrow('SMTP_FROM'),
         },
         template: {
-            dir: join(process.cwd(), 'src/modules/mail/templates'),
-            adapter: new HandlebarsAdapter(),
-            options: {
-              strict: true,
-            },
-        }
+          dir: join(process.cwd(), 'src/modules/mail/templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
       }),
     }),
   ],
   providers: [
     SendMailUseCase,
     { provide: 'IMailService', useClass: MailServiceImpl },
-    SendEmailUserUseCase
+    SendEmailUserUseCase,
   ],
-  exports: [SendMailUseCase,SendEmailUserUseCase],
+  exports: [SendMailUseCase, SendEmailUserUseCase],
 })
 export class MailModule {}

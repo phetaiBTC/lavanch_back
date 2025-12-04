@@ -14,12 +14,11 @@ import { ProductVariantOrm } from './product-variant.orm-entity';
 
 @Entity('price_history')
 export class PriceHistoryOrm extends ShardOrm {
-
   @ManyToOne(() => ProductVariantOrm, { eager: true, nullable: false })
   @JoinColumn({ name: 'product_variant_id' })
   product_variant: ProductVariantOrm;
 
-  @ManyToOne(() => UnitOrm , { eager: true, nullable: false })
+  @ManyToOne(() => UnitOrm, { eager: true, nullable: false })
   @JoinColumn({ name: 'unit_id' })
   unit: UnitOrm;
 

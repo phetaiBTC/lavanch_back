@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { ROLE_REPOSITORY, type IRoleRepository } from '../../domain/role.repository';
+import {
+  ROLE_REPOSITORY,
+  type IRoleRepository,
+} from '../../domain/role.repository';
 import { Role } from '../../domain/role.entity';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 

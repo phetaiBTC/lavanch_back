@@ -15,7 +15,7 @@ export class CreateProductUnitUseCase {
   constructor(
     @Inject(PRODUCT_UNIT_REPOSITORY)
     private readonly productUnitRepo: IProductUnitRepository,
-    
+
     private readonly findProductVariant: FindOneProductVariantUseCase,
     private readonly findUnit: FindOneUnitUseCase,
   ) {}
@@ -34,7 +34,9 @@ export class CreateProductUnitUseCase {
   }
 
   private async loadRelations(dto: CreateProductUnitDto) {
-    const product_variant = await this.findProductVariant.execute(dto.product_variant_id);
+    const product_variant = await this.findProductVariant.execute(
+      dto.product_variant_id,
+    );
     const unit = await this.findUnit.execute(dto.unit_id);
     return { product_variant, unit };
   }

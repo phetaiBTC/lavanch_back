@@ -10,9 +10,9 @@ export class GetOneUserUseCase {
     @Inject(USER_REPOSITORY) private readonly userRepo: IUserRepository,
   ) {}
 
-  async execute(id:number): Promise<User> {
+  async execute(id: number): Promise<User> {
     const user = await this.userRepo.findById(id);
     if (!user) throw new NotFoundException('User not found');
-    return user
+    return user;
   }
 }

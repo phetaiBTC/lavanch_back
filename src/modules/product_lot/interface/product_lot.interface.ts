@@ -14,7 +14,7 @@ export interface ProductLotProps extends ShardInterfaceProps {
   expiry_date?: Date;
   quantity: number;
   cost_price_local: number;
-  cost_currency: Currencies | null; 
+  cost_currency: Currencies | null;
   cost_price_original: number;
   fx_rate: number;
 }
@@ -25,7 +25,7 @@ export interface ProductLotResponse extends ShardInterfaceResponse {
   expiry_date?: Date;
   quantity: number;
   cost_price_local: number;
-  cost_currency: CurrenciesResponse | null; 
+  cost_currency: CurrenciesResponse | null;
   cost_price_original: number;
   fx_rate: number;
 }

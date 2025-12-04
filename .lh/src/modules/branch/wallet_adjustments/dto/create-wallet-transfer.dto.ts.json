@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/modules/branch/wallet_adjustments/dto/create-wallet-transfer.dto.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1761669393198,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1761673123138,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,5 @@\n \r\n   @IsOptional()\r\n   @IsString()\r\n   description?: string;\r\n-\r\n-  @IsNotEmpty()\r\n-  @IsNumber()\r\n-  created_by: number;\r\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1761669393198,
+            "name": "Commit-0",
+            "content": "import { IsNotEmpty, IsNumber, IsString, IsOptional, Min } from 'class-validator';\r\n\r\nexport class CreateWalletTransferDto {\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  branch_id: number; // Sender branch\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  receiver_branch_id: number; // Receiver branch\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  @Min(0.01)\r\n  amount: number;\r\n\r\n  @IsOptional()\r\n  @IsString()\r\n  description?: string;\r\n\r\n  @IsNotEmpty()\r\n  @IsNumber()\r\n  created_by: number;\r\n}"
+        }
+    ]
+}

@@ -1,5 +1,3 @@
-
-
 import { ProductPoint } from '../domain/product_point.entity';
 import { ProductPointOrm } from 'src/database/typeorm/product_point.orm-entity';
 import { ProductPointResponse } from '../interface/product_point.interface';

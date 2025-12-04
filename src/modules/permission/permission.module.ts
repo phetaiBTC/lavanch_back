@@ -15,7 +15,7 @@ import { GetOnePermissionUseCase } from './application/queries/getOne-Permission
       useClass: PermissionRepositoryImpl,
     },
     GetPermissionUseCase,
-    GetOnePermissionUseCase
+    GetOnePermissionUseCase,
   ],
   exports: [GetOnePermissionUseCase],
 })

@@ -61,7 +61,6 @@
 //   },
 // };
 
-
 import { ProductVariant } from '../domain/product_variant.entity';
 import { ProductVariantResponse } from '../interface/product_variant.interface';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
@@ -92,7 +91,8 @@ class ProductVariantMapperClass extends BaseMapper<
     if (domain.value.name != null) schema.name = domain.value.name;
     if (domain.value.sku != null) schema.sku = domain.value.sku;
     if (domain.value.barcode != null) schema.barcode = domain.value.barcode;
-    if (domain.value.is_active != null) schema.is_active = domain.value.is_active;
+    if (domain.value.is_active != null)
+      schema.is_active = domain.value.is_active;
     if (domain.value.product != null)
       schema.product = ProductMapper.toSchema(domain.value.product);
 

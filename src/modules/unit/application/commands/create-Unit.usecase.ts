@@ -23,7 +23,7 @@ export class CreateUnitUseCase {
       name: dto.name,
       name_en: dto.name_en,
       abbreviation: dto.abbreviation,
-      is_active: dto.is_active ?? true
+      is_active: dto.is_active ?? true,
     });
 
     return this.unitRepo.save(unit);

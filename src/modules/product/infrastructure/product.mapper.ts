@@ -1,11 +1,14 @@
-
 import { Product } from '../domain/product.entity';
 import { ProductResponse } from '../interface/product.interface';
 import { ProductOrm } from 'src/database/typeorm/product.orm-entity';
 import { CategoryMapper } from 'src/modules/category/infrastructure/category.mapper';
 import { BaseMapper } from 'src/shared/BaseModule/infrastructure/base.mapper';
 
-class ProductMapperClass extends BaseMapper<Product, ProductOrm, ProductResponse> {
+class ProductMapperClass extends BaseMapper<
+  Product,
+  ProductOrm,
+  ProductResponse
+> {
   toDomain = (schema: ProductOrm): Product => {
     return new Product({
       id: schema.id,
@@ -55,4 +58,3 @@ class ProductMapperClass extends BaseMapper<Product, ProductOrm, ProductResponse
 }
 
 export const ProductMapper = new ProductMapperClass();
-

@@ -1,4 +1,2 @@
-
 import { CreatePriceHistoryDto } from './create-PriceHistory.dto';
-export class UpdatePriceHistoryDto extends CreatePriceHistoryDto {
-}
+export class UpdatePriceHistoryDto extends CreatePriceHistoryDto {}

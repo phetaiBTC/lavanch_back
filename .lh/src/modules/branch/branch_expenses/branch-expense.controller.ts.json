@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/branch/branch_expenses/branch-expense.controller.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1761673126659,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1761673126659,
+            "name": "Commit-0",
+            "content": "import {\r\n  Controller,\r\n  Get,\r\n  Post,\r\n  Body,\r\n  Param,\r\n  Patch,\r\n  Query,\r\n  UseGuards,\r\n} from '@nestjs/common';\r\nimport { CreateBranchExpenseDto } from './dto/create-branch-expense.dto';\r\nimport { ApproveExpenseDto } from './dto/approve-expense.dto';\r\nimport { PaginationDto } from 'src/shared/dto/pagination.dto';\r\nimport { CreateBranchExpenseUseCase } from './application/commands/create-branch-expense.usecase';\r\nimport { ApproveExpenseUseCase } from './application/commands/approve-expense.usecase';\r\nimport { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';\r\nimport { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';\r\nimport { PaginatedResponse } from 'src/shared/interface/pagination.interface';\r\nimport { BranchExpenseMapper } from './infrastructure/branch-expense.mapper';\r\nimport { BranchExpenseResponse } from './interface/branch-expense.interface';\r\nimport { JwtAuthGuard } from 'src/guards/AuthGuard';\r\nimport { CurrentUser } from 'src/shared/decorator/user.decorator';\r\n\r\n@Controller('branch-expenses')\r\n@UseGuards(JwtAuthGuard)\r\nexport class BranchExpenseController {\r\n  constructor(\r\n    private readonly createBranchExpenseUseCase: CreateBranchExpenseUseCase,\r\n    private readonly approveExpenseUseCase: ApproveExpenseUseCase,\r\n    private readonly findOneBranchExpenseUseCase: FindOneBranchExpenseUseCase,\r\n    private readonly findAllBranchExpenseUseCase: FindAllBranchExpenseUseCase,\r\n  ) {}\r\n\r\n  /**\r\n   * Create a new expense (status: PENDING)\r\n   * Does not affect wallet balance until approved\r\n   */\r\n  @Post()\r\n  async create(\r\n    @Body() dto: CreateBranchExpenseDto,\r\n    @CurrentUser() user: any,\r\n  ): Promise<BranchExpenseResponse> {\r\n    return BranchExpenseMapper.toResponse(\r\n      await this.createBranchExpenseUseCase.execute(dto, user.id),\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Get all expenses\r\n   */\r\n  @Get()\r\n  async findAll(\r\n    @Query() query: PaginationDto,\r\n  ): Promise<PaginatedResponse<BranchExpenseResponse>> {\r\n    return BranchExpenseMapper.toResponseList(\r\n      await this.findAllBranchExpenseUseCase.execute(query),\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Get single expense by ID\r\n   */\r\n  @Get(':id')\r\n  async findOne(@Param('id') id: number): Promise<BranchExpenseResponse> {\r\n    return BranchExpenseMapper.toResponse(\r\n      await this.findOneBranchExpenseUseCase.execute(id),\r\n    );\r\n  }\r\n\r\n  /**\r\n   * Approve or reject an expense\r\n   * When approved: Creates wallet transaction and deducts from branch balance\r\n   * When rejected: Just updates status\r\n   */\r\n  @Patch(':id/approve')\r\n  async approve(\r\n    @Param('id') id: number,\r\n    @Body() dto: ApproveExpenseDto,\r\n    @CurrentUser() user: any,\r\n  ): Promise<BranchExpenseResponse> {\r\n    return BranchExpenseMapper.toResponse(\r\n      await this.approveExpenseUseCase.execute(+id, dto, user.id),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

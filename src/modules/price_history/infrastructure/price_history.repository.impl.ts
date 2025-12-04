@@ -16,10 +16,6 @@ export class PriceHistoryRepositoryImpl
     @InjectRepository(PriceHistoryOrm)
     protected readonly price_historyRepo: Repository<PriceHistoryOrm>,
   ) {
-    super(
-      price_historyRepo,
-      PriceHistoryMapper,
-      'price_history',
-    );
+    super(price_historyRepo, PriceHistoryMapper, 'price_history');
   }
 }

@@ -15,7 +15,6 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 @Entity('product_prices')
 @Index(['product_variant', 'unit', 'effective_date'])
 export class ProductPriceOrm extends ShardOrm {
-
   @ManyToOne(() => ProductVariantOrm, { eager: true, nullable: false })
   @JoinColumn({ name: 'product_variant_id' })
   product_variant: ProductVariantOrm;

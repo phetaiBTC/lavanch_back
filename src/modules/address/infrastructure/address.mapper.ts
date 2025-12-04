@@ -62,7 +62,13 @@ export const DistrictMapper = {
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
-      province: d.value.province,
+      province: d.value.province
+        ? {
+            id: d.value.province.value.id!,
+            name: d.value.province.value.name,
+            name_en: d.value.province.value.name_en,
+          }
+        : undefined,
     }));
   },
 };
@@ -98,7 +104,20 @@ export const VillageMapper = {
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
-      district: d.value.district,
+      district: d.value.district
+        ? {
+            id: d.value.district.value.id!,
+            name: d.value.district.value.name,
+            name_en: d.value.district.value.name_en,
+            province: d.value.district.value.province
+              ? {
+                  id: d.value.district.value.province.value.id!,
+                  name: d.value.district.value.province.value.name,
+                  name_en: d.value.district.value.province.value.name_en,
+                }
+              : undefined,
+          }
+        : undefined,
     }));
   },
 };

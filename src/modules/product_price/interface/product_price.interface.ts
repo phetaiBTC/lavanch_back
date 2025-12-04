@@ -8,7 +8,6 @@ import {
   ShardInterfaceResponse,
 } from 'src/shared/BaseModule/interface/Base.interface';
 
-
 export interface ProductPriceProps extends ShardInterfaceProps {
   product_variant: ProductVariant;
   unit: Unit;

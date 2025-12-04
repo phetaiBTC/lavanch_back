@@ -4,7 +4,6 @@ import { PointNameCode } from 'src/shared/enum/point-name-code';
 
 @Entity('Point')
 export class PointOrm extends ShardOrm {
-
   @Column({ type: 'varchar', length: 255, nullable: false })
   name: string;
 

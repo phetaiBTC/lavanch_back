@@ -1,8 +1,4 @@
-import {
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-} from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber } from 'class-validator';
 export class UpdateProductPointDto {
   @IsNotEmpty()
   product_variant_id: number;

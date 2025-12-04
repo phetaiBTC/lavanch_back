@@ -36,7 +36,11 @@ export class TieredPrice extends ShardEntity<TieredPriceProps> {
     };
   }
 
-  update(props: Partial<Omit<TieredPriceProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>) {
+  update(
+    props: Partial<
+      Omit<TieredPriceProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ) {
     return new TieredPrice({ ...this.value, ...props });
   }
 }

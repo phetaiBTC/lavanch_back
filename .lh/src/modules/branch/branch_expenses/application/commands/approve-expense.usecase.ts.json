@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/modules/branch/branch_expenses/application/commands/approve-expense.usecase.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1761673127421,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1761673127421,
+            "name": "Commit-0",
+            "content": "import {\r\n  Injectable,\r\n  Inject,\r\n  NotFoundException,\r\n  BadRequestException,\r\n} from '@nestjs/common';\r\nimport {\r\n  BRANCH_EXPENSE_REPOSITORY,\r\n  type IBranchExpenseRepository,\r\n} from '../../domain/branch-expense.repository';\r\nimport { BranchExpense } from '../../domain/branch-expense.entity';\r\nimport { ApproveExpenseDto, ApprovalAction } from '../../dto/approve-expense.dto';\r\nimport { CreateWalletTransactionUseCase } from '../../../wallet_transactions/application/commands/create-wallet-transaction.usecase';\r\nimport { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';\r\n\r\n/**\r\n * ApproveExpenseUseCase\r\n * \r\n * This use case handles the approval or rejection of branch expenses.\r\n * When approved:\r\n * 1. Create a wallet transaction with type EXPENSE\r\n * 2. The wallet transaction automatically deducts the amount from branch balance\r\n * 3. Link the wallet transaction to the expense\r\n * 4. Update expense status to APPROVED\r\n */\r\n@Injectable()\r\nexport class ApproveExpenseUseCase {\r\n  constructor(\r\n    @Inject(BRANCH_EXPENSE_REPOSITORY)\r\n    private readonly expenseRepo: IBranchExpenseRepository,\r\n    private readonly createWalletTransactionUseCase: CreateWalletTransactionUseCase,\r\n  ) {}\r\n\r\n  async execute(id: number, dto: ApproveExpenseDto, approvedBy: number): Promise<BranchExpense> {\r\n    // Get expense\r\n    const expense = await this.expenseRepo.findById(id);\r\n    if (!expense) {\r\n      throw new NotFoundException(`Expense with ID ${id} not found`);\r\n    }\r\n\r\n    // Validate expense status\r\n    if (expense.value.status !== 'PENDING') {\r\n      throw new BadRequestException(\r\n        `Expense is already ${expense.value.status.toLowerCase()}`,\r\n      );\r\n    }\r\n\r\n    if (dto.action === ApprovalAction.REJECT) {\r\n      // Simply reject without creating wallet transaction\r\n      const rejected = expense.reject(approvedBy);\r\n      return this.expenseRepo.update(rejected);\r\n    }\r\n\r\n    // APPROVE: Create wallet transaction to deduct from branch balance\r\n    const walletTransaction = await this.createWalletTransactionUseCase.execute({\r\n      branch_id: expense.value.branch_id,\r\n      transaction_type: TransactionTypeEnum.EXPENSE,\r\n      amount: expense.value.amount,\r\n      reference_type: 'EXPENSE',\r\n      reference_id: expense.value.id!,\r\n      reference_no: expense.value.expense_no,\r\n      description: `Expense: ${expense.value.description || expense.value.expense_no}`,\r\n      notes: expense.value.notes,\r\n      created_by: approvedBy,\r\n      approved_by: approvedBy,\r\n    });\r\n\r\n    // Approve expense and link wallet transaction\r\n    const approved = expense.approve(\r\n      approvedBy,\r\n      walletTransaction.value.id!,\r\n    );\r\n\r\n    return this.expenseRepo.update(approved);\r\n  }\r\n}\r\n"
+        }
+    ]
+}

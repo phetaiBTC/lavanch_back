@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  Unique,
+} from 'typeorm';
 import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { ProductVariantOrm } from './product-variant.orm-entity';
 import { UnitOrm } from './unit.orm-entity';
