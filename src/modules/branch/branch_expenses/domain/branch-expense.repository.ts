@@ -11,6 +11,7 @@ export interface SummaryResponse {
   count_pending: number;
   count_approved: number;
   count_rejected: number;
+  total_count: number;
 }
 
 export interface IBranchExpenseRepository extends IRemoveRepository {

@@ -66,11 +66,19 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       });
     }
 
+    // Search in both expense_no and branch name
+    if (query.search) {
+      qb.andWhere(
+        '(branch_expenses.expense_no LIKE :search OR LOWER(branch.name) LIKE LOWER(:search))',
+        { search: `%${query.search}%` }
+      );
+    }
+
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
       type: query.type,
-      search: { kw: query.search, field: 'branch_expenses.expense_no' },
+      search: undefined, // Already handled above
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,
@@ -235,6 +243,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
         `SUM(CASE WHEN branch_expenses.status = 'REJECTED' THEN 1 ELSE 0 END)`,
         'count_rejected',
       )
+      .addSelect('COUNT(*)', 'total_count')
       .getRawOne();
 
     return {
@@ -242,6 +251,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       count_pending: Number(result?.count_pending || 0),
       count_approved: Number(result?.count_approved || 0),
       count_rejected: Number(result?.count_rejected || 0),
+      total_count: Number(result?.total_count || 0),
     };
   }
 }

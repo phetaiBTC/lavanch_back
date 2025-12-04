@@ -13,4 +13,5 @@ export interface IExpenseCategoryRepository extends IRemoveRepository {
   create(category: ExpenseCategory): Promise<ExpenseCategory>;
   update(category: ExpenseCategory): Promise<ExpenseCategory>;
   findByCode(code: string): Promise<ExpenseCategory | null>;
+  deleteMultiple(ids: number[]): Promise<void>;
 }

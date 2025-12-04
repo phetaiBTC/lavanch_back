@@ -67,12 +67,22 @@ export class ExpenseCategoryRepositoryImpl
   }
 
   async softDelete(id: number): Promise<{ message: string }> {
+    // Set is_active to false before soft deleting
+    await this.categoryRepo.update(id, { is_active: false });
     await this.categoryRepo.softDelete(id);
     return { message: 'soft delete successfully' };
   }
 
   async restore(id: number): Promise<{ message: string }> {
     await this.categoryRepo.restore(id);
+    // Set is_active to true after restoring
+    await this.categoryRepo.update(id, { is_active: true });
     return { message: 'restore successfully' };
+  }
+
+  async deleteMultiple(ids: number[]): Promise<void> {
+    // Set is_active to false before soft deleting
+    await this.categoryRepo.update(ids, { is_active: false });
+    await this.categoryRepo.softDelete(ids);
   }
 }
