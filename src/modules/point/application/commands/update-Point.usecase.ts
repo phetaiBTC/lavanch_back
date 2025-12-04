@@ -12,8 +12,7 @@ export class UpdatePointUseCase {
   constructor(
     @Inject(POINT_REPOSITORY)
     private readonly pointRepo: IPointRepository,
-        private readonly usecaseFIndOnePoint: FindOnePointUseCase,
-
+    private readonly usecaseFIndOnePoint: FindOnePointUseCase,
   ) {}
 
   async execute(id: number, dto: UpdatePointDto): Promise<Point> {

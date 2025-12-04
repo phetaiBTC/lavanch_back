@@ -1,4 +1,3 @@
-
 import { ProductLot } from '../domain/product_lot.entity';
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { ProductLotResponse } from '../interface/product_lot.interface';

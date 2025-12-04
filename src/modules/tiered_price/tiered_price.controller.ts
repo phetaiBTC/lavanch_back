@@ -1,6 +1,4 @@
-import {
-  Controller
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { CreateTieredPriceDto } from './dto/create-TieredPrice.dto';
 import { UpdateTieredPriceDto } from './dto/update-TieredPrice.dto';
 import { CreateTieredPriceUseCase } from './application/commands/create-TieredPrice.usecase';

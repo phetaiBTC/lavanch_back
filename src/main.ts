@@ -13,8 +13,12 @@ async function bootstrap() {
       validationError: { target: false, value: false }, // security
     }),
   );
+<<<<<<< HEAD
+  // app.setGlobalPrefix('api');
+=======
 
   app.setGlobalPrefix('api');
+>>>>>>> master
   // app.enableCors({
   //   origin: process.env.FRONTEND_URL,
   //   credentials: true,

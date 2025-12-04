@@ -84,4 +84,3 @@ export class UnitRepositoryImpl
     return this.findByField('name', name);
   }
 }
-

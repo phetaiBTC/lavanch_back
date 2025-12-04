@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { PointNameCode } from 'src/shared/enum/point-name-code';
 
 export class CreatePointDto {

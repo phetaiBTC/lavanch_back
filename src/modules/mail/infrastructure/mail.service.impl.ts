@@ -6,12 +6,17 @@ import { IMailService } from '../domain/mail.service';
 export class MailServiceImpl implements IMailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendMail(to: string, subject: string, template: string, context: any): Promise<void> {
+  async sendMail(
+    to: string,
+    subject: string,
+    template: string,
+    context: any,
+  ): Promise<void> {
     await this.mailerService.sendMail({
       to,
       subject,
       template, // เช่น 'welcome' → จะไปหา templates/welcome.hbs
-      context,  // data ที่ใช้ใน template
+      context, // data ที่ใช้ใน template
     });
   }
 }

@@ -11,14 +11,15 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 
 @Entity('Category')
 export class CategoryOrm extends ShardOrm {
-
   @Column({ type: 'varchar', length: 255, nullable: false })
   name: string;
 
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @ManyToOne(() => CategoryOrm, (category) => category.children, { nullable: true })
+  @ManyToOne(() => CategoryOrm, (category) => category.children, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'parent_id' })
   parent?: CategoryOrm;
 

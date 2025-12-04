@@ -1,7 +1,9 @@
 import { Product } from 'src/modules/product/domain/product.entity';
 import { ProductResponse } from 'src/modules/product/interface/product.interface';
-import { ShardInterfaceProps, ShardInterfaceResponse } from 'src/shared/BaseModule/interface/Base.interface';
-
+import {
+  ShardInterfaceProps,
+  ShardInterfaceResponse,
+} from 'src/shared/BaseModule/interface/Base.interface';
 
 export interface ProductVariantProps extends ShardInterfaceProps {
   name: string;
@@ -14,6 +16,6 @@ export interface ProductVariantResponse extends ShardInterfaceResponse {
   name: string;
   sku?: string;
   barcode?: string;
-  product?: ProductResponse  | null;
+  product?: ProductResponse | null;
   is_active: boolean;
 }

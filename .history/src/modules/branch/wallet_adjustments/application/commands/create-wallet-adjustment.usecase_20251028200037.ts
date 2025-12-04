@@ -1,0 +1,100 @@
+import { 
+  Injectable, 
+  Inject, 
+  NotFoundException, 
+  BadRequestException 
+} from '@nestjs/common';
+import {
+  WALLET_ADJUSTMENT_REPOSITORY,
+  type IWalletAdjustmentRepository,
+} from '../../domain/wallet-adjustment.repository';
+import {
+  BRANCH_REPOSITORY,
+  type IBranchRepository,
+} from '../../../branch/domain/branch.repository';
+import { WalletAdjustment } from '../../domain/wallet-adjustment.entity';
+import { CreateWalletAdjustmentDto, AdjustmentTypeEnum } from '../../dto/create-wallet-adjustment.dto';
+import { CreateWalletTransactionUseCase } from '../../../wallet_transactions/application/commands/create-wallet-transaction.usecase';
+import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
+import { DataSource } from 'typeorm';
+
+@Injectable()
+export class CreateWalletAdjustmentUseCase {
+  constructor(
+    @Inject(WALLET_ADJUSTMENT_REPOSITORY)
+    private readonly adjustmentRepo: IWalletAdjustmentRepository,
+    @Inject(BRANCH_REPOSITORY)
+    private readonly branchRepo: IBranchRepository,
+    private readonly createWalletTransactionUseCase: CreateWalletTransactionUseCase,
+    @Inject(DataSource)
+    private readonly dataSource: DataSource,
+  ) {}
+
+  /**
+   * Create a new wallet adjustment with automatic wallet transaction creation
+   * This method runs everything in a single database transaction for consistency
+   */
+  async execute(dto: CreateWalletAdjustmentDto): Promise<WalletAdjustment> {
+    // Validate branch exists
+    const branch = await this.branchRepo.findById(dto.branch_id);
+    if (!branch) {
+      throw new NotFoundException(`Branch with ID ${dto.branch_id} not found`);
+    }
+
+    // Run everything in a single transaction
+    return await this.dataSource.transaction(async (manager) => {
+      // Generate unique adjustment number
+      const adjustmentNo = await this.adjustmentRepo.generateAdjustmentNo();
+
+      // Get current wallet balance
+      const currentBalance = await this.branchRepo.getWalletBalance(dto.branch_id);
+
+      // Calculate new balance
+      let newBalance: number;
+      if (dto.adjustment_type === AdjustmentTypeEnum.ADD) {
+        newBalance = currentBalance + dto.amount;
+      } else {
+        newBalance = currentBalance - dto.amount;
+        // Prevent negative balance
+        if (newBalance < 0) {
+          throw new BadRequestException(
+            `Insufficient balance. Current: ${currentBalance}, Required: ${dto.amount}`
+          );
+        }
+      }
+
+      // Create adjustment record with PENDING status
+      const adjustment = new WalletAdjustment({
+        ...dto,
+        adjustment_no: adjustmentNo,
+        status: 'PENDING',
+      });
+
+      const savedAdjustment = await this.adjustmentRepo.create(adjustment);
+
+      // Create wallet transaction
+      const walletTransaction = await this.createWalletTransactionUseCase.execute({
+        branch_id: dto.branch_id,
+        transaction_type: TransactionTypeEnum.ADJUSTMENT,
+        amount: dto.amount,
+        reference_type: 'WALLET_ADJUSTMENT',
+        reference_id: savedAdjustment.value.id!,
+        reference_no: adjustmentNo,
+        description: `Wallet Adjustment (${dto.adjustment_type}): ${dto.reason}`,
+        notes: dto.description,
+        created_by: dto.created_by,
+        approved_by: dto.created_by, // Auto-approve adjustments
+      });
+
+      // Link wallet transaction to adjustment
+      const updatedAdjustment = new WalletAdjustment({
+        ...savedAdjustment.value,
+        wallet_transaction_id: walletTransaction.value.id!,
+        status: 'APPROVED', // Auto-approve adjustments
+        approved_by: dto.created_by,
+      });
+
+      return this.adjustmentRepo.update(updatedAdjustment);
+    });
+  }
+}

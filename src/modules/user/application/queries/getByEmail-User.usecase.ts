@@ -10,7 +10,7 @@ export class GetByEmailUserUseCase {
     @Inject(USER_REPOSITORY) private readonly userRepo: IUserRepository,
   ) {}
 
-  async execute(email:string): Promise<User> {
+  async execute(email: string): Promise<User> {
     const user = await this.userRepo.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');

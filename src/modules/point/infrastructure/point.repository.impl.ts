@@ -1,5 +1,3 @@
-
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PointOrm } from 'src/database/typeorm/point.orm-entity';

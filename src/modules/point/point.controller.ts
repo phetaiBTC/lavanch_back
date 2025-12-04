@@ -1,5 +1,3 @@
-
-
 import { Controller } from '@nestjs/common';
 import { Point } from './domain/point.entity';
 import { PointOrm } from 'src/database/typeorm/point.orm-entity';
@@ -46,5 +44,4 @@ export class PointController extends BaseController<
   }
 
   //  custom endpoints only for Point
-  
 }
