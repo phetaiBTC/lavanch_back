@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/main.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1764856533753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1764856533753,
+            "name": "Commit-0",
+            "content": "import { NestFactory } from '@nestjs/core';\r\nimport { AppModule } from './app.module';\r\nimport { ValidationPipe } from '@nestjs/common';\r\nasync function bootstrap() {\r\n  const app = await NestFactory.create(AppModule);\r\n  app.useGlobalPipes(\r\n    new ValidationPipe({\r\n      whitelist: true,\r\n      forbidNonWhitelisted: true,\r\n      transform: true,\r\n      transformOptions: { enableImplicitConversion: true },\r\n      stopAtFirstError: false,\r\n      validationError: { target: false, value: false }, // security\r\n    }),\r\n  );\r\n  \r\n  app.setGlobalPrefix('api');\r\n  // app.enableCors({\r\n  //   origin: process.env.FRONTEND_URL,\r\n  //   credentials: true,\r\n  // });\r\n  app.enableCors();\r\n\r\n  await app.listen(process.env.PORT || 4000);\r\n}\r\nbootstrap();\r\n"
+        }
+    ]
+}

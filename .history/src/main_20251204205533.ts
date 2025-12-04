@@ -13,10 +13,7 @@ async function bootstrap() {
       validationError: { target: false, value: false }, // security
     }),
   );
-<<<<<<< HEAD
-=======
   
->>>>>>> master
   app.setGlobalPrefix('api');
   // app.enableCors({
   //   origin: process.env.FRONTEND_URL,

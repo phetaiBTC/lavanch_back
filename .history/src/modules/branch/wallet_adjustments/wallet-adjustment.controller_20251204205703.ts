@@ -31,7 +31,7 @@ import { WalletAdjustmentMapper } from './infrastructure/wallet-adjustment.mappe
 import { WalletAdjustmentResponse } from './interface/wallet-adjustment.interface';
 import { JwtAuthGuard } from 'src/guards/AuthGuard';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
-import type { AuthPayload } from 'src/modules/auth/interface/auth.interface';
+import { AuthPayload } from 'src/modules/auth/interface/auth.interface';
 
 @Controller('wallet-adjustments')
 @UseGuards(JwtAuthGuard)
@@ -53,7 +53,7 @@ export class WalletAdjustmentController {
   @Post('deposit')
   async createDeposit(
     @Body() dto: CreateDepositAdjustmentDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
@@ -71,7 +71,7 @@ export class WalletAdjustmentController {
   @Post('withdraw')
   async createWithdraw(
     @Body() dto: CreateWithdrawAdjustmentDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
@@ -92,7 +92,7 @@ export class WalletAdjustmentController {
   @Post('found')
   async createFound(
     @Body() dto: CreateFoundAdjustmentDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
@@ -110,7 +110,7 @@ export class WalletAdjustmentController {
   @Post('lost')
   async createLost(
     @Body() dto: CreateLostAdjustmentDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
@@ -128,7 +128,7 @@ export class WalletAdjustmentController {
   @Post('transfer')
   async createTransfer(
     @Body() dto: CreateWalletTransferDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     return WalletAdjustmentMapper.toResponse(
       await this.createTransferAdjustmentUseCase.execute(dto, user.id),
@@ -166,7 +166,7 @@ export class WalletAdjustmentController {
   async approve(
     @Param('id') id: number,
     @Body() dto: ApproveAdjustmentDto,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<WalletAdjustmentResponse> {
     return WalletAdjustmentMapper.toResponse(
       await this.approveAdjustmentUseCase.execute(+id, dto, user.id),

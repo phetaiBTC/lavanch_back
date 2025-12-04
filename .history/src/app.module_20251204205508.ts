@@ -34,13 +34,8 @@ import { MemberTierModule } from './modules/memberShip/member_tiers/member-tier.
 import { MemberModule } from './modules/memberShip/members/member.module';
 import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
 import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
-<<<<<<< HEAD
-import { suppliersModule } from './modules/suppliers/suppliers.module';
-
-=======
 
 import { suppliersModule } from './modules/suppliers/suppliers.module';
->>>>>>> master
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -86,16 +81,12 @@ import { suppliersModule } from './modules/suppliers/suppliers.module';
     BranchExpenseModule,
     WalletAdjustmentModule,
     WalletTransactionModule,
-<<<<<<< HEAD
-=======
     suppliersModule,
->>>>>>> master
     ProductLotModule,
     MemberTierModule,
     MemberModule,
     MemberPointModule,
     MemberTransactionModule,
-    suppliersModule
   ],
   controllers: [],
   providers: [

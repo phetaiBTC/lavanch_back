@@ -57,25 +57,19 @@ export const DistrictMapper = {
       schema.province = ProvinceMapper.toSchema(domain.value.province);
     return schema;
   },
-  toResponseList(domain: District[]): DistrictResponse[] {
+  toResponse(domain: District[]): DistrictResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
       province: d.value.province
-        ? ProvinceMapper.toResponse(d.value.province)
+        ? {
+            id: d.value.province.value.id!,
+            name: d.value.province.value.name,
+            name_en: d.value.province.value.name_en,
+          }
         : undefined,
     }));
-  },
-  toResponse(domain: District): DistrictResponse {
-    return {
-      id: domain.value.id!,
-      name: domain.value.name,
-      name_en: domain.value.name_en,
-      province: domain.value.province
-        ? ProvinceMapper.toResponse(domain.value.province)
-        : undefined,
-    }
   },
 };
 
@@ -102,9 +96,7 @@ export const VillageMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-      district: domain.value.district
-        ? DistrictMapper.toResponse(domain.value.district)
-        : undefined,
+      district: domain.value.district,
     }
   },
   toResponseList(domain: Village[]): VillageResponse[] {

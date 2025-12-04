@@ -50,10 +50,7 @@ export class AddressRepositoryImpl implements IAddressRepository {
     });
     return villages.map((village) => VillageMapper.toDomain(village));
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> master
   async getOneProvinceUseCase(id: number): Promise<Province | null> {
     const province = await this.provinceRepository.findOne({
       where: { id },

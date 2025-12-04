@@ -28,7 +28,7 @@ export class AddressController {
   async getDistrict(
     @Param('id') provinceId: number,
   ): Promise<DistrictResponse[]> {
-    return DistrictMapper.toResponse(
+    return DistrictMapper.toResponseList(
       await this.getDistrictUseCase.execute(provinceId),
     );
   }

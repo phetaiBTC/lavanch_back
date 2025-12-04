@@ -22,7 +22,7 @@ import { BranchExpenseResponse } from './interface/branch-expense.interface';
 import { JwtAuthGuard } from 'src/guards/AuthGuard';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
 import { SummaryResponse } from './domain/branch-expense.repository';
-import type { AuthPayload } from 'src/modules/auth/interface/auth.interface';
+import { AuthPayload } from 'src/modules/auth/interface/auth.interface';
 
 @Controller('branch-expenses')
 @UseGuards(JwtAuthGuard)

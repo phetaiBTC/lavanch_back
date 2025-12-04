@@ -22,11 +22,8 @@ import { GetOneVillageUseCase } from './application/queries/getOne-Village.useca
     GetProvinceUseCase,
     GetDistrictUseCase,
     GetVillageUseCase,
-<<<<<<< HEAD
-=======
     GetProvinceOneUseCase,
     GetOneVillageUseCase,
->>>>>>> master
   ],
   exports: [GetProvinceOneUseCase, GetOneVillageUseCase],
 })

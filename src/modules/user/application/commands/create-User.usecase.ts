@@ -15,7 +15,7 @@ export class CreateUserUseCase {
     private readonly sendEmailUserUseCase: SendEmailUserUseCase,
   ) {}
 
-  async execute(dto: CreateUserDto | RegisterUserDto): Promise<User> {
+  async execute(dto: CreateUserDto): Promise<User> {
     if (dto.password != dto.confirm_password)
       throw new BadRequestException('Passwords do not match');
     const userExists = await this.userRepo.findByEmail(dto.email);
