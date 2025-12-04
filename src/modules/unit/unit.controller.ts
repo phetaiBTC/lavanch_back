@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-import { Controller, Patch, Param, Body } from '@nestjs/common';
-=======
-import {
-  Controller,
-  Patch,
-  Param,
-  Body,
-  Post,
-  Get,
-  Query,
-} from '@nestjs/common';
->>>>>>> master
+import { Controller, Patch, Param, Body, Post, Get, Query } from '@nestjs/common';
 import { Unit } from './domain/unit.entity';
 import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { UnitResponse } from './interface/unit.interface';
