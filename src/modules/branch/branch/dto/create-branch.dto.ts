@@ -4,6 +4,8 @@ import {
   IsOptional,
   IsNumber,
   IsBoolean,
+  Matches,
+  Length,
 } from 'class-validator';
 
 export class CreateBranchDto {
@@ -21,6 +23,8 @@ export class CreateBranchDto {
 
   @IsOptional()
   @IsString()
+  @Matches(/^[0-9]+$/, { message: 'Phone must contain only numbers' })
+  @Length(10, 11, { message: 'Phone must be 10-11 digits' })
   phone?: string;
 
   @IsOptional()

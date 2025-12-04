@@ -19,6 +19,13 @@ export enum Status {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }
+
+export enum ActiveStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  ALL = 'all',
+}
+
 export class PaginationDto {
   @IsOptional()
   @Type(() => Number)
@@ -47,4 +54,8 @@ export class PaginationDto {
   @IsEnum(Status)
   @IsOptional()
   is_active?: Status = Status.ACTIVE;
+
+  @IsEnum(ActiveStatus)
+  @IsOptional()
+  status?: ActiveStatus;
 }

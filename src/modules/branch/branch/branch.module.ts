@@ -11,6 +11,9 @@ import { RestoreBranchUseCase } from './application/commands/restore-branch.usec
 import { FindOneBranchUseCase } from './application/queries/findOne-branch.usecase';
 import { FindAllBranchUseCase } from './application/queries/find-branch.usecase';
 import { UpdateBranchUseCase } from './application/commands/update-branch.usecase';
+import { GetBranchSummaryUseCase } from './application/queries/get-branch-summary.usecase';
+import { ToggleBranchStatusUseCase } from './application/commands/toggle-branch-status.usecase';
+import { DeleteMultipleBranchesUseCase } from './application/commands/delete-multiple-branches.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BranchesOrm])],
@@ -24,6 +27,9 @@ import { UpdateBranchUseCase } from './application/commands/update-branch.usecas
     RestoreBranchUseCase,
     FindOneBranchUseCase,
     FindAllBranchUseCase,
+    GetBranchSummaryUseCase,
+    ToggleBranchStatusUseCase,
+    DeleteMultipleBranchesUseCase,
   ],
   exports: [BRANCH_REPOSITORY, FindOneBranchUseCase],
 })

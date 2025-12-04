@@ -5,8 +5,9 @@ import { BranchesOrm } from 'src/database/typeorm/branches.orm-entity';
 import { IBranchRepository } from '../domain/branch.repository';
 import { Branch } from '../domain/branch.entity';
 import { BranchMapper } from './branch.mapper';
-import { PaginationDto, Status } from 'src/shared/dto/pagination.dto';
+import { PaginationDto, Status, ActiveStatus } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
+import { BranchSummaryResponse } from '../application/queries/get-branch-summary.usecase';
 
 @Injectable()
 export class BranchRepositoryImpl implements IBranchRepository {
@@ -32,11 +33,20 @@ export class BranchRepositoryImpl implements IBranchRepository {
       });
     }
 
+    // Filter by deletedAt (soft delete status)
     if (query.is_active === Status.ACTIVE) {
       qb.andWhere(`branches.deletedAt IS NULL`);
     } else if (query.is_active === Status.INACTIVE) {
       qb.andWhere(`branches.deletedAt IS NOT NULL`);
     }
+
+    // Filter by is_active column (active/inactive status)
+    if (query.status === 'active') {
+      qb.andWhere(`branches.is_active = :isActive`, { isActive: true });
+    } else if (query.status === 'inactive') {
+      qb.andWhere(`branches.is_active = :isActive`, { isActive: false });
+    }
+    // If status is 'all' or undefined, don't filter by is_active
 
     qb.orderBy(`branches.createdAt`, query.sort || 'DESC');
 
@@ -136,12 +146,52 @@ export class BranchRepositoryImpl implements IBranchRepository {
   }
 
   async softDelete(id: number): Promise<{ message: string }> {
+    // Set is_active to false before soft deleting
+    await this.branchRepo.update(id, { is_active: false });
     await this.branchRepo.softDelete(id);
     return { message: 'soft delete successfully' };
   }
 
   async restore(id: number): Promise<{ message: string }> {
     await this.branchRepo.restore(id);
+    // Set is_active to true after restoring
+    await this.branchRepo.update(id, { is_active: true });
     return { message: 'restore successfully' };
+  }
+
+  async getSummary(): Promise<BranchSummaryResponse> {
+    // Get all branches with their wallet balances
+    const branches = await this.branchRepo.find({
+      select: ['id', 'name', 'wallet_balance', 'is_active'],
+      where: { deletedAt: null as any }, // Only active (non-deleted) branches
+    });
+
+    // Calculate wallet balance per branch
+    const total_wallet_balance_per_branch = branches.map((branch) => ({
+      branch_id: branch.id,
+      branch_name: branch.name,
+      wallet_balance: Number(branch.wallet_balance),
+    }));
+
+    // Calculate total wallet balance
+    const total_wallet_balance_all_branches = branches.reduce(
+      (sum, branch) => sum + Number(branch.wallet_balance),
+      0,
+    );
+
+    // Count active and inactive branches
+    const active_count = branches.filter((b) => b.is_active === true).length;
+    const inactive_count = branches.filter((b) => b.is_active === false).length;
+
+    return {
+      total_wallet_balance_per_branch,
+      total_wallet_balance_all_branches,
+      active_count,
+      inactive_count,
+    };
+  }
+
+  async deleteMultiple(ids: number[]): Promise<void> {
+    await this.branchRepo.softDelete(ids);
   }
 }
