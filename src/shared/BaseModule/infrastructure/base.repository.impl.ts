@@ -41,6 +41,11 @@ export abstract class BaseRepository<
   }
 
   async findById(id: number, relations?: string[]): Promise<TDomain | null> {
+    // const entity = await this.repository.findOne({
+    //   where: { id } as any,
+    //   relations,
+    //   withDeleted: true,
+    // });
     const entity = await this.repository.findOne({
       where: { id } as any,
       relations,
@@ -80,6 +85,7 @@ export abstract class BaseRepository<
   protected createBaseQueryBuilder(): SelectQueryBuilder<TOrm> {
     return this.repository.createQueryBuilder(this.tableName);
   }
+  
 
   async findByField<K extends keyof TOrm>(
     field: K,

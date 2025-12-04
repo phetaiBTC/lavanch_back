@@ -22,7 +22,7 @@ export class AddressController {
   ) {}
   @Get('province')
   async getProvince(): Promise<ProvinceResponse[]> {
-    return ProvinceMapper.toResponse(await this.getProvinceUseCase.execute());
+    return ProvinceMapper.toResponseList(await this.getProvinceUseCase.execute());
   }
   @Get('district/:id')
   async getDistrict(
@@ -34,6 +34,6 @@ export class AddressController {
   }
   @Get('village/:id')
   async getVillage(@Param('id') id: number): Promise<VillageResponse[]> {
-    return VillageMapper.toResponse(await this.getVillageUseCase.execute(id));
+    return VillageMapper.toResponseList(await this.getVillageUseCase.execute(id));
   }
 }

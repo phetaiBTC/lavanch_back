@@ -40,6 +40,6 @@ import { RestoreUserUseCase } from './application/commands/restore-User.usecase'
     HardDeleteUserUseCase,
     RestoreUserUseCase
   ],
-  exports: [GetByEmailUserUseCase,GetOneUserUseCase,UpdateUserUseCase],
+  exports: [GetByEmailUserUseCase,GetOneUserUseCase,UpdateUserUseCase,CreateUserUseCase],
 })
 export class UserModule {}

@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { DistrictOrm } from './district.orm-entity';
+import { SuppliersOrm } from './suppliers.orm-entity';
 @Entity('province')
 export class ProvinceOrm {
   @PrimaryGeneratedColumn()
