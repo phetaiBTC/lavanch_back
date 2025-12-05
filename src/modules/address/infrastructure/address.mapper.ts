@@ -35,7 +35,7 @@ export const ProvinceMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-    }
+    };
   },
 };
 

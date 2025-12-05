@@ -2,7 +2,7 @@ import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 export interface IBaseRepository<TDomain> {
-  findAll(query: PaginationDto): Promise<PaginatedResponse<TDomain>>;
+  findAll(query: PaginationDto, joins?: { relation: string; as: string }[]): Promise<PaginatedResponse<TDomain>>;
   findById(id: number): Promise<TDomain | null>;
   save(domain: TDomain): Promise<TDomain>;
   hardDelete(id: number): Promise<{ message: string }>;

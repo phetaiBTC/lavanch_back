@@ -15,6 +15,7 @@ export class FindAllProductVariantUseCase {
   async execute(
     query: PaginationDto,
   ): Promise<PaginatedResponse<ProductVariant>> {
-    return await this.product_variantRepo.findAll(query);
+    const joins = [{ relation: 'product_variant.product', as: 'product' }];
+    return await this.product_variantRepo.findAll(query, joins);
   }
 }

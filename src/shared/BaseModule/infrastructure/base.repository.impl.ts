@@ -32,7 +32,7 @@ export abstract class BaseRepository<
       qb,
       page: query.page || 1,
       type: query.type,
-      search: { kw: query.search, field: this.searchField },
+      search: { kw: query.search, field: this.tableName + '.' + this.searchField },
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,

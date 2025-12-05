@@ -13,6 +13,7 @@ export async function fetchWithPagination<T extends object, U>(query: {
   toDomain: (entity: T) => U;
 }): Promise<PaginatedResponse<U>> {
   if (query.search && query.search.kw) {
+    console.log(query.search.kw, query.search.field);
     query.qb.andWhere(`${query.search.field} LIKE :kw`, {
       kw: `%${query.search.kw}%`,
     });
