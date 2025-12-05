@@ -17,11 +17,11 @@ export class RegisterUserDto {
   @IsString()
   confirm_password:string
 
-  @IsArray()
-  @IsNumber({}, { each: true })
-  roles: number[]
+  // @IsArray()
+  // @IsNumber({}, { each: true })
+  // roles: number[]
 
-  @IsArray()
-  @IsNumber({}, { each: true })
-  permissions: number[]
+  // @IsArray()
+  // @IsNumber({}, { each: true })
+  // permissions: number[]
 }

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -13,7 +13,18 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
-  confirm_password: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // confirm_password: string;
+
+  @IsBoolean()
+  is_verified: boolean;
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  roles: number[];
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  permissions: number[];
 }

@@ -35,7 +35,7 @@ export const ProvinceMapper = {
       id: domain.value.id!,
       name: domain.value.name,
       name_en: domain.value.name_en,
-    };
+    }
   },
 };
 
@@ -57,25 +57,19 @@ export const DistrictMapper = {
       schema.province = ProvinceMapper.toSchema(domain.value.province);
     return schema;
   },
-  toResponseList(domain: District[]): DistrictResponse[] {
+  toResponse(domain: District[]): DistrictResponse[] {
     return domain.map((d) => ({
       id: d.value.id!,
       name: d.value.name,
       name_en: d.value.name_en,
       province: d.value.province
-        ? ProvinceMapper.toResponse(d.value.province)
+        ? {
+            id: d.value.province.value.id!,
+            name: d.value.province.value.name,
+            name_en: d.value.province.value.name_en,
+          }
         : undefined,
     }));
-  },
-  toResponse(domain: District): DistrictResponse {
-    return {
-      id: domain.value.id!,
-      name: domain.value.name,
-      name_en: domain.value.name_en,
-      province: domain.value.province
-        ? ProvinceMapper.toResponse(domain.value.province)
-        : undefined,
-    }
   },
 };
 
@@ -103,7 +97,18 @@ export const VillageMapper = {
       name: domain.value.name,
       name_en: domain.value.name_en,
       district: domain.value.district
-        ? DistrictMapper.toResponse(domain.value.district)
+        ? {
+            id: domain.value.district.value.id!,
+            name: domain.value.district.value.name,
+            name_en: domain.value.district.value.name_en,
+            province: domain.value.district.value.province
+              ? {
+                  id: domain.value.district.value.province.value.id!,
+                  name: domain.value.district.value.province.value.name,
+                  name_en: domain.value.district.value.province.value.name_en,
+                }
+              : undefined,
+          }
         : undefined,
     }
   },
@@ -113,7 +118,18 @@ export const VillageMapper = {
       name: d.value.name,
       name_en: d.value.name_en,
       district: d.value.district
-        ? DistrictMapper.toResponse(d.value.district)
+        ? {
+            id: d.value.district.value.id!,
+            name: d.value.district.value.name,
+            name_en: d.value.district.value.name_en,
+            province: d.value.district.value.province
+              ? {
+                  id: d.value.district.value.province.value.id!,
+                  name: d.value.district.value.province.value.name,
+                  name_en: d.value.district.value.province.value.name_en,
+                }
+              : undefined,
+          }
         : undefined,
     }));
   },

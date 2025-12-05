@@ -75,15 +75,12 @@ import { suppliersModule } from './modules/suppliers/suppliers.module';
     ProductPointModule,
     CurrencyRatesModule,
     CurrenciesModule,
-<<<<<<< HEAD
-=======
     BranchModule,
     ShiftsModule,
     ExpenseCategoryModule,
     BranchExpenseModule,
     WalletAdjustmentModule,
     WalletTransactionModule,
->>>>>>> master
     suppliersModule,
     ProductLotModule,
     MemberTierModule,
