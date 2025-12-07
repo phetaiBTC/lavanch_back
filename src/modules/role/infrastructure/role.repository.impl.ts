@@ -66,4 +66,12 @@ export class RoleRepositoryImpl implements IRoleRepository {
     await this.roleRepository.restore(id);
     return { message: 'restore sussessfully' };
   }
+  async findByName(name: string): Promise<Role | null> {
+    const role = await this.roleRepository.findOne({
+      where: { code: name },
+      relations: ['permissions'],
+      withDeleted: true,
+    });
+    return role ? RoleMapper.toDomain(role) : null;
+  }
 }
