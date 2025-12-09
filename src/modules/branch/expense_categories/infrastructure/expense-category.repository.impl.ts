@@ -5,9 +5,9 @@ import { ExpenseCategoriesOrm } from 'src/database/typeorm/expense_categories.or
 import { IExpenseCategoryRepository } from '../domain/expense-category.repository';
 import { ExpenseCategory } from '../domain/expense-category.entity';
 import { ExpenseCategoryMapper } from './expense-category.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindExpenseCategoryDto } from '../dto/find-expense-category.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { fetchWithPagination } from 'src/shared/utils/pagination.util';
+import { ActiveStatus, Status } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class ExpenseCategoryRepositoryImpl
@@ -19,21 +19,59 @@ export class ExpenseCategoryRepositoryImpl
   ) {}
 
   async findAll(
-    query: PaginationDto,
+    query: FindExpenseCategoryDto,
   ): Promise<PaginatedResponse<ExpenseCategory>> {
-    const qb = this.categoryRepo
-      .createQueryBuilder('expense_categories')
-      .withDeleted();
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'name' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: ExpenseCategoryMapper.toDomain,
-    });
+    const qb = this.categoryRepo.createQueryBuilder('expense_categories');
+
+    // Search by name or code
+    if (query.search) {
+      qb.andWhere(
+        '(expense_categories.name LIKE :kw OR expense_categories.code LIKE :kw)',
+        {
+          kw: `%${query.search}%`,
+        },
+      );
+    }
+
+    // Filter by status (active / inactive / all) on is_active
+    if (query.status) {
+      if (query.status === ActiveStatus.ACTIVE) {
+        qb.andWhere('expense_categories.is_active = true');
+      } else if (query.status === ActiveStatus.INACTIVE) {
+        qb.andWhere('expense_categories.is_active = false');
+      }
+      // status === ALL -> no condition
+    }
+
+    // Filter by deletedAt using boolean `deleted`
+    if (query.deleted) {
+      qb.withDeleted();
+      qb.andWhere('expense_categories.deletedAt IS NOT NULL');
+    } else {
+      qb.andWhere('expense_categories.deletedAt IS NULL');
+    }
+
+    // Sorting
+    qb.orderBy('expense_categories.createdAt', query.sort || 'DESC');
+
+    // Pagination
+    const skip = ((query.page || 1) - 1) * (query.limit || 10);
+
+    const [entities, total] = await qb
+      .skip(skip)
+      .take(query.limit || 10)
+      .getManyAndCount();
+
+    return {
+      data: entities.map((e) => ExpenseCategoryMapper.toDomain(e)),
+      pagination: {
+        total,
+        count: entities.length,
+        limit: query.limit || 10,
+        totalPages: Math.ceil(total / (query.limit || 10)) || 1,
+        currentPage: query.page || 1,
+      },
+    };
   }
 
   async findById(id: number): Promise<ExpenseCategory | null> {

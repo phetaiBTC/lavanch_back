@@ -18,6 +18,7 @@ export enum AdjustmentReasonEnum {
   WITHDRAW = 'WITHDRAW',
   LOST = 'LOST',
   FOUND = 'FOUND',
+  TRANSFER = 'TRANSFER',
 }
 
 export class CreateWalletAdjustmentDto {

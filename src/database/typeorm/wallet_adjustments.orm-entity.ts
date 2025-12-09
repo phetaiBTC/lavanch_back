@@ -22,6 +22,7 @@ export enum AdjustmentReason {
   WITHDRAW = 'WITHDRAW',
   LOST = 'LOST',
   FOUND = 'FOUND',
+  TRANSFER = 'TRANSFER',
 }
 
 export enum AdjustmentStatus {

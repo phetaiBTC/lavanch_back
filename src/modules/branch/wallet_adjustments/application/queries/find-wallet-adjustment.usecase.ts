@@ -3,7 +3,7 @@ import {
   WALLET_ADJUSTMENT_REPOSITORY,
   type IWalletAdjustmentRepository,
 } from '../../domain/wallet-adjustment.repository';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindWalletAdjustmentDto } from '../../dto/find-wallet-adjustment.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { WalletAdjustment } from '../../domain/wallet-adjustment.entity';
 
@@ -15,7 +15,7 @@ export class FindAllWalletAdjustmentUseCase {
   ) {}
 
   async execute(
-    query: PaginationDto,
+    query: FindWalletAdjustmentDto,
   ): Promise<PaginatedResponse<WalletAdjustment>> {
     return this.adjustmentRepo.findAll(query);
   }

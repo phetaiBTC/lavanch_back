@@ -1,12 +1,16 @@
 import { WalletAdjustmentProps } from '../interface/wallet-adjustment.interface';
+import {
+  AdjustmentTypeEnum,
+  AdjustmentReasonEnum,
+} from '../dto/create-wallet-adjustment.dto';
 
 export class WalletAdjustment {
   private id?: number;
   private adjustment_no: string;
   private branch_id: number;
-  private adjustment_type: string;
+  private adjustment_type: AdjustmentTypeEnum;
   private amount: number;
-  private reason: string;
+  private reason: AdjustmentReasonEnum;
   private description?: string;
   private created_by: number;
   private approved_by?: number;

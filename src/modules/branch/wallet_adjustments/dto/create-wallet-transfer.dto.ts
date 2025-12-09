@@ -4,7 +4,9 @@ import {
   IsString,
   IsOptional,
   Min,
+  IsEnum,
 } from 'class-validator';
+import { AdjustmentReasonEnum } from './create-wallet-adjustment.dto';
 
 export class CreateWalletTransferDto {
   @IsNotEmpty()
@@ -23,4 +25,8 @@ export class CreateWalletTransferDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsEnum(AdjustmentReasonEnum)
+  reason: AdjustmentReasonEnum | AdjustmentReasonEnum.TRANSFER;
 }

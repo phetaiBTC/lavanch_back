@@ -6,6 +6,7 @@ import { IWalletAdjustmentRepository } from '../domain/wallet-adjustment.reposit
 import { WalletAdjustment } from '../domain/wallet-adjustment.entity';
 import { WalletAdjustmentMapper } from './wallet-adjustment.mapper';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindWalletAdjustmentDto } from '../dto/find-wallet-adjustment.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
 
@@ -19,7 +20,7 @@ export class WalletAdjustmentRepositoryImpl
   ) {}
 
   async findAll(
-    query: PaginationDto,
+    query: FindWalletAdjustmentDto,
   ): Promise<
     PaginatedResponse<WalletAdjustment & { _orm?: WalletAdjustmentsOrm }>
   > {
@@ -30,8 +31,25 @@ export class WalletAdjustmentRepositoryImpl
       .leftJoinAndSelect('wallet_adjustments.creator', 'creator');
 
     if (query.search) {
-      qb.andWhere(`wallet_adjustments.adjustment_no LIKE :kw`, {
-        kw: `%${query.search}%`,
+      qb.andWhere(
+        `(wallet_adjustments.adjustment_no LIKE :kw OR branch.name LIKE :kw)`,
+        {
+          kw: `%${query.search}%`,
+        },
+      );
+    }
+
+    // Filter by adjustment_type (ADD or DEDUCT)
+    if (query.adjustment_type) {
+      qb.andWhere(`wallet_adjustments.adjustment_type = :adjustmentType`, {
+        adjustmentType: query.adjustment_type,
+      });
+    }
+
+    // Filter by status (PENDING, APPROVED, REJECTED)
+    if (query.adjustment_status) {
+      qb.andWhere(`wallet_adjustments.status = :status`, {
+        status: query.adjustment_status,
       });
     }
 
@@ -52,6 +70,7 @@ export class WalletAdjustmentRepositoryImpl
     // Map to domain with ORM data attached
     const data = entities.map((entity) => {
       const domain = WalletAdjustmentMapper.toDomain(entity);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (domain as any)._orm = entity;
       return domain as WalletAdjustment & { _orm?: WalletAdjustmentsOrm };
     });
