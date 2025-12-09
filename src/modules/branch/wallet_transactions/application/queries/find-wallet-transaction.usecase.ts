@@ -3,7 +3,7 @@ import {
   WALLET_TRANSACTION_REPOSITORY,
   type IWalletTransactionRepository,
 } from '../../domain/wallet-transaction.repository';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindWalletTransactionDto } from '../../dto/find-wallet-transaction.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { WalletTransaction } from '../../domain/wallet-transaction.entity';
 
@@ -15,7 +15,7 @@ export class FindAllWalletTransactionUseCase {
   ) {}
 
   async execute(
-    query: PaginationDto,
+    query: FindWalletTransactionDto,
   ): Promise<PaginatedResponse<WalletTransaction>> {
     return this.transactionRepo.findAll(query);
   }

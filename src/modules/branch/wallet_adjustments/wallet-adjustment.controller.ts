@@ -8,7 +8,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreateWalletAdjustmentDto } from './dto/create-wallet-adjustment.dto';
+import {
+  CreateWalletAdjustmentDto,
+  AdjustmentTypeEnum,
+  AdjustmentReasonEnum,
+} from './dto/create-wallet-adjustment.dto';
+import { FindWalletAdjustmentDto } from './dto/find-wallet-adjustment.dto';
 import { ApproveAdjustmentDto } from './dto/approve-adjustment.dto';
 import {
   CreateDepositAdjustmentDto,
@@ -57,8 +62,8 @@ export class WalletAdjustmentController {
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
-      adjustment_type: 'ADD' as any,
-      reason: 'DEPOSIT' as any,
+      adjustment_type: AdjustmentTypeEnum.ADD,
+      reason: AdjustmentReasonEnum.DEPOSIT,
     };
     return WalletAdjustmentMapper.toResponse(
       await this.createDepositAdjustmentUseCase.execute(adjustmentDto, user.id),
@@ -75,8 +80,8 @@ export class WalletAdjustmentController {
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
-      adjustment_type: 'DEDUCT' as any,
-      reason: 'WITHDRAW' as any,
+      adjustment_type: AdjustmentTypeEnum.DEDUCT,
+      reason: AdjustmentReasonEnum.WITHDRAW,
     };
     return WalletAdjustmentMapper.toResponse(
       await this.createWithdrawAdjustmentUseCase.execute(
@@ -96,8 +101,8 @@ export class WalletAdjustmentController {
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
-      adjustment_type: 'ADD' as any,
-      reason: 'FOUND' as any,
+      adjustment_type: AdjustmentTypeEnum.ADD,
+      reason: AdjustmentReasonEnum.FOUND,
     };
     return WalletAdjustmentMapper.toResponse(
       await this.createFoundAdjustmentUseCase.execute(adjustmentDto, user.id),
@@ -114,8 +119,8 @@ export class WalletAdjustmentController {
   ): Promise<WalletAdjustmentResponse> {
     const adjustmentDto: CreateWalletAdjustmentDto = {
       ...dto,
-      adjustment_type: 'DEDUCT' as any,
-      reason: 'LOST' as any,
+      adjustment_type: AdjustmentTypeEnum.DEDUCT,
+      reason: AdjustmentReasonEnum.LOST,
     };
     return WalletAdjustmentMapper.toResponse(
       await this.createLostAdjustmentUseCase.execute(adjustmentDto, user.id),
@@ -140,7 +145,7 @@ export class WalletAdjustmentController {
    */
   @Get()
   async findAll(
-    @Query() query: PaginationDto,
+    @Query() query: FindWalletAdjustmentDto,
   ): Promise<PaginatedResponse<WalletAdjustmentResponse>> {
     return WalletAdjustmentMapper.toResponseList(
       await this.findAllWalletAdjustmentUseCase.execute(query),

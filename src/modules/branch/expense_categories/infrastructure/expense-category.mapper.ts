@@ -51,7 +51,9 @@ export const ExpenseCategoryMapper = {
     pagination: IPagination;
   }): PaginatedResponse<ExpenseCategoryResponse> {
     return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
+      data: domain.data.map((domain) =>
+        ExpenseCategoryMapper.toResponse(domain),
+      ),
       pagination: domain.pagination,
     };
   },
