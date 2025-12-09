@@ -12,8 +12,8 @@ export interface CurrencyRatesProps extends ShardInterfaceProps {
   rate_date: Date;
 }
 export interface CurrencyRatesResponse extends ShardInterfaceResponse {
-  from_currency_id: CurrenciesResponse;
-  to_currency_id: CurrenciesResponse;
+  from_currency: CurrenciesResponse;
+  to_currency: CurrenciesResponse;
   rate: number;
   rate_date: string;
 }
