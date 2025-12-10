@@ -7,7 +7,7 @@ import { ExpenseCategory } from '../domain/expense-category.entity';
 import { ExpenseCategoryMapper } from './expense-category.mapper';
 import { FindExpenseCategoryDto } from '../dto/find-expense-category.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { ActiveStatus, Status } from 'src/shared/dto/pagination.dto';
+import { ActiveStatus } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class ExpenseCategoryRepositoryImpl
@@ -23,6 +23,14 @@ export class ExpenseCategoryRepositoryImpl
   ): Promise<PaginatedResponse<ExpenseCategory>> {
     const qb = this.categoryRepo.createQueryBuilder('expense_categories');
 
+    // Debug logging
+    console.log('FindExpenseCategoryDto query:', {
+      deleted: query.deleted,
+      deletedType: typeof query.deleted,
+      status: query.status,
+      search: query.search,
+    });
+
     // Search by name or code
     if (query.search) {
       qb.andWhere(
@@ -33,22 +41,30 @@ export class ExpenseCategoryRepositoryImpl
       );
     }
 
-    // Filter by status (active / inactive / all) on is_active
-    if (query.status) {
+    // Handle deleted filter first (takes priority)
+    if (query.deleted === true) {
+      // Show only soft-deleted items
+      console.log('Applying deleted=true filter');
+      qb.withDeleted();
+      qb.andWhere('expense_categories.deletedAt IS NOT NULL');
+    } else if (query.deleted === false) {
+      // Show only active items (not deleted)
+      console.log('Applying deleted=false filter');
+      qb.andWhere('expense_categories.deletedAt IS NULL');
+    } else {
+      console.log('No deleted filter, showing all');
+    }
+    // If deleted is undefined, show all (no filter on deletedAt)
+
+    // Apply status filter ONLY if deleted filter is not set
+    // status filters is_active field (active/inactive) for non-deleted records
+    if (query.deleted === undefined && query.status) {
       if (query.status === ActiveStatus.ACTIVE) {
         qb.andWhere('expense_categories.is_active = true');
       } else if (query.status === ActiveStatus.INACTIVE) {
         qb.andWhere('expense_categories.is_active = false');
       }
       // status === ALL -> no condition
-    }
-
-    // Filter by deletedAt using boolean `deleted`
-    if (query.deleted) {
-      qb.withDeleted();
-      qb.andWhere('expense_categories.deletedAt IS NOT NULL');
-    } else {
-      qb.andWhere('expense_categories.deletedAt IS NULL');
     }
 
     // Sorting
