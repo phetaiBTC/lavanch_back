@@ -5,6 +5,7 @@ import {
 } from '../../domain/branch-expense.repository';
 import { BranchExpense } from '../../domain/branch-expense.entity';
 import { CreateBranchExpenseDto } from '../../dto/create-branch-expense.dto';
+import { ExpenseStatus } from '../../domain/expense-status.enum';
 
 @Injectable()
 export class CreateBranchExpenseUseCase {
@@ -29,7 +30,7 @@ export class CreateBranchExpenseUseCase {
       ...dto,
       expense_no: expenseNo,
       expense_date: new Date(dto.expense_date),
-      status: 'PENDING',
+      status: ExpenseStatus.PENDING,
       created_by: createdBy,
     });
 

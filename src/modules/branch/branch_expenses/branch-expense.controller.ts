@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateBranchExpenseDto } from './dto/create-branch-expense.dto';
-import { ApproveExpenseDto } from './dto/approve-expense.dto';
+import { ApproveExpenseDto, ApprovalAction } from './dto/approve-expense.dto';
 import { FindBranchExpenseDto } from './dto/find-branch-expense.dto';
 import { CreateBranchExpenseUseCase } from './application/commands/create-branch-expense.usecase';
 import { ApproveExpenseUseCase } from './application/commands/approve-expense.usecase';
@@ -103,12 +103,12 @@ export class BranchExpenseController {
   @Patch(':id/reject')
   async reject(
     @Param('id') id: number,
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthPayload,
   ): Promise<BranchExpenseResponse> {
     return BranchExpenseMapper.toResponse(
       await this.approveExpenseUseCase.execute(
         +id,
-        { action: 'REJECT' as any },
+        { action: ApprovalAction.REJECT },
         user.id,
       ),
     );

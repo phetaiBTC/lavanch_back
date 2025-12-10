@@ -1,4 +1,5 @@
 import { BranchExpenseProps } from '../interface/branch-expense.interface';
+import { ExpenseStatus } from './expense-status.enum';
 
 export class BranchExpense {
   private id?: number;
@@ -13,7 +14,7 @@ export class BranchExpense {
   private receipt_image?: string;
   private created_by: number;
   private approved_by?: number;
-  private status: string;
+  private status: ExpenseStatus;
   private wallet_transaction_id?: number;
   private createdAt: Date;
   private updatedAt: Date;
@@ -34,7 +35,7 @@ export class BranchExpense {
     this.receipt_image = props.receipt_image;
     this.created_by = props.created_by;
     this.approved_by = props.approved_by;
-    this.status = props.status ?? 'PENDING';
+    this.status = props.status ?? ExpenseStatus.PENDING;
     this.wallet_transaction_id = props.wallet_transaction_id;
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt ?? new Date();
@@ -70,7 +71,7 @@ export class BranchExpense {
   approve(approvedBy: number, walletTransactionId: number): BranchExpense {
     return new BranchExpense({
       ...this.value,
-      status: 'APPROVED',
+      status: ExpenseStatus.APPROVED,
       approved_by: approvedBy,
       wallet_transaction_id: walletTransactionId,
       updatedAt: new Date(),
@@ -80,7 +81,7 @@ export class BranchExpense {
   reject(approvedBy: number): BranchExpense {
     return new BranchExpense({
       ...this.value,
-      status: 'REJECTED',
+      status: ExpenseStatus.REJECTED,
       approved_by: approvedBy,
       updatedAt: new Date(),
     });
