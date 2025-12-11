@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, Between } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WalletTransactionsOrm } from 'src/database/typeorm/wallet_transactions.orm-entity';
 import { IWalletTransactionRepository } from '../domain/wallet-transaction.repository';
@@ -7,6 +7,7 @@ import { WalletTransaction } from '../domain/wallet-transaction.entity';
 import { WalletTransactionMapper } from './wallet-transaction.mapper';
 import { FindWalletTransactionDto } from '../dto/find-wallet-transaction.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
+import { Status } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class WalletTransactionRepositoryImpl
@@ -59,28 +60,21 @@ export class WalletTransactionRepositoryImpl
     }
 
     // Filter by date range
-    if (query.date_from && query.date_to) {
-      qb.andWhere(
-        'wallet_transactions.createdAt BETWEEN :dateFrom AND :dateTo',
-        {
-          dateFrom: new Date(query.date_from),
-          dateTo: new Date(query.date_to + ' 23:59:59'),
-        },
-      );
-    } else if (query.date_from) {
-      qb.andWhere('wallet_transactions.createdAt >= :dateFrom', {
-        dateFrom: new Date(query.date_from),
+    if (query.date_from) {
+      qb.andWhere('DATE(wallet_transactions.createdAt) >= :dateFrom', {
+        dateFrom: query.date_from,
       });
-    } else if (query.date_to) {
-      qb.andWhere('wallet_transactions.createdAt <= :dateTo', {
-        dateTo: new Date(query.date_to + ' 23:59:59'),
+    }
+    if (query.date_to) {
+      qb.andWhere('DATE(wallet_transactions.createdAt) <= :dateTo', {
+        dateTo: query.date_to,
       });
     }
 
     // Filter by is_active (soft delete)
-    if (query.is_active === 'active') {
+    if (query.is_active === Status.ACTIVE) {
       qb.andWhere('wallet_transactions.deletedAt IS NULL');
-    } else if (query.is_active === 'inactive') {
+    } else if (query.is_active === Status.INACTIVE) {
       qb.andWhere('wallet_transactions.deletedAt IS NOT NULL');
     }
 

@@ -5,7 +5,7 @@ import { WalletAdjustmentsOrm } from 'src/database/typeorm/wallet_adjustments.or
 import { IWalletAdjustmentRepository } from '../domain/wallet-adjustment.repository';
 import { WalletAdjustment } from '../domain/wallet-adjustment.entity';
 import { WalletAdjustmentMapper } from './wallet-adjustment.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto, Status } from 'src/shared/dto/pagination.dto';
 import { FindWalletAdjustmentDto } from '../dto/find-wallet-adjustment.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
@@ -53,9 +53,9 @@ export class WalletAdjustmentRepositoryImpl
       });
     }
 
-    if (query.is_active === 'active') {
+    if (query.is_active === Status.ACTIVE) {
       qb.andWhere(`wallet_adjustments.deletedAt IS NULL`);
-    } else if (query.is_active === 'inactive') {
+    } else if (query.is_active === Status.INACTIVE) {
       qb.andWhere(`wallet_adjustments.deletedAt IS NOT NULL`);
     }
 
@@ -70,9 +70,9 @@ export class WalletAdjustmentRepositoryImpl
     // Map to domain with ORM data attached
     const data = entities.map((entity) => {
       const domain = WalletAdjustmentMapper.toDomain(entity);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (domain as any)._orm = entity;
-      return domain as WalletAdjustment & { _orm?: WalletAdjustmentsOrm };
+      return Object.assign(domain, { _orm: entity }) as WalletAdjustment & {
+        _orm?: WalletAdjustmentsOrm;
+      };
     });
 
     return {
@@ -105,7 +105,7 @@ export class WalletAdjustmentRepositoryImpl
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,
-      toDomain: WalletAdjustmentMapper.toDomain,
+      toDomain: (entity) => WalletAdjustmentMapper.toDomain(entity),
     });
   }
 
