@@ -1,5 +1,9 @@
 import { WalletTransaction } from '../domain/wallet-transaction.entity';
-import { WalletTransactionsOrm } from 'src/database/typeorm/wallet_transactions.orm-entity';
+import {
+  WalletTransactionsOrm,
+  TransactionType,
+  TransactionStatus,
+} from 'src/database/typeorm/wallet_transactions.orm-entity';
 import { WalletTransactionResponse } from '../interface/wallet-transaction.interface';
 import { formatDate } from 'src/shared/utils/dayjs.util';
 import {
@@ -37,7 +41,8 @@ export const WalletTransactionMapper = {
     const schema = new WalletTransactionsOrm();
     if (domain.value.id != null) schema.id = domain.value.id;
     schema.branch_id = domain.value.branch_id;
-    schema.transaction_type = domain.value.transaction_type as any;
+    schema.transaction_type = domain.value
+      .transaction_type as TransactionType;
     schema.amount = domain.value.amount;
     schema.balance_before = domain.value.balance_before;
     schema.balance_after = domain.value.balance_after;
@@ -55,7 +60,7 @@ export const WalletTransactionMapper = {
     if (domain.value.notes) schema.notes = domain.value.notes;
     schema.created_by = domain.value.created_by;
     if (domain.value.approved_by) schema.approved_by = domain.value.approved_by;
-    schema.status = domain.value.status as any;
+    schema.status = domain.value.status as TransactionStatus;
     schema.transaction_date = domain.value.transaction_date;
     return schema;
   },

@@ -24,12 +24,16 @@ export class ExpenseCategoryRepositoryImpl
     const qb = this.categoryRepo.createQueryBuilder('expense_categories');
 
     // Debug logging
-    console.log('FindExpenseCategoryDto query:', {
-      deleted: query.deleted,
-      deletedType: typeof query.deleted,
-      status: query.status,
-      search: query.search,
-    });
+    console.log('\n=== FindExpenseCategoryDto query ===');
+    console.log(
+      'deleted:',
+      query.deleted,
+      '(type:',
+      typeof query.deleted + ')',
+    );
+    console.log('status:', query.status);
+    console.log('search:', query.search);
+    console.log('====================================\n');
 
     // Search by name or code
     if (query.search) {
@@ -41,30 +45,33 @@ export class ExpenseCategoryRepositoryImpl
       );
     }
 
-    // Handle deleted filter first (takes priority)
-    if (query.deleted === true) {
-      // Show only soft-deleted items
-      console.log('Applying deleted=true filter');
+    // FILTER 1: Handle deletedAt (soft-delete) filter
+    if (query.deleted === 'true') {
+      // Show only soft-deleted items (deletedAt IS NOT NULL)
+      console.log('✅ Applying: deletedAt IS NOT NULL (soft-deleted records)');
       qb.withDeleted();
       qb.andWhere('expense_categories.deletedAt IS NOT NULL');
-    } else if (query.deleted === false) {
-      // Show only active items (not deleted)
-      console.log('Applying deleted=false filter');
+    } else if (query.deleted === 'false') {
+      // Show only non-deleted items (deletedAt IS NULL)
+      console.log('✅ Applying: deletedAt IS NULL (active records)');
       qb.andWhere('expense_categories.deletedAt IS NULL');
     } else {
-      console.log('No deleted filter, showing all');
+      console.log('ℹ️  No deletedAt filter - showing all records');
     }
-    // If deleted is undefined, show all (no filter on deletedAt)
 
-    // Apply status filter ONLY if deleted filter is not set
-    // status filters is_active field (active/inactive) for non-deleted records
-    if (query.deleted === undefined && query.status) {
+    // FILTER 2: Handle is_active (status) filter - INDEPENDENT of deleted filter
+    if (query.status) {
       if (query.status === ActiveStatus.ACTIVE) {
+        console.log('✅ Applying: is_active = true');
         qb.andWhere('expense_categories.is_active = true');
       } else if (query.status === ActiveStatus.INACTIVE) {
+        console.log('✅ Applying: is_active = false');
         qb.andWhere('expense_categories.is_active = false');
+      } else if (query.status === ActiveStatus.ALL) {
+        console.log('ℹ️  Status = ALL - no is_active filter');
       }
-      // status === ALL -> no condition
+    } else {
+      console.log('ℹ️  No is_active filter');
     }
 
     // Sorting
@@ -73,10 +80,17 @@ export class ExpenseCategoryRepositoryImpl
     // Pagination
     const skip = ((query.page || 1) - 1) * (query.limit || 10);
 
+    // Debug: Print the SQL query
+    const sqlQuery = qb.getSql();
+    console.log('Generated SQL:', sqlQuery);
+    console.log('Query parameters:', qb.getParameters());
+
     const [entities, total] = await qb
       .skip(skip)
       .take(query.limit || 10)
       .getManyAndCount();
+
+    console.log('Found entities:', entities.length, 'Total:', total);
 
     return {
       data: entities.map((e) => ExpenseCategoryMapper.toDomain(e)),
