@@ -15,7 +15,7 @@ import {
 } from '../../dto/approve-expense.dto';
 import { CreateWalletTransactionUseCase } from '../../../wallet_transactions/application/commands/create-wallet-transaction.usecase';
 import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
-
+import { ExpenseStatus } from '../../domain/expense-status.enum';
 /**
  * ApproveExpenseUseCase
  *
@@ -46,7 +46,7 @@ export class ApproveExpenseUseCase {
     }
 
     // Validate expense status
-    if (expense.value.status !== 'PENDING') {
+    if (expense.value.status !== ExpenseStatus.PENDING) {
       throw new BadRequestException(
         `Expense is already ${expense.value.status.toLowerCase()}`,
       );

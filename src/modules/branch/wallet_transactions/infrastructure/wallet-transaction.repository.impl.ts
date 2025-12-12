@@ -61,12 +61,12 @@ export class WalletTransactionRepositoryImpl
 
     // Filter by date range
     if (query.date_from) {
-      qb.andWhere('DATE(wallet_transactions.createdAt) >= :dateFrom', {
+      qb.andWhere('DATE(wallet_transactions.transaction_date) >= :dateFrom', {
         dateFrom: query.date_from,
       });
     }
     if (query.date_to) {
-      qb.andWhere('DATE(wallet_transactions.createdAt) <= :dateTo', {
+      qb.andWhere('DATE(wallet_transactions.transaction_date) <= :dateTo', {
         dateTo: query.date_to,
       });
     }

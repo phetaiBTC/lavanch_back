@@ -72,12 +72,12 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
 
     // Date range filter
     if (query.createdFrom) {
-      qb.andWhere('DATE(branch_expenses.createdAt) >= :createdFrom', {
+      qb.andWhere('DATE(branch_expenses.expense_date) >= :createdFrom', {
         createdFrom: query.createdFrom,
       });
     }
     if (query.createdTo) {
-      qb.andWhere('DATE(branch_expenses.createdAt) <= :createdTo', {
+      qb.andWhere('DATE(branch_expenses.expense_date) <= :createdTo', {
         createdTo: query.createdTo,
       });
     }
