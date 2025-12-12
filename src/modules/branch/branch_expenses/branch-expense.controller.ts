@@ -16,6 +16,7 @@ import { ApproveExpenseUseCase } from './application/commands/approve-expense.us
 import { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';
 import { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';
 import { GetBranchExpenseSummaryUseCase } from './application/queries/get-summary.usecase';
+import { GetReceiptImagesUseCase } from './application/queries/get-receipt-images.usecase';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { BranchExpenseMapper } from './infrastructure/branch-expense.mapper';
 import { BranchExpenseResponse } from './interface/branch-expense.interface';
@@ -33,6 +34,7 @@ export class BranchExpenseController {
     private readonly findOneBranchExpenseUseCase: FindOneBranchExpenseUseCase,
     private readonly findAllBranchExpenseUseCase: FindAllBranchExpenseUseCase,
     private readonly getSummaryUseCase: GetBranchExpenseSummaryUseCase,
+    private readonly getReceiptImagesUseCase: GetReceiptImagesUseCase,
   ) {}
 
   /**
@@ -79,6 +81,14 @@ export class BranchExpenseController {
     return BranchExpenseMapper.toResponse(
       await this.findOneBranchExpenseUseCase.execute(id),
     );
+  }
+
+  /**
+   * Get receipt images for an expense
+   */
+  @Get(':id/receipt-images')
+  async getReceiptImages(@Param('id') id: number) {
+    return this.getReceiptImagesUseCase.execute(id);
   }
 
   /**
