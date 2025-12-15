@@ -68,15 +68,15 @@
 // }
 
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IProductUnitRepository } from '../domain/product_unit.repository';
 import { ProductUnit } from '../domain/product_unit.entity';
 import { ProductUnitMapper } from './product_unit.mapper';
 import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
-import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 
 @Injectable()
 export class ProductUnitRepositoryImpl
@@ -87,15 +87,18 @@ export class ProductUnitRepositoryImpl
     @InjectRepository(ProductUnitOrm)
     private readonly productUnitRepo: Repository<ProductUnitOrm>,
   ) {
-    super(productUnitRepo, ProductUnitMapper, 'product_unit', 'name');
+    super({
+      repository: productUnitRepo,
+      mapper: ProductUnitMapper,
+      searchField: 'name',
+    });
   }
-
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<ProductUnit>> {
-    return super.findAll(query, [
-      { relation: 'product_unit.unit', as: 'unit' },
-      { relation: 'product_unit.product_variant', as: 'product_variant' },
-      { relation: 'product_variant.product', as: 'product' },
-    ]);
+  override createQueryBuilder(): SelectQueryBuilder<ProductUnitOrm> {
+    return this.productUnitRepo
+      .createQueryBuilder('product_unit')
+      .leftJoinAndSelect('product_unit.unit', 'unit')
+      .leftJoinAndSelect('product_unit.product_variant', 'product_variant')
+      .leftJoinAndSelect('product_variant.product', 'product');
   }
   async findByProductVariantAndUnit(
     product_variant_id: number,

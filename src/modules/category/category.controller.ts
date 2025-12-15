@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { Category } from './domain/category.entity';
 import { CategoryOrm } from 'src/database/typeorm/category.orm-entity';
 import { CategoryResponse } from './interface/category.interface';
@@ -14,7 +22,9 @@ import { SoftDeleteCategoryUseCase } from './application/commands/soft-Category.
 import { RestoreCategoryUseCase } from './application/commands/restore-Category.usecase';
 import { UpdateActiveCategoryUseCase } from './application/commands/ีactive-Category.usecase';
 import { ActiveDto } from 'src/shared/dto/avtive.dto';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('category')
 export class CategoryController extends BaseController<
@@ -25,25 +35,22 @@ export class CategoryController extends BaseController<
   UpdateCategoryDto
 > {
   constructor(
-    createCategoryUseCase: CreateCategoryUseCase,
-    updateCategoryUseCase: UpdateCategoryUseCase,
-    findOneCategoryUseCase: FindOneCategoryUseCase,
-    findAllCategoryUseCase: FindAllCategoryUseCase,
-    hardDeleteCategoryUseCase: HardDeleteCategoryUseCase,
-    softDeleteCategoryUseCase: SoftDeleteCategoryUseCase,
-    restoreCategoryUseCase: RestoreCategoryUseCase,
+    protected readonly findOneCategoryUseCase: FindOneCategoryUseCase,
+    protected readonly hardDeleteCategoryUseCase: HardDeleteCategoryUseCase,
+    protected readonly softDeleteCategoryUseCase: SoftDeleteCategoryUseCase,
+    protected readonly restoreCategoryUseCase: RestoreCategoryUseCase,
+    private readonly createCategoryUseCase: CreateCategoryUseCase,
+    private readonly updateCategoryUseCase: UpdateCategoryUseCase,
+    private readonly findAllCategoryUseCase: FindAllCategoryUseCase,
     private readonly updateActiveCategoryUseCase: UpdateActiveCategoryUseCase, // custom
   ) {
-    super(
-      CategoryMapper,
-      createCategoryUseCase,
-      updateCategoryUseCase,
-      findOneCategoryUseCase,
-      findAllCategoryUseCase,
-      hardDeleteCategoryUseCase,
-      softDeleteCategoryUseCase,
-      restoreCategoryUseCase,
-    );
+    super({
+      mapper: CategoryMapper,
+      findOne: findOneCategoryUseCase,
+      softDelete: softDeleteCategoryUseCase,
+      hardDelete: hardDeleteCategoryUseCase,
+      restore: restoreCategoryUseCase,
+    });
   }
 
   // custom endpoint สำหรับ active update
@@ -54,6 +61,34 @@ export class CategoryController extends BaseController<
   ): Promise<CategoryResponse> {
     return CategoryMapper.toResponse(
       await this.updateActiveCategoryUseCase.execute(id, dto),
+    );
+  }
+
+  @Post()
+  override async create(
+    @Body() dto: CreateCategoryDto,
+  ): Promise<CategoryResponse> {
+    return CategoryMapper.toResponse(
+      await this.createCategoryUseCase.execute(dto),
+    );
+  }
+
+  @Patch(':id')
+  override async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateCategoryDto,
+  ): Promise<CategoryResponse> {
+    return CategoryMapper.toResponse(
+      await this.updateCategoryUseCase.execute(id, dto),
+    );
+  }
+
+  @Get()
+  override async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponse<CategoryResponse>> {
+    return CategoryMapper.toResponseList(
+      await this.findAllCategoryUseCase.execute(query),
     );
   }
 }

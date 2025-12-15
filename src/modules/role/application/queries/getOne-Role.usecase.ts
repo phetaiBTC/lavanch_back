@@ -13,7 +13,7 @@ export class GetOneRoleUseCase {
   ) {}
 
   async execute(id: number): Promise<Role> {
-    const role = await this.permissionRepository.findOne(id);
+    const role = await this.permissionRepository.findById(id);
     if (!role) {
       throw new NotFoundException('Role not found');
     }

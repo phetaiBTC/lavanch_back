@@ -13,9 +13,8 @@ export class SoftDeleteSuppliersUseCase {
     private readonly usecaseFindOne: FindOneSuppliersUseCase,
   ) {}
 
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFindOne.execute(id);
-    await this.suppliersRepo.softDelete(id);
-    return { message: 'Suppliers deleted successfully' };
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFindOne.execute(id)));
+    return await this.suppliersRepo.softDelete(id);
   }
 }

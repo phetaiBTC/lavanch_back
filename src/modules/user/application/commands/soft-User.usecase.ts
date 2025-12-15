@@ -3,16 +3,17 @@ import {
   USER_REPOSITORY,
   type IUserRepository,
 } from '../../domain/user.repository';
+import { GetOneUserUseCase } from '../queries/getOne-User.usecase';
 
 @Injectable()
 export class SoftDeleteUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly userRepo: IUserRepository,
+    private readonly getOneUser: GetOneUserUseCase,
   ) {}
 
-  async execute(id: number): Promise<{ message: string }> {
-    const user = await this.userRepo.findById(id);
-    if (!user) throw new NotFoundException('User not found');
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.getOneUser.execute(id)));
     return await this.userRepo.softDelete(id);
   }
 }

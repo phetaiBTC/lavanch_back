@@ -32,4 +32,14 @@ export class Role {
     this.code = props.code;
     this.permissions = props.permissions;
   }
+  update(
+    props: Partial<
+      Omit<RoleProps, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
+  ): Role {
+    return new Role({
+      ...this.value,
+      ...props,
+    });
+  }
 }

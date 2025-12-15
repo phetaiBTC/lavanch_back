@@ -12,8 +12,9 @@ export class HardDeleteProductPriceUseCase {
 
     private readonly usecaseFindOneProductPrice: FindOneProductPriceUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFindOneProductPrice.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    // await this.usecaseFindOneProductPrice.execute(id);
+    await Promise.all(id.map((id) => this.usecaseFindOneProductPrice.execute(id)));
     return this.product_priceRepo.hardDelete(id);
   }
 }

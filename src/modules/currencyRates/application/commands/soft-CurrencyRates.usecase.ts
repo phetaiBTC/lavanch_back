@@ -11,8 +11,9 @@ export class SoftDeleteCurrencyRatesUseCase {
     private readonly currencyratesRepo: ICurrencyRatesRepository,
     private readonly findOneCurrencyRatesUseCase: FindOneCurrencyRatesUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.findOneCurrencyRatesUseCase.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    // await this.findOneCurrencyRatesUseCase.execute(id);
+    await Promise.all(id.map((id) => this.findOneCurrencyRatesUseCase.execute(id)));
     return this.currencyratesRepo.softDelete(id);
   }
 }

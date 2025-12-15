@@ -6,7 +6,6 @@ import {
   Query,
   Post,
   Get,
-  Delete,
 } from '@nestjs/common';
 import { User } from './domain/user.entity';
 import { UserOrm } from 'src/database/typeorm/user.orm-entity';
@@ -21,7 +20,7 @@ import { GetUserUseCase } from './application/queries/get-User.usecase';
 import { HardDeleteUserUseCase } from './application/commands/hard-User.usecase';
 import { SoftDeleteUserUseCase } from './application/commands/soft-User.usecase';
 import { RestoreUserUseCase } from './application/commands/restore-User.usecase';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
 import { ChangePasswordUserUseCase } from './application/commands/changePassword-User.usecase';
 import { ChangePasswordDto } from './dto/changePassword-User.dto';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
@@ -32,12 +31,11 @@ import { ResetPasswordDto } from './dto/resetPassword-User.dto';
 import { SendEmailDto } from './dto/sendEmail-User.dto';
 import { sendEmailUserUseCase } from './application/commands/sendEmail-User.usecase';
 import { Public } from 'src/shared/decorator/auth.decorator';
-import { BaseControllerSetup } from 'src/shared/BaseModule/base.controller';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('user')
-export class UserController extends BaseControllerSetup<
+export class UserController extends BaseController<
   User,
   UserOrm,
   UserResponse,
@@ -47,15 +45,15 @@ export class UserController extends BaseControllerSetup<
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
-    getOneUserUseCase: GetOneUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
-    hardDeleteUserUseCase: HardDeleteUserUseCase,
-    softDeleteUserUseCase: SoftDeleteUserUseCase,
-    restoreUserUseCase: RestoreUserUseCase,
     private readonly changePasswordUseCase: ChangePasswordUserUseCase,
     private readonly verifyUserUseCase: VerifyUserUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUserUseCase,
     private readonly sendEmailUserUseCase: sendEmailUserUseCase,
+    protected readonly getOneUserUseCase: GetOneUserUseCase,
+    protected readonly hardDeleteUserUseCase: HardDeleteUserUseCase,
+    protected readonly softDeleteUserUseCase: SoftDeleteUserUseCase,
+    protected readonly restoreUserUseCase: RestoreUserUseCase,
   ) {
     super({
       mapper: UserMapper,
@@ -77,12 +75,12 @@ export class UserController extends BaseControllerSetup<
   }
 
   @Post('')
-  async create(@Body() body: CreateUserDto): Promise<UserResponse> {
+  override async create(@Body() body: CreateUserDto): Promise<UserResponse> {
     return UserMapper.toResponse(await this.createUserUseCase.execute(body));
   }
 
   @Get('')
-  async findAll(
+  override async findAll(
     @Query()
     query: PaginationDto,
   ): Promise<PaginatedResponse<UserResponse>> {
@@ -90,7 +88,7 @@ export class UserController extends BaseControllerSetup<
   }
 
   @Patch(':id')
-  async update(
+  override async update(
     @Param('id') id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<UserResponse> {

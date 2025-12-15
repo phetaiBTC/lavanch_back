@@ -16,8 +16,9 @@ export class RestoreProductVariantUseCase {
     private readonly product_variantRepo: IProductVariantRepository,
     private readonly FindOneProductVariantUseCase: FindOneProductVariantUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.FindOneProductVariantUseCase.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.FindOneProductVariantUseCase.execute(id)));
+    // await this.FindOneProductVariantUseCase.execute(id);
     return this.product_variantRepo.restore(id);
   }
 }

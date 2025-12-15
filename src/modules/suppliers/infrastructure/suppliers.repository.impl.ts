@@ -3,15 +3,12 @@ import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ISuppliersRepository } from '../domain/suppliers.repository';
 import { SuppliersOrm } from 'src/database/typeorm/suppliers.orm-entity';
-import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { Suppliers } from '../domain/suppliers.entity';
 import { SuppliersMapper } from './suppliers.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { BaseRepositorySetup } from 'src/shared/BaseModule/infrastructure/baseSetup.repository.impl';
+import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 @Injectable()
 export class SuppliersRepositoryImpl
-  extends BaseRepositorySetup<Suppliers, SuppliersOrm, any>
+  extends BaseRepository<Suppliers, SuppliersOrm, any>
   implements ISuppliersRepository
 {
   constructor(
@@ -21,7 +18,7 @@ export class SuppliersRepositoryImpl
     super({
       repository: suppliersRepo,
       mapper: SuppliersMapper,
-      searchField: 'name',
+      searchField: 'suppliers.name',
     });
   }
   createQueryBuilder(): SelectQueryBuilder<SuppliersOrm> {

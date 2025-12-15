@@ -16,10 +16,11 @@ export class HardDeleteCategoryUseCase {
     private readonly categoryRepo: ICategoryRepository,
     private readonly usecaseFindOne: FindOneCategoryUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    const category = await this.usecaseFindOne.execute(id);
-    if (category.value.children.length > 0)
-      throw new BadRequestException('Cannot delete Category has children');
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFindOne.execute(id)));
+    // const category = await this.usecaseFindOne.execute(id);
+    // if (category.value.children.length > 0)
+    //   throw new BadRequestException('Cannot delete Category has children');
     return this.categoryRepo.hardDelete(id);
   }
 }

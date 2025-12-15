@@ -16,8 +16,8 @@ export class HardDeletePointUseCase {
 
     private readonly usecaseFIndOnePoint: FindOnePointUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOnePoint.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFIndOnePoint.execute(id)));
     return this.pointRepo.hardDelete(id);
   }
 }

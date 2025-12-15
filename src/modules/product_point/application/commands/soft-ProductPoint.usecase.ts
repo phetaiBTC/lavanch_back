@@ -11,8 +11,9 @@ export class SoftDeleteProductPointUseCase {
     private readonly product_pointRepo: IProductPointRepository,
     private readonly usecaseFIndOneProductPoint: FindOneProductPointUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOneProductPoint.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFIndOneProductPoint.execute(id)));
+    // await this.usecaseFIndOneProductPoint.execute(id);
     return this.product_pointRepo.softDelete(id);
   }
 }

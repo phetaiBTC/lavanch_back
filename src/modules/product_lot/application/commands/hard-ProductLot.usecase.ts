@@ -16,8 +16,8 @@ export class HardDeleteProductLotUseCase {
     private readonly product_lotRepo: IProductLotRepository,
     private readonly usecaseFIndOneProductLot: FindOneProductLotUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOneProductLot.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFIndOneProductLot.execute(id)));
     return this.product_lotRepo.hardDelete(id);
   }
 }

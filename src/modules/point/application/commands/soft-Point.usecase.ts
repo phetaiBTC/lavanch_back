@@ -15,8 +15,9 @@ export class SoftDeletePointUseCase {
     @Inject(POINT_REPOSITORY) private readonly pointRepo: IPointRepository,
     private readonly usecaseFIndOnePoint: FindOnePointUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOnePoint.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    // await this.usecaseFIndOnePoint.execute(id);
+    await Promise.all(id.map((id) => this.usecaseFIndOnePoint.execute(id)));
     return this.pointRepo.softDelete(id);
   }
 }
