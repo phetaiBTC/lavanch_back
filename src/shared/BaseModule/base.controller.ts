@@ -41,17 +41,17 @@ export abstract class BaseController<
     );
   }
 
-  @Delete('soft/:id')
+  @Delete('soft')
   async softDelete(@Body() body: IdArrayDto): Promise<{ message: string }> {
     return await this.methods.softDelete.execute(body.ids);
   }
 
-  @Delete('hard/:id')
+  @Delete('hard')
   async hardDelete(@Body() body: IdArrayDto): Promise<{ message: string }> {
     return await this.methods.hardDelete.execute(body.ids);
   }
 
-  @Patch('restore/:id')
+  @Patch('restore')
   async restore(@Body() body: IdArrayDto): Promise<{ message: string }> {
     return await this.methods.restore.execute(body.ids);
   }
