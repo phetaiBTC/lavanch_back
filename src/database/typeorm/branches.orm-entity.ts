@@ -5,6 +5,8 @@ import { ShiftsOrm } from './shifts.orm-entity';
 import { WalletTransactionsOrm } from './wallet_transactions.orm-entity';
 import { BranchExpensesOrm } from './branch_expenses.orm-entity';
 import { WalletAdjustmentsOrm } from './wallet_adjustments.orm-entity';
+import { BranchStockOrm } from './branch_stocks.orm-entity';
+import { StockTransfersOrm } from './stock_transfers.orm-entity';
 
 @Entity('branches')
 export class BranchesOrm extends ShardOrm {
@@ -63,4 +65,14 @@ export class BranchesOrm extends ShardOrm {
 
   @OneToMany(() => WalletAdjustmentsOrm, (adjustment) => adjustment.branch)
   wallet_adjustments: WalletAdjustmentsOrm[];
-}
+
+  @OneToMany(() => BranchStockOrm, (stock) => stock.branch)
+  branch_stocks: BranchStockOrm[];
+
+  @OneToMany(() => StockTransfersOrm, (transfer) => transfer.from_branch)
+  stock_transfers_from: StockTransfersOrm[];
+
+  @OneToMany(() => StockTransfersOrm, (transfer) => transfer.to_branch)
+  stock_transfers_to: StockTransfersOrm[];
+
+} 
