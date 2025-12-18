@@ -15,7 +15,7 @@ export const generateCreateUseCase = (
   @Injectable()
   export class Create${capitalizedName}UseCase {
     constructor(
-      @Inject(${capitalizedName}_REPOSITORY)
+      @Inject(${moduleName.toUpperCase()}_REPOSITORY)
       private readonly ${moduleName}Repository: I${capitalizedName}Repository,
     ) {}
 

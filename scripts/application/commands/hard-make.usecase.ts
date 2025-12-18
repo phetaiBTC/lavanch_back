@@ -6,7 +6,7 @@ import { Inject, Injectable } from '@nestjs/common';
     ${moduleName.toUpperCase()}_REPOSITORY,
     type I${capitalizedName}Repository,
   } from '../../domain/${moduleName}.repository';
-import { FindOne${capitalizedName}UseCase } from '../queries/findOne-${capitalizedName}.usecase';
+import { FindOne${capitalizedName}UseCase } from '../queries/findOne-${moduleName}.usecase';
 
 
 @Injectable()

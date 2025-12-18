@@ -12,7 +12,7 @@ export const generateGetOneUseCase = (moduleName: string, capitalize: (str: stri
 @Injectable()
 export class FindOne${capitalizedName}UseCase {
   constructor(
- @Inject(${capitalizedName}_REPOSITORY)
+ @Inject(${moduleName.toUpperCase()}_REPOSITORY)
       private readonly ${moduleName}Repository: I${capitalizedName}Repository,
   ) {}
 

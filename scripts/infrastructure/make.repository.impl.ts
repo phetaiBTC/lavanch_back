@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ${capitalizedName}Orm } from 'src/database/typeorm/${moduleName}.orm-entity';
 import { ${capitalizedName}Response } from '../interface/${moduleName}.interface';
-import { ${capitalizedName} from '../domain/${moduleName}.entity';
+import { ${capitalizedName} } from '../domain/${moduleName}.entity';
 import { I${capitalizedName}Repository } from '../domain/${moduleName}.repository';
 import { ${capitalizedName}Mapper } from './${moduleName}.mapper';
 import { SelectQueryBuilder } from 'typeorm/browser';
@@ -31,7 +31,7 @@ export class ${capitalizedName}RepositoryImpl
       searchField: 'name',
     });
   }
-  createQueryBuilder(): SelectQueryBuilder<TagOrm> {
+  createQueryBuilder(): SelectQueryBuilder<${capitalizedName}Orm> {
     return this.repo.createQueryBuilder('${moduleName}');
   }
 }

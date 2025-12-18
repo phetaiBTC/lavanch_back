@@ -17,7 +17,7 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 @Injectable()
 export class Find${capitalizedName}UseCase {
   constructor(
- @Inject(${capitalizedName}_REPOSITORY)
+ @Inject(${moduleName.toUpperCase()}_REPOSITORY)
       private readonly ${moduleName}Repository: I${capitalizedName}Repository,
   ) {}
 

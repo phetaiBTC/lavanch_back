@@ -4,6 +4,8 @@ export const generateRepository = (
 ): string => {
   const capitalizedName = capitalize(moduleName);
   return `import { ${capitalizedName} } from './${moduleName}.entity';
+import { IBaseRepository } from 'src/shared/BaseModule/domain/base.repository';
+
 export const ${moduleName.toUpperCase()}_REPOSITORY = Symbol('${moduleName.toUpperCase()}_REPOSITORY');
 export interface I${capitalizedName}Repository extends IBaseRepository<${capitalizedName}> {}`;
 };
