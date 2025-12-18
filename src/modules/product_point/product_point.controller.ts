@@ -78,7 +78,15 @@
 //   }
 // }
 
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ProductPoint } from './domain/product_point.entity';
 import { ProductPointOrm } from 'src/database/typeorm/product_point.orm-entity';
 import { ProductPointResponse } from './interface/product_point.interface';
@@ -92,7 +100,10 @@ import { FindAllProductPointUseCase } from './application/queries/find-ProductPo
 import { HardDeleteProductPointUseCase } from './application/commands/hard-ProductPoint.usecase';
 import { SoftDeleteProductPointUseCase } from './application/commands/soft-ProductPoint.usecase';
 import { RestoreProductPointUseCase } from './application/commands/restore-ProductPoint.usecase';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
+// import { BaseController } from 'src/shared/BaseModule/BaseController';
 
 @Controller('product_point')
 export class ProductPointController extends BaseController<
@@ -103,23 +114,45 @@ export class ProductPointController extends BaseController<
   UpdateProductPointDto
 > {
   constructor(
-    createProductPointUseCase: CreateProductPointUseCase,
-    updateProductPointUseCase: UpdateProductPointUseCase,
-    findOneProductPointUseCase: FindOneProductPointUseCase,
-    findAllProductPointUseCase: FindAllProductPointUseCase,
-    hardDeleteProductPointUseCase: HardDeleteProductPointUseCase,
-    softDeleteProductPointUseCase: SoftDeleteProductPointUseCase,
-    restoreProductPointUseCase: RestoreProductPointUseCase,
+    private readonly createProductPointUseCase: CreateProductPointUseCase,
+    private readonly updateProductPointUseCase: UpdateProductPointUseCase,
+    private readonly findAllProductPointUseCase: FindAllProductPointUseCase,
+    protected readonly findOneProductPointUseCase: FindOneProductPointUseCase,
+    protected readonly hardDeleteProductPointUseCase: HardDeleteProductPointUseCase,
+    protected readonly softDeleteProductPointUseCase: SoftDeleteProductPointUseCase,
+    protected readonly restoreProductPointUseCase: RestoreProductPointUseCase,
   ) {
-    super(
-      ProductPointMapper,
-      createProductPointUseCase,
-      updateProductPointUseCase,
-      findOneProductPointUseCase,
-      findAllProductPointUseCase,
-      hardDeleteProductPointUseCase,
-      softDeleteProductPointUseCase,
-      restoreProductPointUseCase,
+    super({
+      mapper: ProductPointMapper,
+      restore: restoreProductPointUseCase,
+      hardDelete: hardDeleteProductPointUseCase,
+      softDelete: softDeleteProductPointUseCase,
+      findOne: findOneProductPointUseCase,
+    });
+  }
+
+  @Post() override async create(
+    @Body() dto: CreateProductPointDto,
+  ): Promise<ProductPointResponse> {
+    return ProductPointMapper.toResponse(
+      await this.createProductPointUseCase.execute(dto),
+    );
+  }
+
+  @Get() override async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponse<ProductPointResponse>> {
+    return ProductPointMapper.toResponseList(
+      await this.findAllProductPointUseCase.execute(query),
+    );
+  }
+
+  @Patch(':id') override async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateProductPointDto,
+  ): Promise<ProductPointResponse> {
+    return ProductPointMapper.toResponse(
+      await this.updateProductPointUseCase.execute(id, dto),
     );
   }
 }

@@ -12,88 +12,66 @@ export abstract class BaseRepository<
 > implements IBaseRepository<TDomain>
 {
   constructor(
-    protected readonly repository: Repository<TOrm>,
-    protected readonly mapper: BaseMapper<TDomain, TOrm, TResponse>,
-    protected readonly tableName: string,
-    protected readonly searchField: string = 'name',
+    protected readonly parms: {
+      repository: Repository<TOrm>;
+      mapper: BaseMapper<TDomain, TOrm, TResponse>;
+      searchField: string;
+    },
   ) {}
+  abstract createQueryBuilder(): SelectQueryBuilder<TOrm>;
 
-  async findAll(
-    query: PaginationDto,
-    joins: { relation: string; as: string }[] = [],
-  ): Promise<PaginatedResponse<TDomain>> {
-    let qb = this.createBaseQueryBuilder().withDeleted();
-
-    joins.forEach(({ relation, as }) => {
-      qb = qb.leftJoinAndSelect(relation, as);
-    });
-
+  async findAll(query: PaginationDto): Promise<PaginatedResponse<TDomain>> {
+    const qb = this.createQueryBuilder();
     return await fetchWithPagination({
       qb,
       page: query.page || 1,
       type: query.type,
-      search: { kw: query.search, field: this.tableName + '.' + this.searchField },
+      search: { kw: query.search, field: this.parms.searchField },
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,
-      toDomain: this.mapper.toDomain.bind(this.mapper),
+      toDomain: this.parms.mapper.toDomain.bind(this.parms.mapper),
     });
   }
 
-  async findById(id: number, relations?: string[]): Promise<TDomain | null> {
-    // const entity = await this.repository.findOne({
-    //   where: { id } as any,
-    //   relations,
-    //   withDeleted: true,
-    // });
-    const entity = await this.repository.findOne({
-      where: { id } as any,
-      relations,
-      withDeleted: true,
-    });
-    return entity ? this.mapper.toDomain(entity) : null;
+  async findById(id: number): Promise<TDomain | null> {
+    const entity = await this.createQueryBuilder()
+      .withDeleted()
+      .where({ id })
+      .getOne();
+    return entity ? this.parms.mapper.toDomain(entity) : null;
   }
 
   async save(domain: TDomain): Promise<TDomain> {
-    const entity = this.repository.create(this.mapper.toSchema(domain));
-    await this.repository.save(entity);
-    return this.mapper.toDomain(entity);
+    const entity = this.parms.repository.create(
+      this.parms.mapper.toSchema(domain),
+    );
+    await this.parms.repository.save(entity);
+    return this.parms.mapper.toDomain(entity);
   }
 
-  // async update(domain: TDomain): Promise<TDomain> {
-  //   const saved = await this.repository.save(
-  //     this.mapper.toSchema(domain) as any,
-  //   );
-  //   return this.mapper.toDomain(saved);
-  // }
-
-  async hardDelete(id: number): Promise<{ message: string }> {
-    await this.repository.delete(id);
+  async hardDelete(id: number[]): Promise<{ message: string }> {
+    await this.parms.repository.delete(id);
     return { message: 'hard delete successfully' };
   }
 
-  async softDelete(id: number): Promise<{ message: string }> {
-    await this.repository.softDelete(id);
+  async softDelete(id: number[]): Promise<{ message: string }> {
+    await this.parms.repository.softDelete(id);
     return { message: 'soft delete successfully' };
   }
 
-  async restore(id: number): Promise<{ message: string }> {
-    await this.repository.restore(id);
+  async restore(id: number[]): Promise<{ message: string }> {
+    await this.parms.repository.restore(id);
     return { message: 'restore successfully' };
   }
-
-  protected createBaseQueryBuilder(): SelectQueryBuilder<TOrm> {
-    return this.repository.createQueryBuilder(this.tableName);
-  }
-  
 
   async findByField<K extends keyof TOrm>(
     field: K,
     value: TOrm[K],
   ): Promise<TDomain | null> {
-    const entity = await this.repository.findOne({
+    const entity = await this.parms.repository.findOne({
       where: { [field]: value } as any,
     });
-    return entity ? this.mapper.toDomain(entity) : null;
+    return entity ? this.parms.mapper.toDomain(entity) : null;
   }
 }

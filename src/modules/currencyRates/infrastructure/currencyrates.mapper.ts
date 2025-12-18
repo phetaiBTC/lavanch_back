@@ -39,10 +39,12 @@ class CurrencyRatesMapperClass extends BaseMapper<
   toResponse = (domain: CurrencyRates): CurrencyRatesResponse => {
     return {
       id: domain.value.id!,
-      from_currency_id: domain.value.from_currency_id,
-      to_currency_id: domain.value.to_currency_id,
+      from_currency: CurrenciesMapper.toResponse(
+        domain.value.from_currency_id,
+      ),
+      to_currency: CurrenciesMapper.toResponse(domain.value.to_currency_id),
       rate: domain.value.rate,
-      rate_date: domain.value.rate_date,
+      rate_date: formatDate(domain.value.rate_date),
       ...this.getFormattedTimestamps(domain),
     };
   };

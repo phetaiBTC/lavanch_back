@@ -8,11 +8,12 @@ import { GetRoleUseCase } from './application/queries/get-Role.usecase';
 import { PermissionModule } from '../permission/permission.module';
 import { CreateRoleUseCase } from './application/commands/create-Role.usecase';
 import { GetOneRoleUseCase } from './application/queries/getOne-Role.usecase';
-import { UpdateRoleUseCase } from './application/commands/udate-Role.usecase';
+import { UpdateRoleUseCase } from './application/commands/update-Role.usecase';
 import { SoftDeleteRoleUseCase } from './application/commands/soft-Role.usecase';
 import { HardDeleteRoleUseCase } from './application/commands/hard-Role.usecase';
 import { RestoreRoleUseCase } from './application/commands/restore-Role.usecase';
 import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
+import { GetByNameRoleUseCase } from './application/queries/getByName-Role.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RoleOrm]), PermissionModule],
@@ -29,7 +30,8 @@ import { UniqueValidatorService } from 'src/shared/utils/pass.notfound.util';
     SoftDeleteRoleUseCase,
     HardDeleteRoleUseCase,
     RestoreRoleUseCase,
+    GetByNameRoleUseCase,
   ],
-  exports: [GetOneRoleUseCase],
+  exports: [GetOneRoleUseCase,GetByNameRoleUseCase],
 })
 export class RoleModule {}

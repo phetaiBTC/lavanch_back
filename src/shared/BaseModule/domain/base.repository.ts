@@ -5,7 +5,7 @@ export interface IBaseRepository<TDomain> {
   findAll(query: PaginationDto, joins?: { relation: string; as: string }[]): Promise<PaginatedResponse<TDomain>>;
   findById(id: number): Promise<TDomain | null>;
   save(domain: TDomain): Promise<TDomain>;
-  hardDelete(id: number): Promise<{ message: string }>;
-  softDelete(id: number): Promise<{ message: string }>;
-  restore(id: number): Promise<{ message: string }>;
+  hardDelete(id: number[]): Promise<{ message: string }>;
+  softDelete(id: number[]): Promise<{ message: string }>;
+  restore(id: number[]): Promise<{ message: string }>;
 }

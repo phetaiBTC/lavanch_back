@@ -15,8 +15,8 @@ export class HardDeleteUnitUseCase {
     @Inject(UNIT_REPOSITORY) private readonly unitRepo: IUnitRepository,
     private readonly usecaseFIndOneUnit: FindOneUnitUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOneUnit.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFIndOneUnit.execute(id)));
     return this.unitRepo.hardDelete(id);
   }
 }

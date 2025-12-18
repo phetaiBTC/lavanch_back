@@ -11,8 +11,8 @@ export class HardDeleteTieredPriceUseCase {
     private readonly tiered_priceRepo: ITieredPriceRepository,
     private readonly usecaseFindOneTieredPrice: FindOneTieredPriceUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFindOneTieredPrice.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFindOneTieredPrice.execute(id)));
     return this.tiered_priceRepo.hardDelete(id);
   }
 }

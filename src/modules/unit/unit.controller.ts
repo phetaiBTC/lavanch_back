@@ -22,13 +22,12 @@ import { HardDeleteUnitUseCase } from './application/commands/hard-Unit.usecase'
 import { SoftDeleteUnitUseCase } from './application/commands/soft-Unit.usecase';
 import { RestoreUnitUseCase } from './application/commands/restore-Unit.usecase';
 import { ActiveUnitUseCase } from './application/commands/active-Unit.usecase';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
-import { BaseControllerSetup } from 'src/shared/BaseModule/base.controller';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('unit')
-export class UnitController extends BaseControllerSetup<
+export class UnitController extends BaseController<
   Unit,
   UnitOrm,
   UnitResponse,
@@ -54,18 +53,18 @@ export class UnitController extends BaseControllerSetup<
     });
   }
   @Post('')
-  async create(@Body() dto: CreateUnitDto): Promise<UnitResponse> {
+  override async create(@Body() dto: CreateUnitDto): Promise<UnitResponse> {
     return UnitMapper.toResponse(await this.createUnitUseCase.execute(dto));
   }
   @Patch(':id')
-  async update(
+  override async update(
     @Param('id') id: number,
     @Body() dto: UpdateUnitDto,
   ): Promise<UnitResponse> {
     return UnitMapper.toResponse(await this.updateUnitUseCase.execute(id, dto));
   }
   @Get('')
-  async findAll(
+  override async findAll(
     @Query() query: PaginationDto,
   ): Promise<PaginatedResponse<UnitResponse>> {
     return UnitMapper.toResponseList(

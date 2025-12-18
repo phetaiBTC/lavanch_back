@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICategoryRepository } from '../domain/category.repository';
 import { Category } from '../domain/category.entity';
@@ -16,7 +16,14 @@ export class CategoryRepositoryImpl
     @InjectRepository(CategoryOrm)
     protected readonly categoryRepo: Repository<CategoryOrm>,
   ) {
-    super(categoryRepo, CategoryMapper, 'category', 'name');
+    super({
+      repository: categoryRepo,
+      mapper: CategoryMapper,
+      searchField: 'name',
+    });
+  }
+  override createQueryBuilder(): SelectQueryBuilder<CategoryOrm> {
+    return this.categoryRepo.createQueryBuilder('category');
   }
   async findByName(name: string): Promise<Category | null> {
     return this.findByField('name', name);

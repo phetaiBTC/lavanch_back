@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CurrenciesOrm } from 'src/database/typeorm/currencies.orm-entity';
 import { ICurrenciesRepository } from '../domain/currencies.repository';
@@ -15,9 +15,15 @@ export class CurrenciesRepositoryImpl
     @InjectRepository(CurrenciesOrm)
     protected readonly currenciesRepo: Repository<CurrenciesOrm>,
   ) {
-    super(currenciesRepo, CurrenciesMapper, 'currencies', 'name');
+    super({
+      repository: currenciesRepo,
+      mapper: CurrenciesMapper,
+      searchField: 'currencies.code',
+    });
   }
-
+  override createQueryBuilder(): SelectQueryBuilder<CurrenciesOrm> {
+    return this.currenciesRepo.createQueryBuilder('currencies');
+  }
   async findByCode(code: string): Promise<Currencies | null> {
     const currenciesEntity = await this.currenciesRepo.findOne({
       where: { code },

@@ -19,12 +19,14 @@ export async function fetchWithPagination<T extends object, U>(query: {
     });
   }
 
-  if (query.is_active === Status.ACTIVE) {
-    query.qb.andWhere(`${query.qb.alias}.deletedAt IS NULL`);
-  } else {
-    query.qb.andWhere(`${query.qb.alias}.deletedAt IS NOT NULL`);
-  }
-
+  if (query.is_active === Status.INACTIVE) {
+    // query.qb.andWhere(`${query.qb.alias}.deletedAt IS NULL`);
+    query.qb.withDeleted();
+  } 
+  // else {
+  //   // query.qb.andWhere(`${query.qb.alias}.deletedAt IS NOT NULL`);
+  // }
+    
   query.qb.orderBy(`${query.qb.alias}.createdAt`, query.sort || sortType.DESC);
 
   if (query.type === GetType.ALL) {

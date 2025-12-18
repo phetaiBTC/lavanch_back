@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { IUserRepository } from '../domain/user.repository';
 import { User } from '../domain/user.entity';
 import { UserMapper } from './user.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { BaseRepository } from 'src/shared/BaseModule/infrastructure/base.repository.impl';
 import { UserResponse } from '../interface/user.interface';
 
@@ -19,25 +17,19 @@ export class UserRepositoryImpl
     @InjectRepository(UserOrm)
     protected readonly repo: Repository<UserOrm>,
   ) {
-    super(repo, UserMapper, 'user', 'username');
+    super({
+      repository: repo,
+      mapper: UserMapper,
+      searchField: 'user.email',
+    });
   }
-
-  async findById(id: number): Promise<User | null> {
-    return await super.findById(id, [
-      'roles',
-      'permissions',
-      'roles.permissions',
-    ]);
+  override createQueryBuilder(): SelectQueryBuilder<UserOrm> {
+    return this.repo
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'roles')
+      .leftJoinAndSelect('user.permissions', 'permissions')
+      .leftJoinAndSelect('roles.permissions', 'role_permissions');
   }
-
-  async findAll(query: PaginationDto): Promise<PaginatedResponse<User>> {
-    return super.findAll(query, [
-      { relation: 'user.roles', as: 'roles' },
-      { relation: 'roles.permissions', as: 'permissions' },
-      { relation: 'user.permissions', as: 'user_permissions' },
-    ]);
-  }
-
   async findByEmail(email: string): Promise<User | null> {
     const entity = await this.repo.findOne({
       where: { email },

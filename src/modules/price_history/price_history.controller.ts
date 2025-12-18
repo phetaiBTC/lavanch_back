@@ -2,10 +2,9 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Patch,
-  Delete,
+  Body,
   Query,
 } from '@nestjs/common';
 import { CreatePriceHistoryDto } from './dto/create-PriceHistory.dto';
@@ -21,9 +20,9 @@ import { FindAllPriceHistoryUseCase } from './application/queries/find-PriceHist
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { PriceHistoryMapper } from './infrastructure/price_history.mapper';
 import { PriceHistoryResponse } from './interface/price_history.interface';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
 import { PriceHistory } from './domain/price_history.entity';
 import { PriceHistoryOrm } from 'src/database/typeorm/price_history.orm-entity';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
 @Controller('price_history')
 export class PriceHistoryController extends BaseController<
   PriceHistory,
@@ -41,15 +40,39 @@ export class PriceHistoryController extends BaseController<
     protected readonly findOnePriceHistoryUseCase: FindOnePriceHistoryUseCase,
     protected readonly findAllPriceHistoryUseCase: FindAllPriceHistoryUseCase,
   ) {
-    super(
-      PriceHistoryMapper,
-      createPriceHistoryUseCase,
-      updatePriceHistoryUseCase,
-      findOnePriceHistoryUseCase,
-      findAllPriceHistoryUseCase,
-      hardDeletePriceHistoryUseCase,
-      softDeletePriceHistoryUseCase,
-      restorePriceHistoryUseCase,
+    super({
+      mapper: PriceHistoryMapper,
+      hardDelete: hardDeletePriceHistoryUseCase,
+      softDelete: softDeletePriceHistoryUseCase,
+      restore: restorePriceHistoryUseCase,
+      findOne: findOnePriceHistoryUseCase,
+    });
+  }
+  @Post()
+  override async create(
+    @Body() dto: CreatePriceHistoryDto,
+  ): Promise<PriceHistoryResponse> {
+    return PriceHistoryMapper.toResponse(
+      await this.createPriceHistoryUseCase.execute(dto),
+    );
+  }
+
+  @Patch(':id')
+  override async update(
+    @Param('id') id: number,
+    @Body() dto: UpdatePriceHistoryDto,
+  ): Promise<PriceHistoryResponse> {
+    return PriceHistoryMapper.toResponse(
+      await this.updatePriceHistoryUseCase.execute(id, dto),
+    );
+  }
+
+  @Get()
+  override async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponse<PriceHistoryResponse>> {
+    return PriceHistoryMapper.toResponseList(
+      await this.findAllPriceHistoryUseCase.execute(query),
     );
   }
 }

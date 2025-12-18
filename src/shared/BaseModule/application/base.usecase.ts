@@ -19,9 +19,9 @@ export interface IFindAllUseCase<TDomain> {
 }
 
 export interface IDeleteUseCase {
-  execute(id: number): Promise<{ message: string }>;
+  execute(id: number[]): Promise<{ message: string }>;
 }
 
 export interface IRestoreUseCase {
-  execute(id: number): Promise<{ message: string }>;
+  execute(id: number[]): Promise<{ message: string }>;
 }

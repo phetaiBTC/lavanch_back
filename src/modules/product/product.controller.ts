@@ -1,4 +1,12 @@
-import { Controller, Patch, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Patch,
+  Body,
+  Param,
+  Post,
+  Query,
+  Get,
+} from '@nestjs/common';
 import { Product } from './domain/product.entity';
 import { ProductOrm } from 'src/database/typeorm/product.orm-entity';
 import { ProductResponse } from './interface/product.interface';
@@ -14,7 +22,9 @@ import { SoftDeleteProductUseCase } from './application/commands/soft-Product.us
 import { RestoreProductUseCase } from './application/commands/restore-Product.usecase';
 import { ActiveProductUseCase } from './application/commands/active-Product.usecase';
 import { ActiveDto } from 'src/shared/dto/avtive.dto';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('product')
 export class ProductController extends BaseController<
@@ -25,27 +35,50 @@ export class ProductController extends BaseController<
   UpdateProductDto
 > {
   constructor(
-    createProductUseCase: CreateProductUseCase,
-    updateProductUseCase: UpdateProductUseCase,
-    findOneProductUseCase: FindOneProductUseCase,
-    findAllProductUseCase: FindAllProductUseCase,
-    hardDeleteProductUseCase: HardDeleteProductUseCase,
-    softDeleteProductUseCase: SoftDeleteProductUseCase,
-    restoreProductUseCase: RestoreProductUseCase,
+    private readonly createProductUseCase: CreateProductUseCase,
+    private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly findAllProductUseCase: FindAllProductUseCase,
     private readonly activeProductUseCase: ActiveProductUseCase, // custom
+    protected readonly findOneProductUseCase: FindOneProductUseCase,
+    protected readonly hardDeleteProductUseCase: HardDeleteProductUseCase,
+    protected readonly softDeleteProductUseCase: SoftDeleteProductUseCase,
+    protected readonly restoreProductUseCase: RestoreProductUseCase,
   ) {
-    super(
-      ProductMapper,
-      createProductUseCase,
-      updateProductUseCase,
-      findOneProductUseCase,
-      findAllProductUseCase,
-      hardDeleteProductUseCase,
-      softDeleteProductUseCase,
-      restoreProductUseCase,
+    super({
+      findOne: findOneProductUseCase,
+      mapper: ProductMapper,
+      hardDelete: hardDeleteProductUseCase,
+      softDelete: softDeleteProductUseCase,
+      restore: restoreProductUseCase,
+    });
+  }
+  @Post()
+  override async create(
+    @Body() dto: CreateProductDto,
+  ): Promise<ProductResponse> {
+    return ProductMapper.toResponse(
+      await this.createProductUseCase.execute(dto),
     );
   }
 
+  @Patch(':id')
+  override async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateProductDto,
+  ): Promise<ProductResponse> {
+    return ProductMapper.toResponse(
+      await this.updateProductUseCase.execute(id, dto),
+    );
+  }
+
+  @Get()
+  override async findAll(
+    @Query() query: PaginationDto,
+  ): Promise<PaginatedResponse<ProductResponse>> {
+    return ProductMapper.toResponseList(
+      await this.findAllProductUseCase.execute(query),
+    );
+  }
   @Patch('active-update/:id')
   async activeUpdate(
     @Param('id') id: number,

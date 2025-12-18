@@ -13,6 +13,14 @@ export async function seedRole(dataSource: DataSource) {
     const exists = await roleRepo.findOne({
       where: { code: 'admin' },
     });
+    const RoleUserExists = await roleRepo.findOne({
+      where: { code: 'user' },
+    });
+
+    if (!RoleUserExists) {
+      const roleUser = roleRepo.create({ code: 'user', permissions: [] });
+      await roleRepo.save(roleUser);
+    }
 
     if (!exists) {
       const roleAdmin = roleRepo.create({ code: 'admin', permissions });

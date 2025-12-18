@@ -11,8 +11,9 @@ export class SoftDeletePriceHistoryUseCase {
     private readonly price_historyRepo: IPriceHistoryRepository,
     private readonly findOnePriceHistory: FindOnePriceHistoryUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.findOnePriceHistory.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    // await this.findOnePriceHistory.execute(id);
+    await Promise.all(id.map((id) => this.findOnePriceHistory.execute(id)));
     return this.price_historyRepo.softDelete(id);
   }
 }

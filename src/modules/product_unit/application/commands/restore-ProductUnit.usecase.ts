@@ -18,8 +18,9 @@ export class RestoreProductUnitUseCase {
     private readonly product_unitRepo: IProductUnitRepository,
     private readonly usecaseFIndOneProductUnit: FindOneProductUnitUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.usecaseFIndOneProductUnit.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.usecaseFIndOneProductUnit.execute(id)));
+    // await this.usecaseFIndOneProductUnit.execute(id);
     return this.product_unitRepo.restore(id);
   }
 }

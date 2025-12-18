@@ -11,8 +11,10 @@ export class RestoreCurrenciesUseCase {
     private readonly currenciesRepo: ICurrenciesRepository,
     private readonly findOneCurrenciesUseCase: FindOneCurrenciesUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.findOneCurrenciesUseCase.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    await Promise.all(id.map((id) => this.findOneCurrenciesUseCase.execute(id)));
+
+    // await this.findOneCurrenciesUseCase.execute(id);
     return this.currenciesRepo.restore(id);
   }
 }

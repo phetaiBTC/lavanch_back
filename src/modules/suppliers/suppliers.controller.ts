@@ -1,6 +1,6 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Query } from '@nestjs/common';
 import { Suppliers } from './domain/suppliers.entity';
-import { BaseController } from 'src/shared/BaseModule/BaseController';
+import { BaseController } from 'src/shared/BaseModule/base.controller';
 import { SuppliersOrm } from 'src/database/typeorm/suppliers.orm-entity';
 import { SuppliersResponse } from './interface/suppliers.interface';
 import { CreateSuppliersDto } from './dto/create-Suppliers.dto';
@@ -13,6 +13,8 @@ import { HardDeleteSuppliersUseCase } from './application/commands/hard-Supplier
 import { SoftDeleteSuppliersUseCase } from './application/commands/soft-Suppliers.usecase';
 import { RestoreSuppliersUseCase } from './application/commands/restore-Suppliers.usecase';
 import { SuppliersMapper } from './infrastructure/suppliers.mapper';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 
 @Controller('suppliers')
 export class SuppliersController extends BaseController<
@@ -23,24 +25,45 @@ export class SuppliersController extends BaseController<
   UpdateSuppliersDto
 > {
   constructor(
-    protected createsuppliersUseCase: CreateSuppliersUseCase,
-    protected updatesuppliersUseCase: UpdateSuppliersUseCase,
-    protected findOnesuppliersUseCase: FindOneSuppliersUseCase,
-    protected findAllsuppliersUseCase: FindAllSuppliersUseCase,
-    protected hardDeletesuppliersUseCase: HardDeleteSuppliersUseCase,
-    protected softDeletesuppliersUseCase: SoftDeleteSuppliersUseCase,
-    protected restoresuppliersUseCase: RestoreSuppliersUseCase,
+    private readonly createsuppliersUseCase: CreateSuppliersUseCase,
+    private readonly updatesuppliersUseCase: UpdateSuppliersUseCase,
+    private readonly findAllsuppliersUseCase: FindAllSuppliersUseCase,
+    protected readonly findOnesuppliersUseCase: FindOneSuppliersUseCase,
+    protected readonly hardDeletesuppliersUseCase: HardDeleteSuppliersUseCase,
+    protected readonly softDeletesuppliersUseCase: SoftDeleteSuppliersUseCase,
+    protected readonly restoresuppliersUseCase: RestoreSuppliersUseCase,
   ) {
-    super(
-      SuppliersMapper,
-      createsuppliersUseCase,
-      updatesuppliersUseCase,
-      findOnesuppliersUseCase,
-      findAllsuppliersUseCase,
-      hardDeletesuppliersUseCase,
-      softDeletesuppliersUseCase,
-      restoresuppliersUseCase,
+    super({
+      mapper: SuppliersMapper,
+      findOne: findOnesuppliersUseCase,
+      softDelete: softDeletesuppliersUseCase,
+      hardDelete: hardDeletesuppliersUseCase,
+      restore: restoresuppliersUseCase,
+    });
+  }
+  @Post()
+  override async create(data: CreateSuppliersDto): Promise<SuppliersResponse> {
+    return SuppliersMapper.toResponse(
+      await this.createsuppliersUseCase.execute(data),
     );
   }
-  
+
+  @Patch(':id')
+  override async update(
+    id: number,
+    data: UpdateSuppliersDto,
+  ): Promise<SuppliersResponse> {
+    return SuppliersMapper.toResponse(
+      await this.updatesuppliersUseCase.execute(id, data),
+    );
+  }
+  @Get('')
+  override async findAll(
+    @Query()
+    query: PaginationDto,
+  ): Promise<PaginatedResponse<SuppliersResponse>> {
+    return SuppliersMapper.toResponseList(
+      await this.findAllsuppliersUseCase.execute(query),
+    );
+  }
 }

@@ -9,10 +9,10 @@ import {
   type IRoleRepository,
 } from '../../domain/role.repository';
 import { Role } from '../../domain/role.entity';
-import { CreateRoleDto } from '../../dto/create-Role.dto';
 import { GetOnePermissionUseCase } from 'src/modules/permission/application/queries/getOne-Permission.usecase';
 import { Permission } from 'src/modules/permission/domain/permission.entity';
 import { GetOneRoleUseCase } from '../queries/getOne-Role.usecase';
+import { UpdateRoleDto } from '../../dto/update-Role.dto';
 
 @Injectable()
 export class UpdateRoleUseCase {
@@ -23,11 +23,8 @@ export class UpdateRoleUseCase {
     private readonly getOneRoleUseCase: GetOneRoleUseCase,
   ) {}
 
-  async execute(roleId: number, body: CreateRoleDto): Promise<Role> {
+  async execute(roleId: number, body: UpdateRoleDto): Promise<Role> {
     const role = await this.getOneRoleUseCase.execute(roleId);
-    if (!role) {
-      throw new NotFoundException('Role not found');
-    }
     if (body.code && body.code !== role.value.code) {
       const exists = await this.roleRepository.findByCode(body.code);
       if (exists) {
@@ -36,16 +33,17 @@ export class UpdateRoleUseCase {
     }
 
     const permissions: Permission[] = [];
-    for (const permissionId of body.permissions) {
-      const permission =
-        await this.getOnePermissionUseCase.execute(permissionId);
-      if (!permission) {
-        throw new NotFoundException(`Permission ${permissionId} not found`);
+    if (body.permissions) {
+      for (const permissionId of body.permissions) {
+        const permission =
+          await this.getOnePermissionUseCase.execute(permissionId);
+        if (!permission) {
+          throw new NotFoundException(`Permission ${permissionId} not found`);
+        }
+        permissions.push(permission);
       }
-      permissions.push(permission);
     }
-    const updatedRole = new Role({
-      id: role.value.id,
+    const updatedRole = role.update({
       code: body.code ?? role.value.code,
       permissions:
         permissions.length > 0 ? permissions : role.value.permissions,

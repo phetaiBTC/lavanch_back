@@ -12,8 +12,9 @@ export class RestorePriceHistoryUseCase {
 
     private readonly findOnePriceHistory: FindOnePriceHistoryUseCase,
   ) {}
-  async execute(id: number): Promise<{ message: string }> {
-    await this.findOnePriceHistory.execute(id);
+  async execute(id: number[]): Promise<{ message: string }> {
+    // await this.findOnePriceHistory.execute(id);
+    await Promise.all(id.map((id) => this.findOnePriceHistory.execute(id)));
     return this.price_historyRepo.restore(id);
   }
 }
