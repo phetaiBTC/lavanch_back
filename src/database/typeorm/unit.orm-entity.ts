@@ -10,6 +10,7 @@ import {
 import { ProductPriceOrm } from './product_price.orm-entity';
 import { PriceHistoryOrm } from './price_history.orm-entity';
 import { TieredPriceOrm } from './tiered-price.orm-entity';
+import { Inbound_order_itemsOrm } from './inbound_order_items.orm-entity';
 
 @Entity('Unit')
 export class UnitOrm extends ShardOrm {
@@ -49,4 +50,10 @@ export class UnitOrm extends ShardOrm {
     onUpdate: 'CASCADE',
   })
   tiered_prices: TieredPriceOrm[];
+
+  @OneToMany(
+    () => Inbound_order_itemsOrm,
+    (inbound_order_items) => inbound_order_items.unit,
+  )
+  inbound_order_items: Inbound_order_itemsOrm[];
 }

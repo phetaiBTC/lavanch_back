@@ -1,8 +1,16 @@
-import { Entity, Column, ManyToOne, JoinColumn, Unique, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  Unique,
+  OneToMany,
+} from 'typeorm';
 import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { ProductVariantOrm } from './product-variant.orm-entity';
 import { CurrenciesOrm } from './currencies.orm-entity';
 import { Stock_transfer_itemsOrm } from './stock_transfer_items.orm-entity';
+import { Inbound_order_itemsOrm } from './inbound_order_items.orm-entity';
 
 @Entity('product_lots')
 // @Unique(['product_variant', 'lot_number'])
@@ -40,6 +48,15 @@ export class ProductLotOrm extends ShardOrm {
   @Column({ type: 'decimal', nullable: false })
   fx_rate: number;
 
-  @OneToMany(()=> Stock_transfer_itemsOrm, (stockTransferItem) => stockTransferItem.product_lot)
-  stock_transfer_items: Stock_transfer_itemsOrm[]
+  @OneToMany(
+    () => Stock_transfer_itemsOrm,
+    (stockTransferItem) => stockTransferItem.product_lot,
+  )
+  stock_transfer_items: Stock_transfer_itemsOrm[];
+
+  @OneToMany(
+    () => Inbound_order_itemsOrm,
+    (inbound_order_items) => inbound_order_items.product_lot,
+  )
+  inbound_order_items: Inbound_order_itemsOrm[];
 }

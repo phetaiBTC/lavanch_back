@@ -14,6 +14,7 @@ import { ProductPriceOrm } from './product_price.orm-entity';
 import { TieredPriceOrm } from './tiered-price.orm-entity';
 import { Branch_stocksOrm } from './branch_stocks.orm-entity';
 import { Stock_transfer_itemsOrm } from './stock_transfer_items.orm-entity';
+import { Inbound_order_itemsOrm } from './inbound_order_items.orm-entity';
 
 @Entity('Product_variant')
 export class ProductVariantOrm extends ShardOrm {
@@ -62,6 +63,15 @@ export class ProductVariantOrm extends ShardOrm {
   @OneToMany(() => Branch_stocksOrm, (branchStock) => branchStock.variant)
   branch_stocks: ProductUnitOrm[];
 
-  @OneToMany(()=> Stock_transfer_itemsOrm, (stock_transfer_items) => stock_transfer_items.product_variant)
-  stock_transfer_items: Stock_transfer_itemsOrm[]
+  @OneToMany(
+    () => Stock_transfer_itemsOrm,
+    (stock_transfer_items) => stock_transfer_items.product_variant,
+  )
+  stock_transfer_items: Stock_transfer_itemsOrm[];
+
+  @OneToMany(
+    () => Inbound_order_itemsOrm,
+    (inbound_order_items) => inbound_order_items.variant,
+  )
+  inbound_order_items: Inbound_order_itemsOrm[];
 }
