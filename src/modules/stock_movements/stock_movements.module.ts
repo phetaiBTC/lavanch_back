@@ -8,8 +8,8 @@
   import { STOCK_MOVEMENTS_REPOSITORY } from './domain/stock_movements.repository';
   import { CreateStock_movementsUseCase } from './application/commands/create-stock_movements.usecase';
   import { UpdateStock_movementsUseCase } from './application/commands/update-stock_movements.usecase';
-  import { FindOneStock_movementsUseCase } from './application/queries/getOne-stock_movements.usecase';
-  import { FindStock_movementsUseCase } from './application/queries/get-stock_movements.usecase';
+  import { FindOneStock_movementsUseCase } from './application/queries/findOne-stock_movements.usecase';
+  import { FindStock_movementsUseCase } from './application/queries/findAll-stock_movements.usecase';
   import { HardDeleteStock_movementsUseCase } from './application/commands/hard-stock_movements.usecase';
   import { SoftDeleteStock_movementsUseCase } from './application/commands/soft-stock_movements.usecase';
   import { RestoreStock_movementsUseCase } from './application/commands/restore-stock_movements.usecase';

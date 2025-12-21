@@ -8,8 +8,8 @@
   import { STOCK_ADJUSTMENTS_REPOSITORY } from './domain/stock_adjustments.repository';
   import { CreateStock_adjustmentsUseCase } from './application/commands/create-stock_adjustments.usecase';
   import { UpdateStock_adjustmentsUseCase } from './application/commands/update-stock_adjustments.usecase';
-  import { FindOneStock_adjustmentsUseCase } from './application/queries/getOne-stock_adjustments.usecase';
-  import { FindStock_adjustmentsUseCase } from './application/queries/get-stock_adjustments.usecase';
+  import { FindOneStock_adjustmentsUseCase } from './application/queries/findOne-stock_adjustments.usecase';
+  import { FindStock_adjustmentsUseCase } from './application/queries/findAll-stock_adjustments.usecase';
   import { HardDeleteStock_adjustmentsUseCase } from './application/commands/hard-stock_adjustments.usecase';
   import { SoftDeleteStock_adjustmentsUseCase } from './application/commands/soft-stock_adjustments.usecase';
   import { RestoreStock_adjustmentsUseCase } from './application/commands/restore-stock_adjustments.usecase';
