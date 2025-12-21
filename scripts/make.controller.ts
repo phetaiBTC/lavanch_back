@@ -18,16 +18,16 @@ import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { ${capitalizedName} } from './domain/${moduleName}.entity';
 import { ${capitalizedName}Orm } from 'src/database/typeorm/${moduleName}.orm-entity';
 import { ${capitalizedName}Response } from './interface/${moduleName}.interface';
-import { Create${capitalizedName}Dto } from './dto/create-${capitalizedName}.dto';
-import { Update${capitalizedName}Dto } from './dto/update-${capitalizedName}.dto';
-import { Create${capitalizedName}UseCase } from './application/commands/create-${capitalizedName}.usecase';
-import { Update${capitalizedName}UseCase } from './application/commands/update-${capitalizedName}.usecase';
-import { GetOne${capitalizedName}UseCase } from './application/queries/getOne-${capitalizedName}.usecase';
-import { Get${capitalizedName}UseCase } from './application/queries/get-${capitalizedName}.usecase';
+import { Create${capitalizedName}Dto } from './dto/create-${moduleName}.dto';
+import { Update${capitalizedName}Dto } from './dto/update-${moduleName}.dto';
+import { Create${capitalizedName}UseCase } from './application/commands/create-${moduleName}.usecase';
+import { Update${capitalizedName}UseCase } from './application/commands/update-${moduleName}.usecase';
+import { FindOne${capitalizedName}UseCase } from './application/queries/findOne-${moduleName}.usecase';
+import { Find${capitalizedName}UseCase } from './application/queries/findAll-${moduleName}.usecase';
 import { ${capitalizedName}Mapper } from './infrastructure/${moduleName}.mapper';
-import { Restore${capitalizedName}UseCase } from './application/commands/restore-${capitalizedName}.usecase';
-import { SoftDelete${capitalizedName}UseCase } from './application/commands/soft-${capitalizedName}.usecase';
-import { HardDelete${capitalizedName}UseCase } from './application/commands/hard-${capitalizedName}.usecase';
+import { Restore${capitalizedName}UseCase } from './application/commands/restore-${moduleName}.usecase';
+import { SoftDelete${capitalizedName}UseCase } from './application/commands/soft-${moduleName}.usecase';
+import { HardDelete${capitalizedName}UseCase } from './application/commands/hard-${moduleName}.usecase';
 import { BaseController } from 'src/shared/BaseModule/base.controller';
 
 @Controller('${moduleName}')
@@ -41,15 +41,15 @@ export class ${capitalizedName}Controller extends BaseController<
   constructor(
     private readonly create${capitalizedName}UseCase: Create${capitalizedName}UseCase,
     private readonly update${capitalizedName}UseCase: Update${capitalizedName}UseCase,
-    protected readonly getOne${capitalizedName}UseCase: GetOne${capitalizedName}UseCase,
-    private readonly get${capitalizedName}UseCase: Get${capitalizedName}UseCase,
+    protected readonly findOne${capitalizedName}UseCase: FindOne${capitalizedName}UseCase,
+    private readonly find${capitalizedName}UseCase: Find${capitalizedName}UseCase,
     protected readonly hardDelete${capitalizedName}UseCase: HardDelete${capitalizedName}UseCase,
     protected readonly softDelete${capitalizedName}UseCase: SoftDelete${capitalizedName}UseCase,
     protected readonly restore${capitalizedName}UseCase: Restore${capitalizedName}UseCase,
   ) {
     super({
       mapper: ${capitalizedName}Mapper,
-      findOne: getOne${capitalizedName}UseCase,
+      findOne: findOne${capitalizedName}UseCase,
       hardDelete: hardDelete${capitalizedName}UseCase,
       softDelete: softDelete${capitalizedName}UseCase,
       restore: restore${capitalizedName}UseCase,
@@ -66,7 +66,7 @@ export class ${capitalizedName}Controller extends BaseController<
     @Query()
     query: PaginationDto,
   ): Promise<PaginatedResponse<${capitalizedName}Response>> {
-    return ${capitalizedName}Mapper.toResponseList(await this.get${capitalizedName}UseCase.execute(query));
+    return ${capitalizedName}Mapper.toResponseList(await this.find${capitalizedName}UseCase.execute(query));
   }
 
   @Patch(':id')

@@ -58,13 +58,13 @@ const generateModule = (moduleName: string): string => {
   import { ${capitalizedName}Orm } from 'src/database/typeorm/${moduleName}.orm-entity';
   import { ${capitalizedName}RepositoryImpl } from './infrastructure/${moduleName}.repository.impl';
   import { ${moduleName.toUpperCase()}_REPOSITORY } from './domain/${moduleName}.repository';
-  import { Create${capitalizedName}UseCase } from './application/commands/create-${capitalizedName}.usecase';
-  import { Update${capitalizedName}UseCase } from './application/commands/update-${capitalizedName}.usecase';
-  import { GetOne${capitalizedName}UseCase } from './application/queries/getOne-${capitalizedName}.usecase';
-  import { Get${capitalizedName}UseCase } from './application/queries/get-${capitalizedName}.usecase';
-  import { HardDelete${capitalizedName}UseCase } from './application/commands/hard-${capitalizedName}.usecase';
-  import { SoftDelete${capitalizedName}UseCase } from './application/commands/soft-${capitalizedName}.usecase';
-  import { Restore${capitalizedName}UseCase } from './application/commands/restore-${capitalizedName}.usecase';
+  import { Create${capitalizedName}UseCase } from './application/commands/create-${moduleName}.usecase';
+  import { Update${capitalizedName}UseCase } from './application/commands/update-${moduleName}.usecase';
+  import { FindOne${capitalizedName}UseCase } from './application/queries/findOne-${moduleName}.usecase';
+  import { Find${capitalizedName}UseCase } from './application/queries/findAll-${moduleName}.usecase';
+  import { HardDelete${capitalizedName}UseCase } from './application/commands/hard-${moduleName}.usecase';
+  import { SoftDelete${capitalizedName}UseCase } from './application/commands/soft-${moduleName}.usecase';
+  import { Restore${capitalizedName}UseCase } from './application/commands/restore-${moduleName}.usecase';
   
   @Module({
     imports: [TypeOrmModule.forFeature([${capitalizedName}Orm])],
@@ -76,8 +76,8 @@ const generateModule = (moduleName: string): string => {
       },
       Create${capitalizedName}UseCase,
       Update${capitalizedName}UseCase,
-      GetOne${capitalizedName}UseCase,
-      Get${capitalizedName}UseCase,
+      FindOne${capitalizedName}UseCase,
+      Find${capitalizedName}UseCase,
       HardDelete${capitalizedName}UseCase,
       SoftDelete${capitalizedName}UseCase,
       Restore${capitalizedName}UseCase,

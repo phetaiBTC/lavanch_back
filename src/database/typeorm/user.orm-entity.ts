@@ -2,7 +2,8 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { Entity, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { PermissionOrm } from './permission.orm-entity';
 import { RoleOrm } from './role.orm-entity';
-import { StockTransfersOrm } from './stock_transfers.orm-entity';
+import { Stock_transfersOrm } from './stock_transfers.orm-entity';
+import { Stock_movementsOrm } from './stock_movements.orm-entity';
 @Entity('user')
 export class UserOrm extends ShardOrm {
   @Column() username: string;
@@ -17,6 +18,15 @@ export class UserOrm extends ShardOrm {
   @ManyToMany(() => PermissionOrm, (permission) => permission.users)
   @JoinTable()
   permissions: PermissionOrm[];
-  @OneToMany(() => StockTransfersOrm, (stock_transfer) => stock_transfer.user)
-  stock_transfers: StockTransfersOrm[];
+
+  @OneToMany(
+    () => Stock_transfersOrm,
+    (stock_transfers) => stock_transfers.created_by,
+  )
+  stock_transfers: Stock_transfersOrm[];
+  @OneToMany(
+    () => Stock_movementsOrm,
+    (stock_movements) => stock_movements.created_by,
+  )
+  stock_movements: Stock_transfersOrm[];
 }
