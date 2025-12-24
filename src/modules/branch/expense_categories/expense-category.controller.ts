@@ -11,7 +11,7 @@ import {
 import { CreateExpenseCategoryDto } from './dto/create-expense-category.dto';
 import { UpdateExpenseCategoryDto } from './dto/update-expense-category.dto';
 import { DeleteMultipleExpenseCategoriesDto } from './dto/delete-multiple-expense-categories.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindExpenseCategoryDto } from './dto/find-expense-category.dto';
 import { CreateExpenseCategoryUseCase } from './application/commands/create-expense-category.usecase';
 import { HardDeleteExpenseCategoryUseCase } from './application/commands/hard-expense-category.usecase';
 import { SoftDeleteExpenseCategoryUseCase } from './application/commands/soft-expense-category.usecase';
@@ -50,7 +50,7 @@ export class ExpenseCategoryController {
 
   @Get()
   async findAll(
-    @Query() query: PaginationDto,
+    @Query() query: FindExpenseCategoryDto,
   ): Promise<PaginatedResponse<ExpenseCategoryResponse>> {
     return ExpenseCategoryMapper.toResponseList(
       await this.findAllExpenseCategoryUseCase.execute(query),

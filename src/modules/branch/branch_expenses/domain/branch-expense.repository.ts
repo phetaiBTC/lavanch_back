@@ -15,7 +15,9 @@ export interface SummaryResponse {
 }
 
 export interface IBranchExpenseRepository extends IRemoveRepository {
-  findAll(query: FindBranchExpenseDto): Promise<PaginatedResponse<BranchExpense>>;
+  findAll(
+    query: FindBranchExpenseDto,
+  ): Promise<PaginatedResponse<BranchExpense>>;
   findById(id: number): Promise<BranchExpense | null>;
   create(expense: BranchExpense): Promise<BranchExpense>;
   update(expense: BranchExpense): Promise<BranchExpense>;

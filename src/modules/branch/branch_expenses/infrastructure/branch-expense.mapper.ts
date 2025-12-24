@@ -1,6 +1,7 @@
 import { BranchExpense } from '../domain/branch-expense.entity';
 import { BranchExpensesOrm } from 'src/database/typeorm/branch_expenses.orm-entity';
 import { BranchExpenseResponse } from '../interface/branch-expense.interface';
+import { ExpenseStatus } from '../domain/expense-status.enum';
 import { formatDate } from 'src/shared/utils/dayjs.util';
 import {
   IPagination,
@@ -22,13 +23,17 @@ export const BranchExpenseMapper = {
       receipt_image: schema.receipt_image,
       created_by: schema.created_by,
       approved_by: schema.approved_by,
-      status: schema.status,
+      status: schema.status as ExpenseStatus,
       wallet_transaction_id: schema.wallet_transaction_id,
       createdAt: schema.createdAt,
       updatedAt: schema.updatedAt,
       deletedAt: schema.deletedAt,
-      branch: schema.branch ? { id: schema.branch.id, name: schema.branch.name } : undefined,
-      expense_category: schema.expense_category ? { id: schema.expense_category.id, name: schema.expense_category.name } : undefined,
+      branch: schema.branch
+        ? { id: schema.branch.id, name: schema.branch.name }
+        : undefined,
+      expense_category: schema.expense_category
+        ? { id: schema.expense_category.id, name: schema.expense_category.name }
+        : undefined,
     });
   },
 
@@ -47,7 +52,7 @@ export const BranchExpenseMapper = {
       schema.receipt_image = domain.value.receipt_image;
     schema.created_by = domain.value.created_by;
     if (domain.value.approved_by) schema.approved_by = domain.value.approved_by;
-    schema.status = domain.value.status as any;
+    schema.status = domain.value.status;
     if (domain.value.wallet_transaction_id)
       schema.wallet_transaction_id = domain.value.wallet_transaction_id;
     return schema;
@@ -84,7 +89,7 @@ export const BranchExpenseMapper = {
     pagination: IPagination;
   }): PaginatedResponse<BranchExpenseResponse> {
     return {
-      data: domain.data.map((domain) => this.toResponse(domain)),
+      data: domain.data.map((entity) => BranchExpenseMapper.toResponse(entity)),
       pagination: domain.pagination,
     };
   },

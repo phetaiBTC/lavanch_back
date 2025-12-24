@@ -5,9 +5,9 @@ import { ExpenseCategoriesOrm } from 'src/database/typeorm/expense_categories.or
 import { IExpenseCategoryRepository } from '../domain/expense-category.repository';
 import { ExpenseCategory } from '../domain/expense-category.entity';
 import { ExpenseCategoryMapper } from './expense-category.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindExpenseCategoryDto } from '../dto/find-expense-category.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { fetchWithPagination } from 'src/shared/utils/pagination.util';
+import { ActiveStatus } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class ExpenseCategoryRepositoryImpl
@@ -19,21 +19,89 @@ export class ExpenseCategoryRepositoryImpl
   ) {}
 
   async findAll(
-    query: PaginationDto,
+    query: FindExpenseCategoryDto,
   ): Promise<PaginatedResponse<ExpenseCategory>> {
-    const qb = this.categoryRepo
-      .createQueryBuilder('expense_categories')
-      .withDeleted();
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'name' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: ExpenseCategoryMapper.toDomain,
-    });
+    const qb = this.categoryRepo.createQueryBuilder('expense_categories');
+
+    // Debug logging
+    console.log('\n=== FindExpenseCategoryDto query ===');
+    console.log(
+      'deleted:',
+      query.deleted,
+      '(type:',
+      typeof query.deleted + ')',
+    );
+    console.log('status:', query.status);
+    console.log('search:', query.search);
+    console.log('====================================\n');
+
+    // Search by name or code
+    if (query.search) {
+      qb.andWhere(
+        '(expense_categories.name LIKE :kw OR expense_categories.code LIKE :kw)',
+        {
+          kw: `%${query.search}%`,
+        },
+      );
+    }
+
+    // FILTER 1: Handle deletedAt (soft-delete) filter
+    if (query.deleted === 'true') {
+      // Show only soft-deleted items (deletedAt IS NOT NULL)
+      console.log('✅ Applying: deletedAt IS NOT NULL (soft-deleted records)');
+      qb.withDeleted();
+      qb.andWhere('expense_categories.deletedAt IS NOT NULL');
+    } else if (query.deleted === 'false') {
+      // Show only non-deleted items (deletedAt IS NULL)
+      console.log('✅ Applying: deletedAt IS NULL (active records)');
+      qb.andWhere('expense_categories.deletedAt IS NULL');
+    } else {
+      console.log('ℹ️  No deletedAt filter - showing all records');
+    }
+
+    // FILTER 2: Handle is_active (status) filter - INDEPENDENT of deleted filter
+    if (query.status) {
+      if (query.status === ActiveStatus.ACTIVE) {
+        console.log('✅ Applying: is_active = true');
+        qb.andWhere('expense_categories.is_active = true');
+      } else if (query.status === ActiveStatus.INACTIVE) {
+        console.log('✅ Applying: is_active = false');
+        qb.andWhere('expense_categories.is_active = false');
+      } else if (query.status === ActiveStatus.ALL) {
+        console.log('ℹ️  Status = ALL - no is_active filter');
+      }
+    } else {
+      console.log('ℹ️  No is_active filter');
+    }
+
+    // Sorting
+    qb.orderBy('expense_categories.createdAt', query.sort || 'DESC');
+
+    // Pagination
+    const skip = ((query.page || 1) - 1) * (query.limit || 10);
+
+    // Debug: Print the SQL query
+    const sqlQuery = qb.getSql();
+    console.log('Generated SQL:', sqlQuery);
+    console.log('Query parameters:', qb.getParameters());
+
+    const [entities, total] = await qb
+      .skip(skip)
+      .take(query.limit || 10)
+      .getManyAndCount();
+
+    console.log('Found entities:', entities.length, 'Total:', total);
+
+    return {
+      data: entities.map((e) => ExpenseCategoryMapper.toDomain(e)),
+      pagination: {
+        total,
+        count: entities.length,
+        limit: query.limit || 10,
+        totalPages: Math.ceil(total / (query.limit || 10)) || 1,
+        currentPage: query.page || 1,
+      },
+    };
   }
 
   async findById(id: number): Promise<ExpenseCategory | null> {

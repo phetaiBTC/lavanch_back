@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { CreateWalletTransactionDto } from './dto/create-wallet-transaction.dto';
+import { FindWalletTransactionDto } from './dto/find-wallet-transaction.dto';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { CreateWalletTransactionUseCase } from './application/commands/create-wallet-transaction.usecase';
 import { FindOneWalletTransactionUseCase } from './application/queries/findOne-wallet-transaction.usecase';
@@ -29,7 +30,7 @@ export class WalletTransactionController {
 
   @Get()
   async findAll(
-    @Query() query: PaginationDto,
+    @Query() query: FindWalletTransactionDto,
   ): Promise<PaginatedResponse<WalletTransactionResponse>> {
     return WalletTransactionMapper.toResponseList(
       await this.findAllWalletTransactionUseCase.execute(query),

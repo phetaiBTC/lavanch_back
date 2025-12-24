@@ -19,10 +19,13 @@ import {
 import { WalletAdjustment } from '../../domain/wallet-adjustment.entity';
 import { WalletTransaction } from '../../../wallet_transactions/domain/wallet-transaction.entity';
 import { CreateWalletTransferDto } from '../../dto/create-wallet-transfer.dto';
-import { AdjustmentTypeEnum } from '../../dto/create-wallet-adjustment.dto';
+import {
+  AdjustmentTypeEnum,
+  AdjustmentReasonEnum,
+} from '../../dto/create-wallet-adjustment.dto';
 import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
+import { TransactionStatus } from 'src/database/typeorm/wallet_transactions.orm-entity';
 import { DataSource } from 'typeorm';
-
 @Injectable()
 export class CreateWalletAdjustmentTransferUseCase {
   constructor(
@@ -89,14 +92,19 @@ export class CreateWalletAdjustmentTransferUseCase {
         );
       }
 
+      // Get branch names for descriptions
+      const senderBranchName = senderBranch.value.name;
+      const receiverBranchName = receiverBranch.value.name;
+
       // Create adjustment record for the transfer
       const adjustment = new WalletAdjustment({
         branch_id: dto.branch_id,
         adjustment_type: AdjustmentTypeEnum.DEDUCT,
         amount: dto.amount,
-        reason: 'TRANSFER' as any, // Add TRANSFER to AdjustmentReasonEnum if needed
+        reason: dto.reason || AdjustmentReasonEnum.TRANSFER,
         description:
-          dto.description || `Transfer to branch ${dto.receiver_branch_id}`,
+          dto.description ||
+          `Branch ${senderBranchName} transfer to ${receiverBranchName}`,
         created_by: createdBy,
         adjustment_no: adjustmentNo,
         status: 'APPROVED',
@@ -108,7 +116,7 @@ export class CreateWalletAdjustmentTransferUseCase {
       // Create TRANSFER_OUT transaction for sender branch
       const transferOutTransaction = new WalletTransaction({
         branch_id: dto.branch_id,
-        transaction_type: TransactionTypeEnum.TRANSFER_OUT,
+        transaction_type: TransactionTypeEnum.TRANSFER_OUT,     
         amount: dto.amount,
         balance_before: senderBalance,
         balance_after: newSenderBalance,
@@ -116,11 +124,11 @@ export class CreateWalletAdjustmentTransferUseCase {
         reference_id: savedAdjustment.value.id!,
         reference_no: adjustmentNo,
         related_branch_id: dto.receiver_branch_id,
-        description: `Transfer to branch ${dto.receiver_branch_id}`,
+        description: `Branch ${senderBranchName} transfer to ${receiverBranchName}`,
         notes: dto.description,
         created_by: createdBy,
         approved_by: createdBy,
-        status: 'COMPLETED',
+        status: TransactionStatus.COMPLETED,
       });
 
       const savedTransferOut = await this.transactionRepo.create(
@@ -139,11 +147,11 @@ export class CreateWalletAdjustmentTransferUseCase {
         reference_no: adjustmentNo,
         related_branch_id: dto.branch_id,
         related_transaction_id: savedTransferOut.value.id!,
-        description: `Transfer from branch ${dto.branch_id}`,
+        description: `Branch ${receiverBranchName} receive from ${senderBranchName}`,
         notes: dto.description,
         created_by: createdBy,
         approved_by: createdBy,
-        status: 'COMPLETED',
+        status: TransactionStatus.COMPLETED,
       });
 
       await this.transactionRepo.create(transferInTransaction);
@@ -157,13 +165,15 @@ export class CreateWalletAdjustmentTransferUseCase {
         ),
       ]);
 
-      // Link the outgoing transaction to the adjustment
+      // Link the outgoing transaction to the adjustment while preserving all fields including reason
       const updatedAdjustment = new WalletAdjustment({
         ...savedAdjustment.value,
         wallet_transaction_id: savedTransferOut.value.id!,
+        updatedAt: new Date(),
       });
-
+      
       return this.adjustmentRepo.update(updatedAdjustment);
     });
   }
 }
+
