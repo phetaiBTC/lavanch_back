@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import { Upload } from '@aws-sdk/lib-storage';
@@ -31,22 +31,38 @@ export class UploadFileUseCase {
     const results: { url: string; key: string }[] = [];
     const mediumSize = { width: 720 }; // แค่ medium
     for (const file of files) {
-      const baseName = file.originalname.replace(/\.[^/.]+$/, '');
-      const timestamp = Date.now();
+      try {
+        const baseName = file.originalname.replace(/\.[^/.]+$/, '');
+        const timestamp = Date.now();
 
-      const buffer = await sharp(file.path)
-        .resize(mediumSize.width, null, {
-          fit: 'inside',
-          withoutEnlargement: true,
-        })
-        .webp({ quality: 85 })
-        .toBuffer();
+        const buffer = await sharp(file.path)
+          .resize(mediumSize.width, null, {
+            fit: 'inside',
+            withoutEnlargement: true,
+          })
+          .webp({ quality: 85 })
+          .toBuffer();
 
-      const key = `set_up/images/medium/${timestamp}-${baseName}.webp`;
-      const url = await this.uploadToR2(key, buffer);
+        const key = `set_up/images/medium/${timestamp}-${baseName}.webp`;
+        const url = await this.uploadToR2(key, buffer);
 
-      fs.unlinkSync(file.path);
-      results.push({ url, key });
+        fs.unlinkSync(file.path);
+        results.push({ url, key });
+      } catch (error) {
+        // Clean up file if processing fails
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+        
+        throw new BadRequestException({
+          message: 'Failed to process image',
+          error: 'IMAGE_PROCESSING_ERROR',
+          details: {
+            fileName: file.originalname,
+            reason: error.message || 'Unable to process image file. Please ensure the file is a valid JPEG or PNG image.',
+          },
+        });
+      }
     }
 
     return results;
