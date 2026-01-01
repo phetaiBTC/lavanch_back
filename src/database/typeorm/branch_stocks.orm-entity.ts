@@ -12,5 +12,5 @@ export class Branch_stocksOrm extends ShardOrm {
   @Column({ type: 'int', default: 0 })
   quantity: number;
   @Column({ type: 'int', default: 0 })
-  reserved_quantity
+  reserved_quantity:number
 }
