@@ -34,6 +34,9 @@ import { MemberTierModule } from './modules/memberShip/member_tiers/member-tier.
 import { MemberModule } from './modules/memberShip/members/member.module';
 import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
 import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
+import { StockAdjustmentsModule } from './modules/stock_management/stock_adjustments/stock-adjustments.module';
+import { StockManagementModule } from './modules/stock_management/stock-management.module';
+import { TransactionService } from './shared/utils/transaction.util';
 
 @Module({
   imports: [
@@ -85,6 +88,8 @@ import { MemberTransactionModule } from './modules/memberShip/member_transaction
     MemberModule,
     MemberPointModule,
     MemberTransactionModule,
+    StockAdjustmentsModule,
+    StockManagementModule
   ],
   controllers: [],
   providers: [
@@ -92,6 +97,7 @@ import { MemberTransactionModule } from './modules/memberShip/member_transaction
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    
     // {
     //   provide: APP_GUARD,
     //   useClass: PermissionGuard,

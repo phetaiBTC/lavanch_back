@@ -6,11 +6,10 @@ import { ProductLotOrm } from './product_lot.orm-entity';
 import { UserOrm } from './user.orm-entity';
 
 export enum StockMovementType {
-  IN = 'IN',
-  OUT = 'OUT',
+  INBOUND = 'INBOUND',
   TRANSFER_IN = 'TRANSFER_IN',
   TRANSFER_OUT = 'TRANSFER_OUT',
-  ADJUSTMENT = 'ADJUSTMENT',
+  ADJUSTMENT = 'ADJUSTMENT',  
 }
 
 @Entity('stock_movements')

@@ -17,4 +17,6 @@ export class Stock_transfer_itemsOrm extends ShardOrm {
   product_lot: ProductLotOrm;
   @Column({ type: 'int', default: 0 })
   quantity: number;
+  @Column({ type: 'int', default: 0 })
+  received_quantity: number;
 }
