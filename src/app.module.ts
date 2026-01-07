@@ -35,7 +35,6 @@ import { MemberModule } from './modules/memberShip/members/member.module';
 import { MemberPointModule } from './modules/memberShip/member_points/member-point.module';
 import { MemberTransactionModule } from './modules/memberShip/member_transactions/member-transaction.module';
 
-import { suppliersModule } from './modules/suppliers/suppliers.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -81,7 +80,6 @@ import { suppliersModule } from './modules/suppliers/suppliers.module';
     BranchExpenseModule,
     WalletAdjustmentModule,
     WalletTransactionModule,
-    suppliersModule,
     ProductLotModule,
     MemberTierModule,
     MemberModule,
