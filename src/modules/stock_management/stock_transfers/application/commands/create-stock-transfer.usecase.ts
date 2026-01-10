@@ -3,14 +3,12 @@ import {
   type IStockTransferRepository,
   STOCK_TRANSFER_REPOSITORY,
 } from '../../domain/stock-transfer.repository';
-import { EntityManager } from 'typeorm';
 import { CreateStockTransferDto } from '../../dto/create-stock-transfer.dto';
 import { StockTransferItem } from '../../domain/stock-transfer-item.entity';
-import {
-  StockTransfer,
-  StockTransferStatus,
-} from '../../domain/stock-transfer.entity';
+import { StockTransfer } from '../../domain/stock-transfer.entity';
 import { TransactionService } from 'src/shared/utils/transaction.util';
+import { AuthPayload } from 'src/modules/auth/interface/auth.interface';
+import { StockTransferStatus } from 'src/database/typeorm/stock_transfers.orm-entity';
 
 @Injectable()
 export class CreateStockTransferUseCase {
@@ -20,7 +18,10 @@ export class CreateStockTransferUseCase {
     private tx: TransactionService,
   ) {}
 
-  async execute(dto: CreateStockTransferDto): Promise<{ message: string }> {
+  async execute(
+    dto: CreateStockTransferDto,
+    user: AuthPayload,
+  ): Promise<{ message: string }> {
     return await this.tx.run(async (manager) => {
       const items = dto.items.map(
         (i) =>
@@ -37,9 +38,13 @@ export class CreateStockTransferUseCase {
         toBranchId: dto.toBranchId,
         status: StockTransferStatus.PENDING,
         items,
+        created_by: user.id,
+        transfer_date: dto.transfer_date,
       });
 
-      return this.repo.save(manager, transfer);
+      await this.repo.save(manager, transfer);
+
+      return { message: 'Stock transfer created successfully' };
     });
   }
 }

@@ -6,7 +6,7 @@ export interface IStockTransferRepository {
   save(
     manager: EntityManager,
     domain: StockTransfer,
-  ): Promise<{ message: string }>;
+  ): Promise<void>;
 
   findById(manager: EntityManager, id: number): Promise<StockTransfer>;
 }

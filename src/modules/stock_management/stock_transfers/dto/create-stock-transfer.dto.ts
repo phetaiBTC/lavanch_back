@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -29,6 +30,10 @@ export class CreateStockTransferDto {
   @IsNumber()
   @IsNotEmpty()
   readonly toBranchId: number;
+
+  @IsDate()
+  @IsNotEmpty()
+  readonly transfer_date: Date;
 
   @ArrayNotEmpty()
   @ValidateNested({ each: true })

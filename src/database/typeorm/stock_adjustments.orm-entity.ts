@@ -2,10 +2,11 @@ import { ShardOrm } from 'src/shared/typeorm/base.orm-entity';
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { BranchesOrm } from './branches.orm-entity';
 import { Stock_adjustment_itemsOrm } from './stock_adjustment_items.orm-entity';
+import { UserOrm } from './user.orm-entity';
 
 export enum StockAdjustmentsStatus {
   PENDING = 'PENDING',
-  APPROVED =  'APPROVED',
+  APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
 }
 
@@ -25,13 +26,21 @@ export class Stock_adjustmentsOrm extends ShardOrm {
     enum: StockAdjustmentsStatus,
     default: StockAdjustmentsStatus.PENDING,
   })
-
   @Column()
   status: StockAdjustmentsStatus;
 
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @OneToMany(()=>Stock_adjustment_itemsOrm,(stock_adjustment_item)=>stock_adjustment_item.stock_adjustment)
-  stock_adjustment_items:Stock_adjustment_itemsOrm[]
+  @ManyToOne(() => UserOrm, (user) => user.stock_adjustments)
+  created_by: UserOrm;
+
+  @ManyToOne(() => UserOrm, (user) => user.stock_adjustments_approved)
+  adjusted_by: UserOrm;
+
+  @OneToMany(
+    () => Stock_adjustment_itemsOrm,
+    (stock_adjustment_item) => stock_adjustment_item.stock_adjustment,
+  )
+  stock_adjustment_items: Stock_adjustment_itemsOrm[];
 }

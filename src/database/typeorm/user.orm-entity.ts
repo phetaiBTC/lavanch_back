@@ -5,6 +5,7 @@ import { RoleOrm } from './role.orm-entity';
 import { Stock_transfersOrm } from './stock_transfers.orm-entity';
 import { Stock_movementsOrm } from './stock_movements.orm-entity';
 import { Inbound_ordersOrm } from './inbound_orders.orm-entity';
+import { Stock_adjustmentsOrm } from './stock_adjustments.orm-entity';
 @Entity('user')
 export class UserOrm extends ShardOrm {
   @Column() username: string;
@@ -30,6 +31,18 @@ export class UserOrm extends ShardOrm {
     (stock_movements) => stock_movements.created_by,
   )
   stock_movements: Stock_transfersOrm[];
+
+  @OneToMany(
+    () => Stock_adjustmentsOrm,
+    (stock_adjustments) => stock_adjustments.created_by,
+  )
+  stock_adjustments: Stock_adjustmentsOrm[];
+
+  @OneToMany(
+    () => Stock_adjustmentsOrm,
+    (stock_adjustments_approved) => stock_adjustments_approved.adjusted_by,
+  )
+  stock_adjustments_approved: Stock_adjustmentsOrm[];
 
   @OneToMany(
     () => Inbound_ordersOrm,

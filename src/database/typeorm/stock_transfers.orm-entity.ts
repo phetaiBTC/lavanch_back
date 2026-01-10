@@ -6,9 +6,11 @@ import { Stock_transfer_itemsOrm } from './stock_transfer_items.orm-entity';
 
 export enum StockTransferStatus {
   PENDING = 'PENDING',
-  REJECTED = 'REJECTED',
+  PARTIAL = 'PARTIAL',
   SUCCESS = 'SUCCESS',
+  REJECTED = 'REJECTED',
 }
+
 
 @Entity('stock_transfers')
 export class Stock_transfersOrm extends ShardOrm {
