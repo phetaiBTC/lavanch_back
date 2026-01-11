@@ -9,4 +9,5 @@ export interface IStockTransferRepository {
   ): Promise<void>;
 
   findById(manager: EntityManager, id: number): Promise<StockTransfer>;
+  approve(manager: EntityManager, domain: StockTransfer): Promise<void>;
 }

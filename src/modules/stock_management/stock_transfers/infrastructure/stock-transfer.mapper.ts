@@ -34,19 +34,19 @@ export class StockTransferMapper {
 
   toSchemaItem(
     domain: StockTransferItem,
-  orm:{
-    product_variant: ProductVariantOrm,
-    product_lot?: ProductLotOrm,
-    stock_transfers:Stock_transfersOrm
-
-  }): Partial<Stock_transfer_itemsOrm> {
+    orm: {
+      product_variant: ProductVariantOrm;
+      product_lot?: ProductLotOrm;
+      stock_transfers: Stock_transfersOrm;
+    },
+  ): Partial<Stock_transfer_itemsOrm> {
     return {
       id: domain.id,
       product_variant: orm.product_variant,
       product_lot: orm.product_lot,
       quantity: domain.quantity,
       received_quantity: domain.ReceivedQuantity,
-      stock_transfers:orm.stock_transfers
+      stock_transfers: orm.stock_transfers,
     };
   }
 
@@ -64,7 +64,7 @@ export class StockTransferMapper {
       from_branch: orm.from_branch,
       to_branch: orm.to_branch,
       created_by: orm.created_by,
-      transfer_date: domain.transferDate
+      transfer_date: domain.transferDate,
     };
   }
 }

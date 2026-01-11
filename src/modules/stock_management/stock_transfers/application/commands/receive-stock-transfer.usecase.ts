@@ -23,7 +23,8 @@ export class ReceiveStockTransferUseCase {
         transfer.receiveItem(i.itemId, i.receivedQuantity),
       );
 
-      return await this.repo.save(manager, transfer);
+      await this.repo.save(manager, transfer);
+      return { message: 'Transfer received successfully' };
     });
   }
 }

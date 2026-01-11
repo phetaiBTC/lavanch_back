@@ -8,7 +8,7 @@ import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { Stock_transfer_itemsOrm } from 'src/database/typeorm/stock_transfer_items.orm-entity';
-import { NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 
 export class StockTransferRepositoryImpl implements IStockTransferRepository {
   constructor(private readonly mapper: StockTransferMapper) {}
@@ -86,5 +86,12 @@ export class StockTransferRepositoryImpl implements IStockTransferRepository {
     });
 
     await manager.save(Stock_transfer_itemsOrm, items);
+  }
+  async approve(manager: EntityManager, domain: StockTransfer): Promise<void> {
+    await manager.update(
+      Stock_transfersOrm,
+      { id: domain.id },
+      { status: domain.getStatus() },
+    );
   }
 }

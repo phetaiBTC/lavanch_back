@@ -18,7 +18,7 @@ export class SuppliersOrm extends ShardOrm {
   address: string;
   @Column()
   is_active: boolean;
-  @ManyToOne(() => VillageOrm, (village) => village.suppliers)
+  @ManyToOne(() => VillageOrm, (village) => village.suppliers, { nullable: true })
   village?: VillageOrm;
   @OneToMany(()=>Inbound_ordersOrm, (inbound_orders) => inbound_orders.supplier)
   inbound_orders: Inbound_ordersOrm[]

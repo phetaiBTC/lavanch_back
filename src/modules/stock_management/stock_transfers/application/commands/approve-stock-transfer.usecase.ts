@@ -16,7 +16,7 @@ export class ApproveStockTransferUseCase {
     return await this.tx.run(async (manager) => {
       const transfer = await this.repo.findById(manager, transferId);
       transfer.approve();
-      await this.repo.save(manager, transfer);
+      await this.repo.approve(manager, transfer);
       return { message: 'Transfer approved successfully' };
     });
   }

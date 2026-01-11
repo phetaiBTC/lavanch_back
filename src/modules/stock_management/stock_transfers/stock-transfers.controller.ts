@@ -4,6 +4,8 @@ import { ApproveStockTransferUseCase } from './application/commands/approve-stoc
 import { ReceiveStockTransferUseCase } from './application/commands/receive-stock-transfer.usecase';
 import { CreateStockTransferDto } from './dto/create-stock-transfer.dto';
 import { ReceiveStockTransferDto } from './dto/receive-stock-transfer.dto';
+import { CurrentUser } from 'src/shared/decorator/user.decorator';
+import { type AuthPayload } from 'src/modules/auth/interface/auth.interface';
 
 @Controller('stock-transfers')
 export class StockTransfersController {
@@ -14,8 +16,11 @@ export class StockTransfersController {
   ) {}
 
   @Post()
-  async create(@Body() dto: CreateStockTransferDto) {
-    return this.createUseCase.execute(dto);
+  async create(
+    @Body() dto: CreateStockTransferDto,
+    @CurrentUser() user: AuthPayload,
+  ) {
+    return this.createUseCase.execute(dto, user);
   }
 
   @Post('approve/:id')

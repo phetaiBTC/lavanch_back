@@ -37,6 +37,7 @@ import { MemberTransactionModule } from './modules/memberShip/member_transaction
 import { StockAdjustmentsModule } from './modules/stock_management/stock_adjustments/stock-adjustments.module';
 import { StockManagementModule } from './modules/stock_management/stock-management.module';
 import { TransactionService } from './shared/utils/transaction.util';
+import { InboundModule } from './modules/inbound/inbound.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { TransactionService } from './shared/utils/transaction.util';
     WalletTransactionModule,
     ProductLotModule,
     MemberTierModule,
+    InboundModule,
     MemberModule,
     MemberPointModule,
     MemberTransactionModule,

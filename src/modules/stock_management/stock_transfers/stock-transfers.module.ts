@@ -24,7 +24,7 @@ import { TransactionService } from 'src/shared/utils/transaction.util';
     CreateStockTransferUseCase,
     ApproveStockTransferUseCase,
     ReceiveStockTransferUseCase,
-    TransactionService
+    TransactionService,
   ],
   exports: [],
 })

@@ -30,13 +30,13 @@ export class StockTransfer {
     this.created_by = props.created_by;
   }
 
-  // approve() {
-  //   if (this.status !== StockTransferStatus.PENDING) {
-  //     throw new Error('Only pending transfer can be approved');
-  //   }
+  approve() {
+    if (this.status !== StockTransferStatus.PENDING) {
+      throw new Error('Only pending transfer can be approved');
+    }
 
-  //   this.status = StockTransferStatus.SUCCESS;
-  // }
+    this.status = StockTransferStatus.SUCCESS;
+  }
 
   receiveItem(itemId: number, qty: number) {
     const item = this.items.find((i) => i.id === itemId);
