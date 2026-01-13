@@ -40,7 +40,7 @@ export class StockMovementMapper {
     orm: {
       branch: BranchesOrm;
       variant: ProductVariantOrm;
-      lot: ProductLotOrm;
+      lot?: ProductLotOrm;
       createdBy: UserOrm;
     },
   ): Partial<Stock_movementsOrm> {

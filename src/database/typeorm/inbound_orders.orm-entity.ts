@@ -11,6 +11,8 @@ export enum InboundOrdersStatus {
   RECEIVED = 'RECEIVED',
   PARTIAL = 'PARTIAL',
   CANCELLED = 'CANCELLED',
+  CONFIRMED = 'CONFIRMED',
+
 }
 
 @Entity('inbound_orders')
@@ -27,7 +29,7 @@ export class Inbound_ordersOrm extends ShardOrm {
   @Column()
   expected_date: Date;
 
-  @Column()
+  @Column({ nullable: true })
   received_date: Date;
 
   @ManyToOne(() => CurrenciesOrm, (currency) => currency.inbound_orders)

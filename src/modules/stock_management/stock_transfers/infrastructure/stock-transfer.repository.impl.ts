@@ -8,8 +8,8 @@ import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-entity';
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { Stock_transfer_itemsOrm } from 'src/database/typeorm/stock_transfer_items.orm-entity';
-import { Inject, NotFoundException } from '@nestjs/common';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+@Injectable()
 export class StockTransferRepositoryImpl implements IStockTransferRepository {
   constructor(private readonly mapper: StockTransferMapper) {}
   async findById(manager: EntityManager, id: number): Promise<StockTransfer> {

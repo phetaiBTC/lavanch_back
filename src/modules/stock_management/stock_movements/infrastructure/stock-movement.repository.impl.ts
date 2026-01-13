@@ -10,7 +10,8 @@ import { ProductVariantOrm } from 'src/database/typeorm/product-variant.orm-enti
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { UserOrm } from 'src/database/typeorm/user.orm-entity';
 import { IStockMovementRepository } from '../domain/stock-movement.repository';
-
+import { Injectable } from '@nestjs/common';
+@Injectable()
 export class StockMovementRepositoryImpl implements IStockMovementRepository {
   constructor(private readonly mapper: StockMovementMapper) {}
 
@@ -24,16 +25,16 @@ export class StockMovementRepositoryImpl implements IStockMovementRepository {
     const variant = await manager.findOneOrFail(ProductVariantOrm, {
       where: { id: domain.productVariantId },
     });
-    const lot = await manager.findOneOrFail(ProductLotOrm, {
+    const lot = await manager.findOne(ProductLotOrm, {
       where: { id: domain.productLotId },
-    });
+    }); 
     const createdBy = await manager.findOneOrFail(UserOrm, {
       where: { id: domain.createdBy },
     });
     const data = this.mapper.toSchema(domain, {
       branch,
       variant,
-      lot,
+      lot:undefined,
       createdBy,
     });
     await manager.save(Stock_movementsOrm, data);

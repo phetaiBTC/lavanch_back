@@ -5,6 +5,7 @@ import { TransactionService } from 'src/shared/utils/transaction.util';
 import { STOCK_MOVEMENT_REPOSITORY } from './domain/stock-movement.repository';
 import { StockMovementRepositoryImpl } from './infrastructure/stock-movement.repository.impl';
 import { CreateStockMovementUseCase } from './application/commands/create-stock-movement.usecase';
+import { StockMovementMapper } from './infrastructure/stock-movement.mapper';
 @Module({
   imports: [TypeOrmModule.forFeature([Stock_movementsOrm])],
   providers: [
@@ -14,7 +15,13 @@ import { CreateStockMovementUseCase } from './application/commands/create-stock-
     },
     TransactionService,
     CreateStockMovementUseCase,
+    StockMovementMapper,
   ],
-  exports: [],
+  exports: [
+    {
+      provide: STOCK_MOVEMENT_REPOSITORY,
+      useClass: StockMovementRepositoryImpl,
+    },
+  ],
 })
 export class StockMovementsModule {}
