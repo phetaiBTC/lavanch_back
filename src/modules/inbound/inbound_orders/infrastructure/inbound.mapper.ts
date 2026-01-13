@@ -13,15 +13,16 @@ import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 
 @Injectable()
 export class InboundOrderMapper {
-toDomainItem(schema: Inbound_order_itemsOrm): InboundOrderItem {
-  return new InboundOrderItem({
-    id: schema.id,
-    productVariantId: schema.variant.id,
-    unitId: schema.unit.id,
-    quantity: schema.quantity,
-    unitPrice: schema.unit_price,
-  })
-}
+  toDomainItem(schema: Inbound_order_itemsOrm): InboundOrderItem {
+    return new InboundOrderItem({
+      id: schema.id,
+      productVariantId: schema.variant.id,
+      unitId: schema.unit.id,
+      quantity: schema.quantity,
+      unitPrice: schema.unit_price,
+      receivedQuantity: schema.received_quantity,
+    });
+  }
 
   toDomain(schema: Inbound_ordersOrm): InboundOrder {
     return new InboundOrder({
@@ -36,7 +37,6 @@ toDomainItem(schema: Inbound_order_itemsOrm): InboundOrderItem {
       items: schema.inbound_order_items.map((i) => this.toDomainItem(i)),
     });
   }
-
 
   toSchema(
     domain: InboundOrder,

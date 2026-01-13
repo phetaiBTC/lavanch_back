@@ -14,10 +14,19 @@ import { UnitOrm } from 'src/database/typeorm/unit.orm-entity';
 import { CurrenciesOrm } from 'src/database/typeorm/currencies.orm-entity';
 import { ProductLotOrm } from 'src/database/typeorm/product_lot.orm-entity';
 import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
+import { BranchStocksModule } from 'src/modules/stock_management/branch_stocks/branch-stocks.module';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Inbound_ordersOrm, Inbound_order_itemsOrm,UnitOrm,CurrenciesOrm,ProductLotOrm,ProductUnitOrm]),
-    StockMovementsModule
+    TypeOrmModule.forFeature([
+      Inbound_ordersOrm,
+      Inbound_order_itemsOrm,
+      UnitOrm,
+      CurrenciesOrm,
+      ProductLotOrm,
+      ProductUnitOrm,
+    ]),
+    BranchStocksModule,
+    StockMovementsModule,
   ],
   controllers: [InboundOrdersController],
   providers: [
@@ -28,7 +37,7 @@ import { ProductUnitOrm } from 'src/database/typeorm/product-unit.orm-entity';
     CreateInboundOrderUseCase,
     ReceiveInboundOrderUseCase,
     InboundOrderMapper,
-    TransactionService
+    TransactionService,
   ],
   exports: [],
 })

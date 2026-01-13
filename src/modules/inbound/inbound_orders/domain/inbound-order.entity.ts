@@ -1,7 +1,6 @@
 import { InboundOrdersStatus } from 'src/database/typeorm/inbound_orders.orm-entity';
 import { InboundOrderProps } from '../interface/inbound.interface';
 import { InboundOrderItem } from './inbound-order-item.entity';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 export interface ReceiveInboundOrderResult {
   itemId: number;
   productVariantId: number;
@@ -70,7 +69,7 @@ export class InboundOrder {
 
     const item = this.items.find((i) => i.id === itemId);
     if (!item) {
-      throw new NotFoundException(`Item with ID ${itemId} not found`);
+      throw new Error(`Item with ID ${itemId} not found`);
     }
 
     item.receive(qty);

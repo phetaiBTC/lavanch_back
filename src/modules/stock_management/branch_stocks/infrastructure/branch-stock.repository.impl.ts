@@ -37,4 +37,35 @@ export class BranchStockRepositoryImpl implements IBranchStockRepository {
     await manager.save(orm);
     return { message: 'Stock saved successfully' };
   }
+
+  async getOrCreate(
+    manager: EntityManager,
+    branchId: number,
+    productVariantId: number,
+  ): Promise<Branch_stocksOrm> {
+    const orm = await manager.findOne(Branch_stocksOrm, {
+      where: {
+        branch: { id: branchId },
+        variant: { id: productVariantId },
+      },
+    });
+    if (orm) return orm;
+    return manager.create(Branch_stocksOrm, {
+      branch: { id: branchId },
+      variant: { id: productVariantId },
+      quantity: 0,
+      reserved_quantity:0
+    })
+  }
+
+  async increase(
+    manager: EntityManager,
+    branchId: number,
+    productVariantId: number,
+    qty: number,
+  ): Promise<void> {
+    const orm = await this.getOrCreate(manager, branchId, productVariantId);
+    orm.quantity += qty;
+    await manager.save(orm);
+  }
 }

@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common';
+
 export interface InboundOrderItemProps {
   id?: number;
   // inboundOrderId: number;
@@ -9,7 +11,7 @@ export interface InboundOrderItemProps {
   unitPrice: number;
   // piecesPerUnit: number;
 
-  // receivedQuantity?: number;
+  receivedQuantity?: number;
 }
 
 export class InboundOrderItem {
@@ -42,7 +44,7 @@ export class InboundOrderItem {
     this.quantity = props.quantity;
     this.unitPrice = props.unitPrice;
     // this.piecesPerUnit = props.piecesPerUnit;
-    // this._receivedQuantity = props.receivedQuantity ?? 0;
+    this._receivedQuantity = props.receivedQuantity ?? 0;
   }
 
   // ========================
@@ -70,7 +72,9 @@ export class InboundOrderItem {
   // }
   receive(qty: number) {
     if (this._receivedQuantity + qty > this.quantity) {
-      throw new Error('Receive quantity exceeds ordered quantity');
+      throw new BadRequestException(
+        'Receive quantity exceeds ordered quantity',
+      );
     }
     this._receivedQuantity += qty;
   }

@@ -4,7 +4,7 @@ import { ReceiveInboundOrderUseCase } from './application/commands/receive-inbou
 import { CreateInboundOrderDto } from './dto/create-inbound-order.dto';
 import { CurrentUser } from 'src/shared/decorator/user.decorator';
 import { type AuthPayload } from 'src/modules/auth/interface/auth.interface';
-import { ReceiveInboundOrderItemDto } from './dto/receive-inbound-order.dto';
+import { ReceiveInboundOrderDto } from './dto/receive-inbound-order.dto';
 
 @Controller('inbound-orders')
 export class InboundOrdersController {
@@ -21,13 +21,13 @@ export class InboundOrdersController {
     return this.createInboundOrderUseCase.execute(body, user);
   }
 
-  @Patch('receive/:id/:itemId')
+  @Patch('receive/:id')
   async receive(
     @CurrentUser() user: AuthPayload,
-    @Body() body: ReceiveInboundOrderItemDto,
+    @Body() body: ReceiveInboundOrderDto,
     @Param('id') id: number,
-    @Param('itemId') itemId: number,
+    // @Param('itemId') itemId: number,
   ) {
-    return this.receiveInboundOrderUseCase.execute(id, itemId, body, user);
+    return this.receiveInboundOrderUseCase.execute(id, body, user);
   }
 }

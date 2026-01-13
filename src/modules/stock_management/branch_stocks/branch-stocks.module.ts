@@ -14,6 +14,11 @@ import { BranchStockMapper } from './infrastructure/branch-stock.mapper';
     },
     BranchStockMapper,
   ],
-  exports: [],
+  exports: [
+    {
+      provide: BRANCH_STOCK_REPOSITORY,
+      useClass: BranchStockRepositoryImpl,
+    },
+  ],
 })
 export class BranchStocksModule {}
