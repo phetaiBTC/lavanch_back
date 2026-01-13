@@ -18,10 +18,7 @@ import {
 } from '../../../wallet_transactions/domain/wallet-transaction.repository';
 import { WalletAdjustment } from '../../domain/wallet-adjustment.entity';
 import { WalletTransaction } from '../../../wallet_transactions/domain/wallet-transaction.entity';
-import {
-  CreateWalletAdjustmentDto,
-  AdjustmentTypeEnum,
-} from '../../dto/create-wallet-adjustment.dto';
+import {CreateWalletAdjustmentDto } from '../../dto/create-wallet-adjustment.dto';
 import { TransactionTypeEnum } from '../../../wallet_transactions/dto/create-wallet-transaction.dto';
 import { DataSource } from 'typeorm';
 
@@ -109,6 +106,7 @@ export class CreateWalletAdjustmentLostUseCase {
       wallet_transaction_id: savedTransaction.value.id!,
       status: 'APPROVED', // Auto-approve adjustments
       approved_by: createdBy,
+      updatedAt: new Date(),
     });
 
     return this.adjustmentRepo.update(updatedAdjustment);

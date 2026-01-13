@@ -5,9 +5,9 @@ import { WalletTransactionsOrm } from 'src/database/typeorm/wallet_transactions.
 import { IWalletTransactionRepository } from '../domain/wallet-transaction.repository';
 import { WalletTransaction } from '../domain/wallet-transaction.entity';
 import { WalletTransactionMapper } from './wallet-transaction.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindWalletTransactionDto } from '../dto/find-wallet-transaction.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
-import { fetchWithPagination } from 'src/shared/utils/pagination.util';
+import { Status } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class WalletTransactionRepositoryImpl
@@ -19,7 +19,7 @@ export class WalletTransactionRepositoryImpl
   ) {}
 
   async findAll(
-    query: PaginationDto,
+    query: FindWalletTransactionDto,
   ): Promise<PaginatedResponse<WalletTransaction>> {
     const qb = this.transactionRepo
       .createQueryBuilder('wallet_transactions')
@@ -28,40 +28,80 @@ export class WalletTransactionRepositoryImpl
       .leftJoinAndSelect('wallet_transactions.creator', 'creator')
       .leftJoinAndSelect('wallet_transactions.approver', 'approver');
 
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'wallet_transactions.reference_no' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: WalletTransactionMapper.toDomain,
-    });
-  }
+    // Filter by search (reference_no or branch name)
+    if (query.search) {
+      qb.andWhere(
+        '(wallet_transactions.reference_no LIKE :kw OR branch.name LIKE :kw)',
+        {
+          kw: `%${query.search}%`,
+        },
+      );
+    }
 
-  async findByBranch(
-    branchId: number,
-    query: PaginationDto,
-  ): Promise<PaginatedResponse<WalletTransaction>> {
-    const qb = this.transactionRepo
-      .createQueryBuilder('wallet_transactions')
-      .withDeleted()
-      .leftJoinAndSelect('wallet_transactions.branch', 'branch')
-      .leftJoinAndSelect('wallet_transactions.creator', 'creator')
-      .leftJoinAndSelect('wallet_transactions.approver', 'approver')
-      .where('wallet_transactions.branch_id = :branchId', { branchId });
+    // Filter by branch_id
+    if (query.branch_id) {
+      qb.andWhere('wallet_transactions.branch_id = :branchId', {
+        branchId: query.branch_id,
+      });
+    }
 
-    return await fetchWithPagination({
-      qb,
-      page: query.page || 1,
-      type: query.type,
-      search: { kw: query.search, field: 'wallet_transactions.reference_no' },
-      is_active: query.is_active,
-      sort: query.sort,
-      limit: query.limit || 10,
-      toDomain: WalletTransactionMapper.toDomain,
-    });
+    // Filter by transaction_type
+    if (query.transaction_type) {
+      qb.andWhere('wallet_transactions.transaction_type = :transactionType', {
+        transactionType: query.transaction_type,
+      });
+    }
+
+    // Filter by transaction_status
+    if (query.transaction_status) {
+      qb.andWhere('wallet_transactions.status = :status', {
+        status: query.transaction_status,
+      });
+    }
+
+    // Filter by date range
+    if (query.date_from) {
+      qb.andWhere('DATE(wallet_transactions.transaction_date) >= :dateFrom', {
+        dateFrom: query.date_from,
+      });
+    }
+    if (query.date_to) {
+      qb.andWhere('DATE(wallet_transactions.transaction_date) <= :dateTo', {
+        dateTo: query.date_to,
+      });
+    }
+
+    // Filter by is_active (soft delete)
+    if (query.is_active === Status.ACTIVE) {
+      qb.andWhere('wallet_transactions.deletedAt IS NULL');
+    } else if (query.is_active === Status.INACTIVE) {
+      qb.andWhere('wallet_transactions.deletedAt IS NOT NULL');
+    }
+
+    // Sort
+    qb.orderBy('wallet_transactions.createdAt', query.sort || 'DESC');
+
+    // Pagination
+    const skip = ((query.page || 1) - 1) * (query.limit || 10);
+    const [entities, total] = await qb
+      .skip(skip)
+      .take(query.limit || 10)
+      .getManyAndCount();
+
+    const data = entities.map((entity) =>
+      WalletTransactionMapper.toDomain(entity),
+    );
+
+    return {
+      data,
+      pagination: {
+        total,
+        count: entities.length,
+        limit: query.limit || 10,
+        totalPages: Math.ceil(total / (query.limit || 10)) || 1,
+        currentPage: query.page || 1,
+      },
+    };
   }
 
   async findById(id: number): Promise<WalletTransaction | null> {

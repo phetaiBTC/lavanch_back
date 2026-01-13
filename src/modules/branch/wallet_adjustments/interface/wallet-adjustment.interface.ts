@@ -1,10 +1,15 @@
+import {
+  AdjustmentTypeEnum,
+  AdjustmentReasonEnum,
+} from '../dto/create-wallet-adjustment.dto';
+
 export interface WalletAdjustmentProps {
   id?: number;
   adjustment_no: string;
   branch_id: number;
-  adjustment_type: string;
+  adjustment_type: AdjustmentTypeEnum;
   amount: number;
-  reason: string;
+  reason: AdjustmentReasonEnum;
   description?: string;
   created_by: number;
   approved_by?: number;

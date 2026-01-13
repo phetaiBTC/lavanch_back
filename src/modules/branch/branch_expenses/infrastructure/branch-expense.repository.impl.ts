@@ -1,14 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BranchExpensesOrm } from 'src/database/typeorm/branch_expenses.orm-entity';
-import { IBranchExpenseRepository, SummaryResponse } from '../domain/branch-expense.repository';
+import {
+  BranchExpensesOrm,
+  ExpenseStatus,
+} from 'src/database/typeorm/branch_expenses.orm-entity';
+import {
+  IBranchExpenseRepository,
+  SummaryResponse,
+} from '../domain/branch-expense.repository';
 import { BranchExpense } from '../domain/branch-expense.entity';
 import { BranchExpenseMapper } from './branch-expense.mapper';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto, Status } from 'src/shared/dto/pagination.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { fetchWithPagination } from 'src/shared/utils/pagination.util';
-import { FindBranchExpenseDto, ExpenseStatusFilter } from '../dto/find-branch-expense.dto';
+import {
+  FindBranchExpenseDto,
+  ExpenseStatusFilter,
+} from '../dto/find-branch-expense.dto';
 
 @Injectable()
 export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
@@ -28,41 +37,48 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       .leftJoinAndSelect('branch_expenses.creator', 'creator');
 
     // Status filter
-    if (query.expenseStatus && query.expenseStatus !== ExpenseStatusFilter.ALL) {
-      qb.andWhere('branch_expenses.status = :status', { status: query.expenseStatus });
+    if (
+      query.expenseStatus &&
+      query.expenseStatus !== ExpenseStatusFilter.ALL
+    ) {
+      qb.andWhere('branch_expenses.status = :status', {
+        status: query.expenseStatus,
+      });
     }
 
     // Branch filter (by ID or name)
     if (query.branchId) {
-      qb.andWhere('branch_expenses.branch_id = :branchId', { branchId: query.branchId });
+      qb.andWhere('branch_expenses.branch_id = :branchId', {
+        branchId: query.branchId,
+      });
     }
     if (query.branchName) {
-      qb.andWhere('LOWER(branch.name) LIKE LOWER(:branchName)', { 
-        branchName: `%${query.branchName}%` 
+      qb.andWhere('LOWER(branch.name) LIKE LOWER(:branchName)', {
+        branchName: `%${query.branchName}%`,
       });
     }
 
     // Expense Category filter (by ID or name)
     if (query.expenseCategoryId) {
-      qb.andWhere('branch_expenses.expense_category_id = :categoryId', { 
-        categoryId: query.expenseCategoryId 
+      qb.andWhere('branch_expenses.expense_category_id = :categoryId', {
+        categoryId: query.expenseCategoryId,
       });
     }
     if (query.expenseCategoryName) {
-      qb.andWhere('LOWER(category.name) LIKE LOWER(:categoryName)', { 
-        categoryName: `%${query.expenseCategoryName}%` 
+      qb.andWhere('LOWER(category.name) LIKE LOWER(:categoryName)', {
+        categoryName: `%${query.expenseCategoryName}%`,
       });
     }
 
     // Date range filter
     if (query.createdFrom) {
-      qb.andWhere('branch_expenses.createdAt >= :createdFrom', { 
-        createdFrom: query.createdFrom 
+      qb.andWhere('DATE(branch_expenses.expense_date) >= :createdFrom', {
+        createdFrom: query.createdFrom,
       });
     }
     if (query.createdTo) {
-      qb.andWhere('branch_expenses.createdAt <= :createdTo', { 
-        createdTo: query.createdTo 
+      qb.andWhere('DATE(branch_expenses.expense_date) <= :createdTo', {
+        createdTo: query.createdTo,
       });
     }
 
@@ -70,7 +86,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
     if (query.search) {
       qb.andWhere(
         '(branch_expenses.expense_no LIKE :search OR LOWER(branch.name) LIKE LOWER(:search))',
-        { search: `%${query.search}%` }
+        { search: `%${query.search}%` },
       );
     }
 
@@ -82,7 +98,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,
-      toDomain: BranchExpenseMapper.toDomain,
+      toDomain: (schema) => BranchExpenseMapper.toDomain(schema),
     });
   }
 
@@ -105,7 +121,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       is_active: query.is_active,
       sort: query.sort,
       limit: query.limit || 10,
-      toDomain: BranchExpenseMapper.toDomain,
+      toDomain: (schema) => BranchExpenseMapper.toDomain(schema),
     });
   }
 
@@ -184,31 +200,33 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
 
     // Apply same filters as findAll (except status)
     if (query.branchId) {
-      qb.andWhere('branch_expenses.branch_id = :branchId', { branchId: query.branchId });
+      qb.andWhere('branch_expenses.branch_id = :branchId', {
+        branchId: query.branchId,
+      });
     }
     if (query.branchName) {
-      qb.andWhere('LOWER(branch.name) LIKE LOWER(:branchName)', { 
-        branchName: `%${query.branchName}%` 
+      qb.andWhere('LOWER(branch.name) LIKE LOWER(:branchName)', {
+        branchName: `%${query.branchName}%`,
       });
     }
     if (query.expenseCategoryId) {
-      qb.andWhere('branch_expenses.expense_category_id = :categoryId', { 
-        categoryId: query.expenseCategoryId 
+      qb.andWhere('branch_expenses.expense_category_id = :categoryId', {
+        categoryId: query.expenseCategoryId,
       });
     }
     if (query.expenseCategoryName) {
-      qb.andWhere('LOWER(category.name) LIKE LOWER(:categoryName)', { 
-        categoryName: `%${query.expenseCategoryName}%` 
+      qb.andWhere('LOWER(category.name) LIKE LOWER(:categoryName)', {
+        categoryName: `%${query.expenseCategoryName}%`,
       });
     }
     if (query.createdFrom) {
-      qb.andWhere('branch_expenses.createdAt >= :createdFrom', { 
-        createdFrom: query.createdFrom 
+      qb.andWhere('DATE(branch_expenses.createdAt) >= :createdFrom', {
+        createdFrom: query.createdFrom,
       });
     }
     if (query.createdTo) {
-      qb.andWhere('branch_expenses.createdAt <= :createdTo', { 
-        createdTo: query.createdTo 
+      qb.andWhere('DATE(branch_expenses.createdAt) <= :createdTo', {
+        createdTo: query.createdTo,
       });
     }
     if (query.search) {
@@ -217,7 +235,7 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
       });
     }
     if (query.is_active) {
-      if (query.is_active === 'active') {
+      if (query.is_active === Status.ACTIVE) {
         qb.andWhere('branch_expenses.deletedAt IS NULL');
       } else {
         qb.andWhere('branch_expenses.deletedAt IS NOT NULL');
@@ -225,33 +243,44 @@ export class BranchExpenseRepositoryImpl implements IBranchExpenseRepository {
     }
 
     // Apply status filter if specified
-    if (query.expenseStatus && query.expenseStatus !== ExpenseStatusFilter.ALL) {
-      qb.andWhere('branch_expenses.status = :status', { status: query.expenseStatus });
+    if (
+      query.expenseStatus &&
+      query.expenseStatus !== ExpenseStatusFilter.ALL
+    ) {
+      qb.andWhere('branch_expenses.status = :status', {
+        status: query.expenseStatus,
+      });
     }
 
     const result = await qb
       .select('SUM(branch_expenses.amount)', 'total_amount_all')
       .addSelect(
-        `SUM(CASE WHEN branch_expenses.status = 'PENDING' THEN 1 ELSE 0 END)`,
+        `SUM(CASE WHEN branch_expenses.status = '${ExpenseStatus.PENDING}' THEN 1 ELSE 0 END)`,
         'count_pending',
       )
       .addSelect(
-        `SUM(CASE WHEN branch_expenses.status = 'APPROVED' THEN 1 ELSE 0 END)`,
+        `SUM(CASE WHEN branch_expenses.status = '${ExpenseStatus.APPROVED}' THEN 1 ELSE 0 END)`,
         'count_approved',
       )
       .addSelect(
-        `SUM(CASE WHEN branch_expenses.status = 'REJECTED' THEN 1 ELSE 0 END)`,
+        `SUM(CASE WHEN branch_expenses.status = '${ExpenseStatus.REJECTED}' THEN 1 ELSE 0 END)`,
         'count_rejected',
       )
       .addSelect('COUNT(*)', 'total_count')
-      .getRawOne();
+      .getRawOne<{
+        total_amount_all: string | null;
+        count_pending: string | null;
+        count_approved: string | null;
+        count_rejected: string | null;
+        total_count: string;
+      }>();
 
     return {
-      total_amount_all: Number(result?.total_amount_all || 0),
-      count_pending: Number(result?.count_pending || 0),
-      count_approved: Number(result?.count_approved || 0),
-      count_rejected: Number(result?.count_rejected || 0),
-      total_count: Number(result?.total_count || 0),
+      total_amount_all: Number(result?.total_amount_all ?? 0),
+      count_pending: Number(result?.count_pending ?? 0),
+      count_approved: Number(result?.count_approved ?? 0),
+      count_rejected: Number(result?.count_rejected ?? 0),
+      total_count: Number(result?.total_count ?? 0),
     };
   }
 }

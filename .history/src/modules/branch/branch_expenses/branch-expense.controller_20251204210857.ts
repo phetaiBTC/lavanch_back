@@ -9,14 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateBranchExpenseDto } from './dto/create-branch-expense.dto';
-import { ApproveExpenseDto, ApprovalAction } from './dto/approve-expense.dto';
+import { ApproveExpenseDto } from './dto/approve-expense.dto';
 import { FindBranchExpenseDto } from './dto/find-branch-expense.dto';
 import { CreateBranchExpenseUseCase } from './application/commands/create-branch-expense.usecase';
 import { ApproveExpenseUseCase } from './application/commands/approve-expense.usecase';
 import { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';
 import { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';
 import { GetBranchExpenseSummaryUseCase } from './application/queries/get-summary.usecase';
-import { GetReceiptImagesUseCase } from './application/queries/get-receipt-images.usecase';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { BranchExpenseMapper } from './infrastructure/branch-expense.mapper';
 import { BranchExpenseResponse } from './interface/branch-expense.interface';
@@ -34,7 +33,6 @@ export class BranchExpenseController {
     private readonly findOneBranchExpenseUseCase: FindOneBranchExpenseUseCase,
     private readonly findAllBranchExpenseUseCase: FindAllBranchExpenseUseCase,
     private readonly getSummaryUseCase: GetBranchExpenseSummaryUseCase,
-    private readonly getReceiptImagesUseCase: GetReceiptImagesUseCase,
   ) {}
 
   /**
@@ -84,14 +82,6 @@ export class BranchExpenseController {
   }
 
   /**
-   * Get receipt images for an expense
-   */
-  @Get(':id/receipt-images')
-  async getReceiptImages(@Param('id') id: number) {
-    return this.getReceiptImagesUseCase.execute(id);
-  }
-
-  /**
    * Approve or reject an expense
    * When approved: Creates wallet transaction and deducts from branch balance
    * When rejected: Just updates status
@@ -113,12 +103,12 @@ export class BranchExpenseController {
   @Patch(':id/reject')
   async reject(
     @Param('id') id: number,
-    @CurrentUser() user: AuthPayload,
+    @CurrentUser() user: any,
   ): Promise<BranchExpenseResponse> {
     return BranchExpenseMapper.toResponse(
       await this.approveExpenseUseCase.execute(
         +id,
-        { action: ApprovalAction.REJECT },
+        { action: 'REJECT' as any },
         user.id,
       ),
     );

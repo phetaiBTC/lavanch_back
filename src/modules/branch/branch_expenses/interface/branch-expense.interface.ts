@@ -1,3 +1,5 @@
+import { ExpenseStatus } from '../domain/expense-status.enum';
+
 export interface BranchExpenseProps {
   id?: number;
   expense_no: string;
@@ -11,7 +13,7 @@ export interface BranchExpenseProps {
   receipt_image?: string;
   created_by: number;
   approved_by?: number;
-  status?: string;
+  status?: ExpenseStatus;
   wallet_transaction_id?: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -34,7 +36,7 @@ export interface BranchExpenseResponse {
   receipt_image: string | null;
   created_by: number;
   approved_by: number | null;
-  status: string;
+  status: ExpenseStatus;
   wallet_transaction_id: number | null;
   createdAt: string;
   updatedAt: string;

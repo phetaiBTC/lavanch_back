@@ -1,4 +1,10 @@
-import { IsOptional, IsEnum, IsString, IsNumber, IsDateString } from 'class-validator';
+import {
+  IsOptional,
+  IsEnum,
+  IsString,
+  IsNumber,
+  IsDateString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 

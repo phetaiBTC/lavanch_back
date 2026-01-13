@@ -9,6 +9,7 @@ import { ApproveExpenseUseCase } from './application/commands/approve-expense.us
 import { FindOneBranchExpenseUseCase } from './application/queries/findOne-branch-expense.usecase';
 import { FindAllBranchExpenseUseCase } from './application/queries/find-branch-expense.usecase';
 import { GetBranchExpenseSummaryUseCase } from './application/queries/get-summary.usecase';
+import { GetReceiptImagesUseCase } from './application/queries/get-receipt-images.usecase';
 import { WalletTransactionModule } from '../wallet_transactions/wallet-transaction.module';
 
 @Module({
@@ -27,6 +28,7 @@ import { WalletTransactionModule } from '../wallet_transactions/wallet-transacti
     FindOneBranchExpenseUseCase,
     FindAllBranchExpenseUseCase,
     GetBranchExpenseSummaryUseCase,
+    GetReceiptImagesUseCase,
   ],
   exports: [],
 })

@@ -3,7 +3,7 @@ import {
   EXPENSE_CATEGORY_REPOSITORY,
   type IExpenseCategoryRepository,
 } from '../../domain/expense-category.repository';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindExpenseCategoryDto } from '../../dto/find-expense-category.dto';
 import { PaginatedResponse } from 'src/shared/interface/pagination.interface';
 import { ExpenseCategory } from '../../domain/expense-category.entity';
 
@@ -15,7 +15,7 @@ export class FindAllExpenseCategoryUseCase {
   ) {}
 
   async execute(
-    query: PaginationDto,
+    query: FindExpenseCategoryDto,
   ): Promise<PaginatedResponse<ExpenseCategory>> {
     return this.categoryRepo.findAll(query);
   }
